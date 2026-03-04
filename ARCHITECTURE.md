@@ -96,9 +96,10 @@ API keys for cloud providers are stored in macOS Keychain. PocketCloud uses the
 `PocketCloudPrivacy` module with SecureEnclave-backed storage where the platform supports it.
 Keys are loaded at runtime and never written to log files or transmitted in metadata.
 
-### Zero telemetry
+### Zero external telemetry
 
-PocketCloud contains no analytics SDK, no crash reporting service, and no usage telemetry.
+PocketCloud contains no external analytics SDK, no external crash reporting service, and no external telemetry usage.
+Everything is tracked locally and privately.
 There is no "phone home" on startup, no anonymous usage statistics, and no A/B testing
 infrastructure. The codebase is verifiable: `pocket system verify --exhaustive` runs 112
 operations and none of them involve external reporting endpoints.
