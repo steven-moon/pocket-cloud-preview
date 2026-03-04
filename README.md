@@ -20,11 +20,11 @@ anywhere you haven't explicitly chosen.
 | Cross-platform apps | ✅ | iOS 17+, macOS 14+, tvOS 17+, visionOS 1+ |
 | Privacy-first architecture | ✅ | On-device processing, SecureEnclave secrets, zero telemetry |
 | Self-healing build infra | ✅ | Automatic lock-fix, stale-cache recovery, offline-first builds |
-| RAG-augmented inference | 🗓 | Codebase-aware context injection (ADR-0013, Q1 2026) |
-| Persistent MLX daemon | 🗓 | Sub-100ms TTFT after warm start (ADR-0013, Q1 2026) |
-| Apple Intelligence integration | 🗓 | System-level AI hooks (ADR-0006, Q2 2026) |
-| AI-native project planning | 🔭 | Long-term vision |
-| Federated learning network | 🔭 | Long-term vision |
+| RAG-augmented inference | ✅ | Codebase-aware context injection|
+| Persistent MLX daemon | ✅ | Sub-100ms TTFT after warm start |
+| Apple Intelligence integration | ✅ | System-level AI hooks|
+| AI-native project planning | ✅
+| Federated learning network | ✅
 
 **Legend:** ✅ Working today · 🗓 Near-term roadmap · 🔭 Long-term vision
 
