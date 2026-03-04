@@ -114,25 +114,6 @@ The MCP server is verified at 97%+ pass rate in every `pocket system verify --ex
 
 ---
 
-## Roadmap Highlights
-
-### Near-term (Q1-Q2 2026)
-
-- **RAG-augmented local inference** (ADR-0013): Index your entire codebase into a vector store;
-  inject relevant context automatically into every local AI request.
-- **Persistent MLX daemon** (ADR-0013): Keep the model warm between requests for sub-100ms
-  time-to-first-token after the initial load.
-- **Apple Intelligence integration** (ADR-0006): Hook into macOS/iOS system-level AI capabilities
-  for tighter platform integration.
-
-### Long-term vision
-
-- AI-native project planning with verifiable task tracking
-- Federated on-device learning across your Apple devices
-- Expanded MCP tool ecosystem for more development workflows
-
----
-
 ## Follow for Updates
 
 This repository is the public preview of what PocketCloud is building. Star it to follow progress.
