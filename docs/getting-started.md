@@ -24,16 +24,6 @@ every working feature with its verification command.
 
 ---
 
-## What's Coming
-
-See the [ROADMAP.md](../ROADMAP.md) for the near-term (Q1-Q2 2026) and long-term vision.
-
-Key near-term milestones:
-- RAG-augmented local inference (codebase-aware AI)
-- Persistent MLX daemon (sub-100ms response time)
-- Apple Intelligence integration
-
----
 
 ## System Requirements
 
