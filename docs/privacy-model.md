@@ -50,15 +50,16 @@ Keychain with appropriate access controls.
 
 ---
 
-## Zero Telemetry
+## Zero External Telemetry
 
-PocketCloud contains no:
+PocketCloud contains no external telemetry:
 
-- Analytics SDK (no Firebase, Amplitude, Mixpanel, etc.)
-- Crash reporting service (no Sentry, Crashlytics, etc.)
-- Usage telemetry (no "what features are used" reporting)
-- A/B testing infrastructure
-- "Phone home on startup" behavior
+- No External Analytics SDK (no Firebase, Amplitude, Mixpanel, etc.)
+- No External Crash reporting service (no Sentry, Crashlytics, etc.)
+- No External Usage telemetry (no "what features are used" reporting)
+- No A/B testing infrastructure
+- No "Phone home on startup" behavior
+- All telemetry and logging stays on device
 
 This is verifiable. The `pocket system verify --exhaustive` suite runs 112 operations and
 includes workspace integrity checks. The source code contains no third-party analytics imports.
