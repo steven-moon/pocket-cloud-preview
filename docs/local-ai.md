@@ -93,24 +93,12 @@ to a cloud provider without your knowledge.
 
 ---
 
-## Coming Soon: Persistent Daemon
-
-*(Near-term roadmap — ADR-0013)*
-
-The current architecture loads the model on each request. A persistent MLX daemon will
-keep the model in memory between requests, eliminating the cold-start latency for
-all subsequent calls.
-
-Target: sub-100ms time-to-first-token after the initial load.
-
 ---
 
-## Coming Soon: RAG-Augmented Context
+## RAG-Augmented Context
 
-*(Near-term roadmap — ADR-0013)*
-
-RAG (Retrieval-Augmented Generation) will index your codebase, documents, and notes
-into a local vector store. The AI router will automatically inject relevant context
+RAG (Retrieval-Augmented Generation) indexes your codebase, documents, and notes
+into a local vector store. The AI router automatically injects relevant context
 from your indexed knowledge into every request — making local inference codebase-aware
 without you having to manually paste code into prompts.
 
