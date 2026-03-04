@@ -8,7 +8,7 @@ This directory will contain architecture diagrams for PocketCloud.
 - `ai-router-flow.svg` — Local-first AI routing decision tree
 - `mcp-server.svg` — MCP server tool categories and connections
 - `privacy-model.svg` — Data flow and privacy boundaries
-- `rag-pipeline.svg` — RAG indexing and query pipeline (near-term)
+- `rag-pipeline.svg` — RAG indexing and query pipeline
 
 ## Format
 
