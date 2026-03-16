@@ -11,50 +11,88 @@ For the current verified baseline, see [FEATURES.md](FEATURES.md).
 
 ---
 
-## Near-term (Q1-Q2 2026)
+## Recently Completed (Q1 2026)
 
-### 🗓 RAG-Augmented Local Inference (ADR-0013)
+### ✅ RAG-Augmented Local Inference (ADR-0013 — Complete)
 
 Index your codebase, documents, and notes into a local vector store. Every AI request
 automatically receives relevant context — without you having to paste code into the prompt.
 
-**What this means in practice:**
-- Ask `pocket` about your codebase and get answers grounded in your actual files
-- Local inference becomes context-aware, not just prompt-aware
-- The RAG index lives entirely on your device
-
-**Progress:** Core indexing pipeline is working (`pocket knowledge rag index`). Context
-injection into the AI routing layer is in active development.
+- `pocket knowledge rag index` indexes your workspace
+- `pocket knowledge rag query` retrieves relevant context
+- AI Router automatically injects RAG context proportional to the latency budget
+- Budget-proportional RAG timeout (25% of latency budget, max 30s)
+- RAG metadata (`rag_status`, `rag_injected`) on every ChatResponse
 
 ---
 
-### 🗓 Persistent MLX Daemon (ADR-0013)
+### ✅ Persistent MLX Daemon (ADR-0013 — Complete)
 
-The first request to a local MLX model requires loading the model into memory (~1-2s on Apple
-Silicon). A persistent daemon keeps the model warm between requests, targeting sub-100ms
-time-to-first-token for all subsequent requests.
+The persistent daemon keeps models warm between requests for sub-100ms time-to-first-token.
 
-**What this means in practice:**
-- Responsive local AI without cold-start latency
-- The daemon manages memory automatically, freeing resources when idle
-- `pocket system local serve` will expose the daemon lifecycle
-
-**Progress:** Model loading and inference are working. The persistent daemon is in design.
+- `pocket system local serve --warmup` starts daemon with model pre-warming
+- `pocket system local stop` gracefully shuts down
+- PID file management at `~/.pocketcloud/daemon.pid`
+- Auto-start in verify workflow when daemon not running
+- RAG index seeding on warmup
 
 ---
 
-### 🗓 Apple Intelligence Integration (ADR-0006)
+### ✅ Apple Intelligence Integration (ADR-0006 — Complete)
 
-Integrate PocketCloud with Apple Intelligence — the system-level AI layer introduced in
-iOS 18 / macOS 15. This means PocketCloud can participate in Writing Tools, App Intents,
-and Siri Shortcuts natively.
+PocketCloud integrates with Apple's FoundationModels API for system-level AI capabilities.
 
-**What this means in practice:**
-- Use PocketCloud AI from any Apple app via the system Writing Tools menu
-- Expose `pocket` commands as Siri Shortcuts
-- App Intents for the most common AI workflows
+- `AppleIntelligenceProvider` using `SystemLanguageModel.default` and `LanguageModelSession`
+- Availability probing: ARM64 → OS version → SystemLanguageModel.availability gating
+- Capability matrix with tier-based feature detection
+- MCP tool `foundation_models` for live inference probes
+- Small-model detection with embedded-example prompts for sub-2B parameter models
 
-**Progress:** Architecture defined. Implementation targeting Q2 2026.
+---
+
+### ✅ Hardware-Aware Model Selection (ADR-0012 — Complete)
+
+Intelligent model scoring that accounts for your actual hardware:
+
+- SoC-aware bandwidth lookup (M1→55 GB/s through M4 Ultra→740 GB/s)
+- Memory-fit gating with safe budget (45% of physical RAM)
+- MoE active-parameter estimation from config.json
+- 3-prompt oracle verification suite (JSON output, word count, exact constraint)
+- Oracle feedback loop: every local inference emits quality signals
+- Model reputation service: degenerate models auto-blacklisted after 3+ low-quality signals
+- Benchmark auto-enqueuer: fresh benchmarks for models lacking signals
+
+---
+
+### ✅ App Convergence (ADR-0017 — Complete)
+
+All 4 apps wired to the Feb–Mar 2026 infrastructure sprint:
+
+- **PocketMind**: daemon warmup + polling, RAG chat toggle, LocalAIStatusBar
+- **BrainDeck**: RAG note search (actor), debounced RAG search view, study learning signals
+- **PocketCloudHub**: Live verify dashboard (--json output), AI failure diagnosis, planning panel
+- **EmotionalIntelligence**: LocalAIMoodAnalyzer enforcing localOnly routing, privacy badge
+- **Shared**: AppAIContext + DaemonStatusBadge + RAGStatusBadge + VerifyResultRow + PrivacyLocalBadge
+
+---
+
+## Near-term (Q2 2026)
+
+### 🗓 Linux Support
+
+Extend the Kernel layer beyond Apple platforms. The AI Router, provider integrations, and
+CLI already use portable Swift — Linux support means targeting SwiftPM on Ubuntu/Fedora
+and providing inference backends beyond MLX (llama.cpp, Ollama).
+
+### 🗓 Plugin Architecture
+
+Allow third-party developers to extend PocketCloud with custom MCP tools, inference
+providers, and CLI commands without modifying the core codebase.
+
+### 🗓 Open-Source Launch
+
+Prepare the codebase for public contribution: licensing, contribution guidelines,
+CI/CD for community PRs, documentation, and example projects.
 
 ---
 
@@ -71,8 +109,8 @@ An AI assistant that understands your project's ADRs, task backlogs, and verify 
 and can reason about what to work on next, estimate complexity, and surface blocking issues
 automatically.
 
-The foundation (ADR task tracking, verify baselines, RAG indexing) is being built now. The
-AI-native planning layer sits on top of it.
+The foundation (ADR task tracking, verify baselines, RAG indexing, planning document service)
+is built. The AI-native planning layer sits on top of it.
 
 ---
 
@@ -112,5 +150,6 @@ possibilities:
 
 - **Local-first is not optional.** Cloud providers will always be opt-in, never required.
 - **Your data stays on your device.** No telemetry, no analytics, no usage reporting.
-- **Swift-only.** PocketCloud is built for Apple platforms and will remain so.
+- **Swift-only.** PocketCloud is built for Apple platforms first and will remain Swift-native.
 - **Verified, not just shipped.** Every feature ships with a verify operation.
+- **Open-source.** The source code is yours to inspect, modify, and run.

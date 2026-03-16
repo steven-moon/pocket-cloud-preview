@@ -1,11 +1,26 @@
 # PocketCloud
 
-**Privacy-first AI on your device. No cloud required.**
+**Your AI. Your Device. Your Data.**
 
-PocketCloud is a local-first AI ecosystem for Apple platforms. It runs powerful language models
-entirely on-device using Apple Silicon, integrates with leading AI providers as optional
-complements, and gives you a full-featured CLI and MCP server — all without sending your data
-anywhere you haven't explicitly chosen.
+PocketCloud is an open-source, local-first AI stack for Apple platforms — built to prove that the future of AI doesn't have to live in a datacenter.
+
+It runs powerful language models entirely on your hardware using Apple MLX, integrates with cloud providers when you choose, and gives you a complete development toolkit — CLI, MCP server, cross-platform apps, and a privacy-first architecture — all without sending a single byte of your data anywhere you haven't explicitly chosen.
+
+---
+
+## Why PocketCloud Exists
+
+The AI revolution has a concentration problem.
+
+Worldwide AI spending hit **$1.5 trillion in 2025** and is projected to reach **$2.5 trillion in 2026**. Hyperscalers are spending **$600+ billion per year** building datacenters. Meta alone plans **$115-135 billion in 2026 capex** — including a 4.5 million sq ft facility in Eagle Mountain, Utah. US datacenter power consumption is projected to **nearly triple by 2030**, reaching 134 GW. Datacenters consume **449 million gallons of water per day** in the US alone, and communities are pushing back — **$98 billion in datacenter projects** have been blocked or delayed by 188+ opposition groups.
+
+Meanwhile, there are **7.5 billion smartphones** and **2+ billion PCs** in the world. Modern Apple Silicon chips deliver 38 TOPS on the Neural Engine and up to 800 GB/s memory bandwidth. The average connected device sits idle 60% of the time. We are sitting on an ocean of compute.
+
+**PocketCloud exists because you shouldn't need a $200/month API subscription to build with AI.** A $599 MacBook Neo can run 7B-parameter models at 28-35 tokens/second. A Mac Mini M4 Pro can run 32B models. The hardware is here. The models are open. What's been missing is the software stack to tie it all together.
+
+This is that stack.
+
+> Read the full story: **[STORY.md](STORY.md)** — How one developer and a team of AI agents built an AI operating system in 101 days.
 
 ---
 
@@ -14,34 +29,20 @@ anywhere you haven't explicitly chosen.
 | Feature | Status | Details |
 |---|---|---|
 | Local MLX inference | ✅ | 33+ models, <2s cold start on Apple Silicon |
-| Multi-provider AI | ✅ | OpenAI, Claude, Gemini, XAI, OpenRouter, LM Studio, Ollama |
-| `pocket` CLI | ✅ | 5-domain, 45+ commands with scheduling and recurring jobs |
+| Multi-provider AI | ✅ | OpenAI, Claude, Gemini, XAI, OpenRouter, LM Studio, Ollama, LLama.cpp |
+| `pocket` CLI | ✅ | 5-domain, 50+ commands with scheduling and recurring jobs |
 | MCP server | ✅ | 40+ tools, verified 97%+ pass rate |
 | Cross-platform apps | ✅ | iOS 17+, macOS 14+, tvOS 17+, visionOS 1+ |
 | Privacy-first architecture | ✅ | On-device processing, SecureEnclave secrets, zero telemetry |
 | Self-healing build infra | ✅ | Automatic lock-fix, stale-cache recovery, offline-first builds |
-| RAG-augmented inference | 🗓 | Codebase-aware context injection (ADR-0013, Q1 2026) |
-| Persistent MLX daemon | 🗓 | Sub-100ms TTFT after warm start (ADR-0013, Q1 2026) |
-| Apple Intelligence integration | 🗓 | System-level AI hooks (ADR-0006, Q2 2026) |
-| AI-native project planning | 🔭 | Long-term vision |
+| RAG-augmented inference | ✅ | Codebase-aware context injection into local AI requests |
+| Persistent MLX daemon | ✅ | Warm model serving with sub-100ms TTFT |
+| Apple Intelligence integration | ✅ | FoundationModels API, on-device system-level AI |
+| Hardware-aware model selection | ✅ | SoC bandwidth scoring, memory-fit gating, oracle feedback loops |
+| AI-native project planning | 🗓 | Near-term roadmap |
 | Federated learning network | 🔭 | Long-term vision |
 
 **Legend:** ✅ Working today · 🗓 Near-term roadmap · 🔭 Long-term vision
-
----
-
-## Platform Support
-
-| Platform | Minimum Version |
-|---|---|
-| iOS | 17+ |
-| macOS | 14+ (Sonoma) |
-| tvOS | 17+ |
-| visionOS | 1+ |
-
-All platforms share a common Swift 6.2 package core. The local MLX inference engine runs on
-iOS and macOS via Apple Silicon. Server-side provider integrations (OpenAI, Claude, etc.) work
-across all platforms.
 
 ---
 
@@ -62,16 +63,18 @@ across all platforms.
 │  ChatEngine       │  PocketCloudMCP (40+ tools)   │
 │  AIAgent          │  PocketCloudLogger            │
 │  PocketCloudMLX   │  PocketCloudFileKit           │
-│  pocket CLI       │  PocketCloudPrivacy           │
-│                   │  PocketCloudDocumentSystem    │
+│  AIRouter         │  PocketCloudPrivacy           │
+│  ModelSelector    │  PocketCloudDocumentSystem    │
+│  pocket CLI       │  PocketCloudBlockchain        │
 └────────────────────┬────────────────────────────┘
                      │
 ┌────────────────────▼────────────────────────────┐
 │                  Inference Layer                 │
 │                                                   │
-│  Local: Apple MLX (on-device, Apple Silicon)      │
+│  Local: Apple MLX · Apple Intelligence            │
+│         LM Studio · Ollama · LLama.cpp           │
 │  Remote: OpenAI · Claude · Gemini · XAI           │
-│          OpenRouter · LM Studio · Ollama           │
+│          OpenRouter                               │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -81,14 +84,13 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed breakdown.
 
 ## The `pocket` CLI
 
-PocketCloud ships a full-featured CLI with five command domains:
-
 ```
 pocket system      # Verification, health, local AI, workspace
 pocket dev         # Providers, Apple build tools, configuration
 pocket quality     # Code analysis, review, testing, documentation
 pocket ops         # Build, CI/CD, monitoring, bootstrapping
 pocket knowledge   # RAG indexing, document search, model registry
+pocket task        # Task management, scheduling, lifecycle
 ```
 
 Every command supports three execution modes:
@@ -98,56 +100,58 @@ Every command supports three execution modes:
 
 ---
 
-## MCP Server
+## Development Velocity
 
-PocketCloud includes an MCP (Model Context Protocol) server with 40+ verified tools:
+PocketCloud was built in **101 days** by a solo developer working with AI agents:
 
-- File and directory operations
-- Git operations
-- Code analysis and coverage
-- Apple build tools (xcodebuild, simulator, archive, export)
-- AI provider inference
-- RAG document search
-- Log and error analysis
+| Metric | Value |
+|---|---|
+| Total commits | 2,140 |
+| Days with commits | 100 of 101 (99%) |
+| Average commits/day | 21.2 |
+| Peak day | 127 commits (Jan 12, 2026) |
+| Swift files | 7,556 |
+| Lines of Swift | 474,294 |
+| Test files | 2,180 |
+| AI co-authored commits | 246 (Claude Sonnet 4.5 + 4.6) |
+| Architecture decisions | 18 ADRs |
+| Active streak | 66 consecutive days (ongoing) |
 
-The MCP server is verified at 97%+ pass rate in every `pocket system verify --exhaustive` run.
+> See **[docs/development-velocity.md](docs/development-velocity.md)** for the full breakdown.
 
 ---
 
-## Roadmap Highlights
+## Platform Support
 
-### Near-term (Q1-Q2 2026)
+| Platform | Minimum Version |
+|---|---|
+| iOS | 17+ |
+| macOS | 14+ (Sonoma) |
+| tvOS | 17+ |
+| visionOS | 1+ |
+| watchOS | 10+ |
 
-- **RAG-augmented local inference** (ADR-0013): Index your entire codebase into a vector store;
-  inject relevant context automatically into every local AI request.
-- **Persistent MLX daemon** (ADR-0013): Keep the model warm between requests for sub-100ms
-  time-to-first-token after the initial load.
-- **Apple Intelligence integration** (ADR-0006): Hook into macOS/iOS system-level AI capabilities
-  for tighter platform integration.
-
-### Long-term vision
-
-- AI-native project planning with verifiable task tracking
-- Federated on-device learning across your Apple devices
-- Expanded MCP tool ecosystem for more development workflows
+All platforms share a common Swift 6.2 package core with strict concurrency. Local MLX inference runs on iOS and macOS via Apple Silicon.
 
 ---
 
 ## Follow for Updates
 
-This repository is the public preview of what PocketCloud is building. Star it to follow progress.
+This repository is the public preview of PocketCloud. Star it to follow progress.
 
-For questions, issues, or to express interest: open a GitHub issue in this repository.
+For questions, issues, or to express interest: open a GitHub issue.
+
+**Author**: [Steven Moon](https://www.linkedin.com/in/stevenmoon/) · [Clever Coding](https://clevercoding.com/about) · [@stevenmoon](https://x.com/stevenmoon)
 
 ---
 
 ## Verified Baseline
 
-Every ✅ feature in the table above has been verified against the following baseline:
+Every ✅ feature above has been verified:
 
 ```
 pocket system verify --exhaustive --local-first
 # Result: 109/112 operations (97.3%) — 2026-03-01
 ```
 
-See [FEATURES.md](FEATURES.md) for individual feature verification details.
+See [FEATURES.md](FEATURES.md) for individual verification details.

@@ -1,7 +1,11 @@
 # PocketCloud Features
 
-All features listed here are verified working as of 2026-03-01.
+All features listed here are verified working as of 2026-03-16.
 Verification baseline: `pocket system verify --exhaustive --local-first` — 109/112 (97.3%)
+
+For the story behind PocketCloud, see [STORY.md](STORY.md).
+For development statistics, see [docs/development-velocity.md](docs/development-velocity.md).
+For the case for local AI, see [docs/why-local-ai.md](docs/why-local-ai.md).
 
 ---
 
@@ -54,7 +58,7 @@ pocket dev providers list
 
 ## `pocket` CLI
 
-**What it does:** Full-featured CLI with five command domains, 45+ commands, universal
+**What it does:** Full-featured CLI with five command domains, 50+ commands, universal
 scheduling support, and task management.
 
 **Verify:**
@@ -151,6 +155,46 @@ pocket system verify --operation workspace.integrity
 - **Zero telemetry:** No analytics, no usage reporting, no crash reporting to external servers.
 - **Local-first storage:** All chat history, RAG indexes, and model files stay in `~/.pocketcloud/`.
 - **Explicit provider choice:** Cloud providers are opt-in and require explicit configuration.
+
+---
+
+## RAG-Augmented Local Inference
+
+**What it does:** Indexes your codebase into a local vector store and automatically injects
+relevant context into every AI request — making local inference context-aware.
+
+**Verify:**
+```bash
+pocket knowledge rag index
+# Indexes your workspace into the local vector store
+
+pocket knowledge rag query "how does the AI router work"
+# Retrieves relevant context from your codebase
+
+pocket system verify --operation ai_orchestration.knowledge_context_injection
+# Verifies end-to-end RAG context injection into the AI pipeline
+```
+
+**Evidence:**
+- Budget-proportional RAG timeout (25% of latency budget, max 30s)
+- RAG metadata on every ChatResponse (`rag_status`, `rag_injected`)
+- Recursive component exclusion for index quality
+- RAG index seeding on daemon warmup
+
+---
+
+## Hardware-Aware Model Selection
+
+**What it does:** Automatically selects the best local model for your specific hardware,
+tracks model quality over time, and blacklists degenerate models.
+
+**Evidence:**
+- SoC-aware bandwidth scoring (M1 through M4 Ultra)
+- Safe memory budget gating (45% of physical RAM)
+- 3-prompt oracle verification (JSON output, word count, exact constraint)
+- Oracle feedback loop: every inference emits quality signals
+- Model reputation service: auto-blacklists consistently low-quality models
+- Benchmark auto-enqueuer for models lacking fresh signals
 
 ---
 

@@ -1,59 +1,76 @@
 # Getting Started with PocketCloud
 
-PocketCloud is currently in private development. This preview repository documents what is
-being built and where it is heading.
-
----
-
-## How to Follow
-
-**Star this repository** to get notified when new features are verified and documented.
-
-**Open an issue** if you have questions, want to discuss the roadmap, or want to express
-interest in early access.
-
----
-
-## What Is Available Today
-
-PocketCloud is not yet publicly distributed as a downloadable app. The repository documents
-the capabilities that are verified and working in the development build.
-
-If you are a developer interested in the project, the [FEATURES.md](../FEATURES.md) documents
-every working feature with its verification command.
-
----
-
-## What's Coming
-
-See the [ROADMAP.md](../ROADMAP.md) for the near-term (Q1-Q2 2026) and long-term vision.
-
-Key near-term milestones:
-- RAG-augmented local inference (codebase-aware AI)
-- Persistent MLX daemon (sub-100ms response time)
-- Apple Intelligence integration
+> **Preview Repository** — PocketCloud is preparing for open-source release. This repository
+> contains documentation and the public roadmap. The full source code will be published soon.
 
 ---
 
 ## System Requirements
 
-To run PocketCloud when it becomes available:
-
-| Requirement | Details |
+| Requirement | Minimum |
 |---|---|
-| macOS | 14+ (Sonoma) for CLI and hub app |
-| iOS | 17+ for PocketMind |
-| tvOS | 17+ for EmotionalIntelligence |
-| Apple Silicon | Required for local MLX inference |
-| Xcode | 16+ (for building from source) |
+| macOS | 14+ (Sonoma) |
+| iOS | 17+ |
+| tvOS | 17+ |
+| visionOS | 1+ |
+| Hardware | Apple Silicon (M1 or later) for local MLX inference |
+| Xcode | 16+ |
+| Swift | 6.2 |
 
-Local inference requires an M-series Mac or Apple Silicon iPhone/iPad. Cloud providers
-(OpenAI, Claude, etc.) work on any supported platform.
+**For local AI inference:** Any Apple Silicon Mac. A Mac Mini M4 ($599) or MacBook Neo ($599) is sufficient to run 7B-parameter models at 28-35 tokens/second.
+
+**For cloud providers (optional):** API keys from any supported provider (OpenAI, Anthropic, Google, XAI, OpenRouter).
+
+---
+
+## What You Can Do Today
+
+Once PocketCloud is installed, the `pocket` CLI gives you:
+
+```bash
+# Check system health
+pocket system health
+
+# List available local AI models
+pocket system local list
+
+# Run local AI verification
+pocket system local verify
+
+# Index your codebase for RAG
+pocket knowledge rag index
+
+# Query your codebase
+pocket knowledge rag query "how does authentication work"
+
+# Full system verification (112 operations)
+pocket system verify --exhaustive --local-first
+
+# Start the persistent MLX daemon
+pocket system local serve --warmup
+
+# Schedule recurring tasks
+pocket quality test --daily
+pocket system health --every15min
+```
+
+---
+
+## Learn More
+
+- **[STORY.md](../STORY.md)** — Why PocketCloud exists and how it was built
+- **[FEATURES.md](../FEATURES.md)** — Complete feature list with verification commands
+- **[ARCHITECTURE.md](../ARCHITECTURE.md)** — System architecture deep dive
+- **[ROADMAP.md](../ROADMAP.md)** — What's next
+- **[docs/why-local-ai.md](why-local-ai.md)** — The case for local-first AI
+- **[docs/local-ai.md](local-ai.md)** — How local inference works in PocketCloud
+- **[docs/privacy-model.md](privacy-model.md)** — Privacy guarantees and data handling
+- **[docs/development-velocity.md](development-velocity.md)** — Development statistics
 
 ---
 
 ## Stay Updated
 
-- Watch this repository for documentation updates
-- Each verified feature update corresponds to a `pocket system verify` baseline improvement
-- The [FEATURES.md](../FEATURES.md) is updated whenever new capabilities are verified
+Star this repository to follow progress. For questions or to express interest, open a GitHub issue.
+
+**Author**: [Steven Moon](https://www.linkedin.com/in/stevenmoon/) — 26+ years of software development, 18+ years on Apple platforms
