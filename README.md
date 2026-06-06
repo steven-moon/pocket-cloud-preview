@@ -141,7 +141,7 @@ This repository is the public preview of PocketCloud. Star it to follow progress
 
 For questions, issues, or to express interest: open a GitHub issue.
 
-**Author**: [Steven Moon](https://www.linkedin.com/in/stevenmoon/) · [Clever Coding](https://clevercoding.com/about) · [@stevenmoon](https://x.com/stevenmoon)
+**Author**: [Steven Moon](https://www.linkedin.com/in/stevenmoon/) · [@stevenmoon](https://x.com/stevenmoon)
 
 ---
 

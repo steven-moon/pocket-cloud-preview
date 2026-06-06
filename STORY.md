@@ -183,10 +183,9 @@ I want every developer to be able to build amazing AI-powered software without n
 
 ## About the Author
 
-**Steven Moon** is a software developer with 26+ years of experience and 18+ years building on Apple platforms. He wrote one of the first 2,000 iPhone apps and founded [Clever Coding](https://clevercoding.com), a development agency in Utah that employed 100+ engineers over 15+ years.
+**Steven Moon** is a software developer with 26+ years of experience and 18+ years building on Apple platforms. He wrote one of the first 2,000 iPhone apps and founded a Utah-based development agency that employed 100+ engineers over 15+ years.
 
 PocketCloud is the culmination of decades of platform experience meeting the most transformative technology shift since the smartphone.
 
 - [LinkedIn](https://www.linkedin.com/in/stevenmoon/)
 - [X/Twitter](https://x.com/stevenmoon)
-- [Clever Coding](https://clevercoding.com/about)
