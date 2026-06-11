@@ -51,7 +51,7 @@ This is that stack.
 ```
 ┌─────────────────────────────────────────────────┐
 │                     Apps Layer                   │
-│  PocketMind (iOS)  ·  PocketCloudHub (macOS)     │
+│  PocketMind (iOS)  ·  PocketHub (macOS)     │
 │  BrainDeck (macOS) ·  EmotionalIntelligence (tvOS)│
 └────────────────────┬────────────────────────────┘
                      │

@@ -70,7 +70,7 @@ All 4 apps wired to the Feb–Mar 2026 infrastructure sprint:
 
 - **PocketMind**: daemon warmup + polling, RAG chat toggle, LocalAIStatusBar
 - **BrainDeck**: RAG note search (actor), debounced RAG search view, study learning signals
-- **PocketCloudHub**: Live verify dashboard (--json output), AI failure diagnosis, planning panel
+- **PocketHub**: Live verify dashboard (--json output), AI failure diagnosis, planning panel
 - **EmotionalIntelligence**: LocalAIMoodAnalyzer enforcing localOnly routing, privacy badge
 - **Shared**: AppAIContext + DaemonStatusBadge + RAGStatusBadge + VerifyResultRow + PrivacyLocalBadge
 

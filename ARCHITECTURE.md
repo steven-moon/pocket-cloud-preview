@@ -17,7 +17,7 @@ PocketCloud is built on three principles:
 │   iOS 17+              macOS 14+        tvOS 17+              │
 │   AI chat assistant    Study notes      Mood + insights       │
 │                                                               │
-│   PocketCloudHub                                              │
+│   PocketHub                                              │
 │   macOS 14+                                                   │
 │   AI agent serving + developer tools                          │
 └───────────────────────────┬─────────────────────────────────┘

@@ -161,7 +161,7 @@ Beyond Claude, the development workflow involved multiple AI tools for architect
 | Apps/BrainDeck | 350 |
 | Apps/PocketMind | 345 |
 | Packages/Kernel/GameStack | 245 |
-| Apps/PocketCloudHub | 182 |
+| Apps/PocketHub | 182 |
 
 The Kernel — AIStack and Core — accounts for the majority of development effort, reflecting the bottom-up "build the engine first" philosophy.
 

@@ -110,7 +110,7 @@ PocketCloud is organized as a **Kernel/Toolkit** architecture — deliberately e
 **Apps Layer** — four applications:
 - **PocketMind** (iOS): AI chat with daemon warmup, RAG toggle, local AI status
 - **BrainDeck** (macOS): Study notes with RAG-powered search and learning signals
-- **PocketCloudHub** (macOS): Developer dashboard with live verification, AI diagnosis
+- **PocketHub** (macOS): Developer dashboard with live verification, AI diagnosis
 - **EmotionalIntelligence** (tvOS): Mood tracking with enforced local-only AI policy
 
 ### The AI Router

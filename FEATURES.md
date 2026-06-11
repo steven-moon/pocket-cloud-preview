@@ -133,7 +133,7 @@ pocket system verify --operation apple.archive
 | App | Platform | Description |
 |---|---|---|
 | PocketMind | iOS 17+ | AI chat assistant |
-| PocketCloudHub | macOS 14+ | AI agent serving + developer tools |
+| PocketHub | macOS 14+ | AI agent serving + developer tools |
 | BrainDeck | macOS 14+ | Study notes + learning workflows |
 | EmotionalIntelligence | tvOS 17+ | Mood tracking + emotional insights |
 
