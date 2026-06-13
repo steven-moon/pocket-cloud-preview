@@ -1,157 +1,158 @@
-# PocketCloud
+# PocketCloud Preview
 
-**Your AI. Your Device. Your Data.**
+**Private AI that runs on your hardware.**
 
-PocketCloud is an open-source, local-first AI stack for Apple platforms — built to prove that the future of AI doesn't have to live in a datacenter.
+This is the public narrative repository for PocketCloud: a local-first, privacy-first AI ecosystem built in Swift. It mirrors the positioning from [pocketcloud.org](https://pocketcloud.org) while adding the engineering context GitHub readers need before the primary source repository opens.
 
-It runs powerful language models entirely on your hardware using Apple MLX, integrates with cloud providers when you choose, and gives you a complete development toolkit — CLI, MCP server, cross-platform apps, and a privacy-first architecture — all without sending a single byte of your data anywhere you haven't explicitly chosen.
-
----
-
-## Why PocketCloud Exists
-
-The AI revolution has a concentration problem.
-
-Worldwide AI spending hit **$1.5 trillion in 2025** and is projected to reach **$2.5 trillion in 2026**. Hyperscalers are spending **$600+ billion per year** building datacenters. Meta alone plans **$115-135 billion in 2026 capex** — including a 4.5 million sq ft facility in Eagle Mountain, Utah. US datacenter power consumption is projected to **nearly triple by 2030**, reaching 134 GW. Datacenters consume **449 million gallons of water per day** in the US alone, and communities are pushing back — **$98 billion in datacenter projects** have been blocked or delayed by 188+ opposition groups.
-
-Meanwhile, there are **7.5 billion smartphones** and **2+ billion PCs** in the world. Modern Apple Silicon chips deliver 38 TOPS on the Neural Engine and up to 800 GB/s memory bandwidth. The average connected device sits idle 60% of the time. We are sitting on an ocean of compute.
-
-**PocketCloud exists because you shouldn't need a $200/month API subscription to build with AI.** A $599 MacBook Neo can run 7B-parameter models at 28-35 tokens/second. A Mac Mini M4 Pro can run 32B models. The hardware is here. The models are open. What's been missing is the software stack to tie it all together.
-
-This is that stack.
-
-> Read the full story: **[STORY.md](STORY.md)** — How one developer and a team of AI agents built an AI operating system in 101 days.
+PocketCloud starts with Apple Silicon and is actively expanding toward Linux, Unix, and Windows through Swift 6.2, MLX, llama.cpp, MCP, and the `pocket` CLI.
 
 ---
 
-## What's Working Today
+## What This Repo Is
 
-| Feature | Status | Details |
+This repository is not the full source tree yet. It is the open-source launch companion for the main PocketCloud workspace:
+
+- a consistent public explanation of the product, mission, and architecture
+- engineering evidence from the private workspace as it approaches open source
+- a changelog-style view of what is real today versus what is still roadmap
+- a place for issues, questions, and early community feedback
+
+The official marketing site presents the product experience. This repository explains how the system is being built and verified.
+
+---
+
+## Official Positioning
+
+PocketCloud is a reimagining of AI as a personal, distributed, sovereign computing ecosystem:
+
+- **Your data, your control:** AI runs on devices you own.
+- **Local by default:** MLX, llama.cpp, LM Studio, and Ollama come before cloud.
+- **Cloud when you choose:** OpenAI, Anthropic, Gemini, XAI, OpenRouter, and other providers are opt-in.
+- **Open ecosystem:** blueprint apps show how private AI experiences can be built without starting from scratch.
+- **Swift-native operations:** the `pocket` CLI handles build, verification, App Store, web fleet, and automation workflows.
+
+The line from the website is the short version:
+
+> AI for the People, by the People, on the People's Devices.
+
+---
+
+## State of the Code
+
+Reviewed from the main workspace git history through **June 13, 2026**:
+
+| Area | Current state |
+|---|---|
+| Main workspace commits | 2,772 since December 5, 2025 |
+| Last 30 days | 291 commits across apps, AIStack, Core, web fleet, distribution, observability, and verification |
+| Swift code | 3,631 tracked Swift files, roughly 747K lines |
+| ADRs | 45 architecture decision records |
+| App projects | PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase, PocketCloudInstaller |
+| Verification culture | `pocket system verify --exhaustive` remains the core confidence gate |
+| Recent focus | App Store automation, Blueprint Apps, web fleet control plane, ASC read tooling, observability hubs, cross-platform hardening, PCUnifiedProvider naming |
+
+The older "101 days" story is still true as an early milestone. It is no longer the whole story.
+
+---
+
+## What Is Working
+
+| Capability | Status | Evidence |
 |---|---|---|
-| Local MLX inference | ✅ | 33+ models, <2s cold start on Apple Silicon |
-| Multi-provider AI | ✅ | OpenAI, Claude, Gemini, XAI, OpenRouter, LM Studio, Ollama, LLama.cpp |
-| `pocket` CLI | ✅ | 5-domain, 50+ commands with scheduling and recurring jobs |
-| MCP server | ✅ | 40+ tools, verified 97%+ pass rate |
-| Cross-platform apps | ✅ | iOS 17+, macOS 14+, tvOS 17+, visionOS 1+ |
-| Privacy-first architecture | ✅ | On-device processing, SecureEnclave secrets, zero telemetry |
-| Self-healing build infra | ✅ | Automatic lock-fix, stale-cache recovery, offline-first builds |
-| RAG-augmented inference | ✅ | Codebase-aware context injection into local AI requests |
-| Persistent MLX daemon | ✅ | Warm model serving with sub-100ms TTFT |
-| Apple Intelligence integration | ✅ | FoundationModels API, on-device system-level AI |
-| Hardware-aware model selection | ✅ | SoC bandwidth scoring, memory-fit gating, oracle feedback loops |
-| AI-native project planning | 🗓 | Near-term roadmap |
-| Federated learning network | 🔭 | Long-term vision |
+| Local AI routing | Working | MLX-first routing, LM Studio/Ollama local fallback, cloud opt-in |
+| MLX inference | Working | model registry, benchmarking, daemon self-healing, iOS Simulator hardening |
+| llama.cpp integration | Working/integration hardening | ADR-0042, fork pinning, cross-platform provider work |
+| `pocket` CLI | Working | system, dev, quality, ops, knowledge, task, web, build, App Store, ASC surfaces |
+| MCP server | Working | local tool execution, dry-run hardening, workspace and agent instruction tools |
+| RAG and knowledge context | Working | local index/query, verification bootstrap/self-healing |
+| Blueprint Apps | Public beta path | TestFlight-oriented app pages and screenshot automation |
+| Web fleet | Working | Swift-native deploy/sync/rollback/backup, admin control plane, local mirror, SEO Pilot |
+| Observability | Working | local logs, verify run history, settings observability hubs |
+| App Store automation | Working | ADR-0048 metadata SSOT, screenshot capture/eval/push, ASC read commands |
 
-**Legend:** ✅ Working today · 🗓 Near-term roadmap · 🔭 Long-term vision
+See [FEATURES.md](FEATURES.md) for a fuller engineering breakdown.
 
 ---
 
-## Architecture Overview
+## Blueprint Apps
 
-```
-┌─────────────────────────────────────────────────┐
-│                     Apps Layer                   │
-│  PocketMind (iOS)  ·  PocketHub (macOS)     │
-│  BrainDeck (macOS) ·  EmotionalIntelligence (tvOS)│
-└────────────────────┬────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────┐
-│                   Kernel Layer                   │
-│                                                   │
-│  AIStack          │  Core                         │
-│  ─────────────    │  ──────────────────           │
-│  ChatEngine       │  PocketCloudMCP (40+ tools)   │
-│  AIAgent          │  PocketCloudLogger            │
-│  PocketCloudMLX   │  PocketCloudFileKit           │
-│  AIRouter         │  PocketCloudPrivacy           │
-│  ModelSelector    │  PocketCloudDocumentSystem    │
-│  pocket CLI       │  PocketCloudBlockchain        │
-└────────────────────┬────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────┐
-│                  Inference Layer                 │
-│                                                   │
-│  Local: Apple MLX · Apple Intelligence            │
-│         LM Studio · Ollama · LLama.cpp           │
-│  Remote: OpenAI · Claude · Gemini · XAI           │
-│          OpenRouter                               │
-└─────────────────────────────────────────────────┘
+PocketCloud is more than one app. The current ecosystem is organized around blueprint apps that demonstrate private AI patterns:
+
+| App | Purpose |
+|---|---|
+| PocketMind | Private AI chat, notes, local knowledge, daily review |
+| PocketLearning | Notes, flashcards, quizzes, spaced repetition |
+| PocketWellness | Mood, journaling, reflection, privacy-first wellness |
+| PocketBusiness | Native control center for servers, deployments, leads, and BI |
+| PocketHub | AI hub for code, telemetry, prompts, providers, and docs |
+| PocketGamer | Swift-native game engine and AI-assisted gameplay playground |
+| PocketShowcase | Living gallery of the PocketCloud UI kit |
+| PocketCloudInstaller | Install/bootstrap path for the ecosystem |
+
+These map to the public site’s **Blueprint Apps** section and the App Store metadata automation in the main repo.
+
+---
+
+## Architecture Snapshot
+
+```text
+Blueprint Apps
+  PocketMind · PocketLearning · PocketWellness · PocketBusiness
+  PocketHub · PocketGamer · PocketShowcase · PocketCloudInstaller
+        |
+        v
+Toolkit Layer
+  PocketCloudUI · AI UI · Infrastructure UI · Admin UI · StarterKit
+        |
+        v
+Kernel Layer
+  AIStack · Core · MCP · FileKit · Privacy · Logger · Platform · Runtime
+        |
+        v
+Inference + Operations
+  MLX · llama.cpp · LM Studio · Ollama · cloud providers · web fleet
 ```
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for a detailed breakdown.
+Read [ARCHITECTURE.md](ARCHITECTURE.md) for the deeper version.
 
 ---
 
 ## The `pocket` CLI
 
-```
-pocket system      # Verification, health, local AI, workspace
-pocket dev         # Providers, Apple build tools, configuration
-pocket quality     # Code analysis, review, testing, documentation
-pocket ops         # Build, CI/CD, monitoring, bootstrapping
-pocket knowledge   # RAG indexing, document search, model registry
-pocket task        # Task management, scheduling, lifecycle
+The main workspace has converged on `pocket` as the operating surface:
+
+```text
+pocket system      # health, verify, local AI, logs, workspace
+pocket build       # canonical gold-standard build workflow
+pocket dev         # providers, Apple tooling, App Store, ASC
+pocket quality     # platform checks, analysis, tests, docs
+pocket ops         # CI, monitoring, bootstrapping, web fleet ops
+pocket knowledge   # RAG, model registry, document search
+pocket task        # scheduling and lifecycle
+pocket web         # deploy, sync, rollback, backup, analytics, jobs
 ```
 
-Every command supports three execution modes:
-- **Immediate**: `pocket quality test contract`
-- **Scheduled**: `pocket quality test --at "tomorrow 9am"`
-- **Recurring**: `pocket quality test --daily`
+Repository automation in the source workspace should use `./scripts/swiftw` or `pocket`, not raw `swift`.
 
 ---
 
-## Development Velocity
+## Learn More
 
-PocketCloud was built in **101 days** by a solo developer working with AI agents:
-
-| Metric | Value |
-|---|---|
-| Total commits | 2,140 |
-| Days with commits | 100 of 101 (99%) |
-| Average commits/day | 21.2 |
-| Peak day | 127 commits (Jan 12, 2026) |
-| Swift files | 7,556 |
-| Lines of Swift | 474,294 |
-| Test files | 2,180 |
-| AI co-authored commits | 246 (Claude Sonnet 4.5 + 4.6) |
-| Architecture decisions | 18 ADRs |
-| Active streak | 66 consecutive days (ongoing) |
-
-> See **[docs/development-velocity.md](docs/development-velocity.md)** for the full breakdown.
+- [STORY.md](STORY.md) - the original build narrative, updated with the June state
+- [FEATURES.md](FEATURES.md) - current capability map
+- [ARCHITECTURE.md](ARCHITECTURE.md) - system architecture
+- [ROADMAP.md](ROADMAP.md) - completed, active, and future work
+- [docs/local-ai.md](docs/local-ai.md) - local inference details
+- [docs/privacy-model.md](docs/privacy-model.md) - privacy model
+- [docs/development-velocity.md](docs/development-velocity.md) - development stats
+- [docs/why-local-ai.md](docs/why-local-ai.md) - the case for local-first AI
 
 ---
 
-## Platform Support
+## Follow Along
 
-| Platform | Minimum Version |
-|---|---|
-| iOS | 17+ |
-| macOS | 14+ (Sonoma) |
-| tvOS | 17+ |
-| visionOS | 1+ |
-| watchOS | 10+ |
+Star this repository to follow the open-source rollout.
 
-All platforms share a common Swift 6.2 package core with strict concurrency. Local MLX inference runs on iOS and macOS via Apple Silicon.
+Questions, corrections, and early community feedback are welcome through GitHub issues.
 
----
-
-## Follow for Updates
-
-This repository is the public preview of PocketCloud. Star it to follow progress.
-
-For questions, issues, or to express interest: open a GitHub issue.
-
-**Author**: [Steven Moon](https://www.linkedin.com/in/stevenmoon/) · [@stevenmoon](https://x.com/stevenmoon)
-
----
-
-## Verified Baseline
-
-Every ✅ feature above has been verified:
-
-```
-pocket system verify --exhaustive --local-first
-# Result: 109/112 operations (97.3%) — 2026-03-01
-```
-
-See [FEATURES.md](FEATURES.md) for individual verification details.
+**Author:** [Steven Moon](https://www.linkedin.com/in/stevenmoon/) · [Clever Coding](https://clevercoding.com/about) · [@stevenmoon](https://x.com/stevenmoon)

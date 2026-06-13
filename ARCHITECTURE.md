@@ -1,175 +1,164 @@
 # PocketCloud Architecture
 
-PocketCloud is built on three principles:
-1. **Local-first** — AI runs on your device, not in a data center
-2. **Privacy by design** — your data never leaves unless you explicitly choose a cloud provider
-3. **Verified, not assumed** — every layer is continuously verified against a 112-operation test suite
+PocketCloud is built as a Swift-native local AI platform with three public promises:
+
+1. **Local-first intelligence** - run on hardware you own whenever possible.
+2. **Sovereign control** - you decide what data, providers, tools, and servers participate.
+3. **Verified operations** - build, deploy, diagnose, and ship through reproducible CLI workflows.
 
 ---
 
-## Three-Layer Stack
+## Stack Overview
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Apps Layer                            │
-│                                                               │
-│   PocketMind           BrainDeck        EmotionalIntelligence │
-│   iOS 17+              macOS 14+        tvOS 17+              │
-│   AI chat assistant    Study notes      Mood + insights       │
-│                                                               │
-│   PocketHub                                              │
-│   macOS 14+                                                   │
-│   AI agent serving + developer tools                          │
-└───────────────────────────┬─────────────────────────────────┘
-                            │  Swift Package imports
-┌───────────────────────────▼─────────────────────────────────┐
-│                       Kernel Layer                           │
-│                                                               │
-│  ┌─────────────────────┐  ┌──────────────────────────────┐  │
-│  │      AIStack        │  │            Core              │  │
-│  │                     │  │                              │  │
-│  │  ChatEngine         │  │  PocketCloudMCP              │  │
-│  │  (sessions, context)│  │  (40+ MCP tools)             │  │
-│  │                     │  │                              │  │
-│  │  AIAgent            │  │  PocketCloudLogger           │  │
-│  │  (7+ providers)     │  │  PocketCloudFileKit          │  │
-│  │                     │  │  PocketCloudPrivacy          │  │
-│  │  PocketCloudMLX     │  │  PocketCloudChatCore         │  │
-│  │  (local inference)  │  │  PocketCloudDocumentSystem   │  │
-│  │                     │  │                              │  │
-│  │  pocket CLI         │  │  PocketCloudCommon           │  │
-│  │  (5 domains)        │  │                              │  │
-│  └─────────────────────┘  └──────────────────────────────┘  │
-└───────────────────────────┬─────────────────────────────────┘
-                            │
-┌───────────────────────────▼─────────────────────────────────┐
-│                     Inference Layer                          │
-│                                                               │
-│  On-device (local-first):                                     │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │  Apple MLX Framework (binary XCFramework)            │    │
-│  │  33+ quantized models · Apple Silicon only           │    │
-│  │  No network · No API key · Unified memory            │    │
-│  └─────────────────────────────────────────────────────┘    │
-│                                                               │
-│  Cloud providers (optional, explicit opt-in):                │
-│  OpenAI · Claude · Gemini · XAI · OpenRouter                 │
-│  LM Studio (local server) · Ollama (local server)            │
-└─────────────────────────────────────────────────────────────┘
+```text
+Blueprint Apps
+  PocketMind · PocketLearning · PocketWellness · PocketBusiness
+  PocketHub · PocketGamer · PocketShowcase · PocketCloudInstaller
+        |
+        v
+Toolkit Layer
+  PocketCloudUI · PocketCloudAIUI · PocketCloudAdminUI
+  PocketCloudInfrastructureUI · PocketCloudInfrastructureKit
+  PocketCloudStarterKit · app-specific UI/tooling packages
+        |
+        v
+Kernel Layer
+  AIStack
+    AIRouter · providers · MLX · llama.cpp · RAG · model registry
+    AIAgent · task queue · CLI command surfaces
+
+  Core
+    MCP · logger · privacy · FileKit · Platform · Runtime
+    document system · sync · unified provider protocols
+        |
+        v
+Operations + Inference
+  MLX · llama.cpp · LM Studio · Ollama · cloud providers
+  App Store Connect · web fleet · local admin · verification
 ```
 
 ---
 
-## Platform Matrix
+## Apps Layer
 
-| Component | iOS 17+ | macOS 14+ | tvOS 17+ | visionOS 1+ | watchOS 10+ |
-|---|---|---|---|---|---|
-| Core packages | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Local MLX inference | ✅ | ✅ | — | — | — |
-| MCP server | — | ✅ | — | — | — |
-| `pocket` CLI | — | ✅ | — | — | — |
-| Chat UI | ✅ | ✅ | ✅ | ✅ | — |
-| Cloud providers | ✅ | ✅ | ✅ | ✅ | — |
+The app layer is now aligned with the public **Blueprint Apps** story:
 
-All packages are compiled with Swift 6.2 strict concurrency enabled.
+| App | Role |
+|---|---|
+| PocketMind | Private AI assistant and knowledge interface |
+| PocketLearning | Study, flashcards, quizzes, spaced repetition |
+| PocketWellness | Mood, journaling, mindfulness, local reflection |
+| PocketBusiness | Native web fleet and business control center |
+| PocketHub | Developer AI hub for code, prompts, telemetry, and providers |
+| PocketGamer | Swift-native game engine and AI-assisted gameplay playground |
+| PocketShowcase | UI component and design-system gallery |
+| PocketCloudInstaller | Bootstrap/install path |
 
----
-
-## Privacy Model
-
-### What stays on your device
-
-- All chat history and session data (`~/.pocketcloud/` or app sandbox)
-- All downloaded MLX models (`~/.pocketcloud/models/`)
-- All RAG vector indexes (`~/.pocketcloud/knowledge/`)
-- All task schedules and history (`~/.pocketcloud/tasks/`)
-- All API keys (macOS Keychain or `.env` file, never transmitted)
-
-### What leaves your device (only with explicit configuration)
-
-- Prompt content sent to a cloud provider you have configured and authenticated
-- Nothing else
-
-### SecureEnclave and Keychain
-
-API keys for cloud providers are stored in macOS Keychain. PocketCloud uses the
-`PocketCloudPrivacy` module with SecureEnclave-backed storage where the platform supports it.
-Keys are loaded at runtime and never written to log files or transmitted in metadata.
-
-### Zero telemetry
-
-PocketCloud contains no analytics SDK, no crash reporting service, and no usage telemetry.
-There is no "phone home" on startup, no anonymous usage statistics, and no A/B testing
-infrastructure. The codebase is verifiable: `pocket system verify --exhaustive` runs 112
-operations and none of them involve external reporting endpoints.
+The June 2026 workspace includes project manifests and Xcode projects for all eight.
 
 ---
 
-## The MCP Server
+## AI Routing
 
-The Model Context Protocol (MCP) server exposes PocketCloud's capabilities to AI assistants
-like Claude. When configured as an MCP server in your IDE or Claude Desktop, it gives the
-AI direct access to your local filesystem, build tools, and knowledge base — without any
-cloud intermediary.
+PocketCloud's AI routing is local-first:
 
+```text
+Request
+  |
+  +-- local MLX model fits the task and hardware? -> MLX
+  |
+  +-- local server available? -> LM Studio or Ollama
+  |
+  +-- cross-platform llama.cpp model available? -> llama.cpp
+  |
+  +-- explicit cloud provider configured? -> provider API
+  |
+  +-- otherwise -> explain unavailable path
 ```
-Claude Desktop / IDE
-        │
-        │  MCP (local socket / stdio)
-        │
-┌───────▼───────────────────────────────────┐
-│          PocketCloud MCP Server            │
-│                                            │
-│  file_operations   · git                  │
-│  code_analysis     · apple_build          │
-│  model_registry    · orchestrated_inference│
-│  rag_query         · log_analysis         │
-│  documentation     · ...                  │
-└────────────────────────────────────────────┘
-        │
-        │  Local calls only
-        │
-   Your filesystem, models, and build tools
-```
+
+The router is backed by model discovery, model reputation, hardware fit checks, benchmark signals, and local RAG context where available.
 
 ---
 
-## Build Architecture
+## Unified Provider Layer
 
-PocketCloud uses a monorepo with centralized build artifacts:
+Recent source history renamed the broad provider foundation from `UnifiedProvider` to `PCUnifiedProvider` to avoid collisions with generic names in app and package code.
 
+The architectural intent remains the same: Context, AI, Data, Network, and telemetry providers use consistent protocols so apps can swap implementations without rewriting product logic.
+
+Public docs may still use "Unified Intelligence" as the product concept. Engineering docs should use `PCUnifiedProvider` for the concrete code-level foundation.
+
+---
+
+## Web Fleet Architecture
+
+The current system includes a complete web platform:
+
+```text
+pocket web CLI
+  deploy · sync · rollback · backup · jobs · logs · analytics
+        |
+        v
+web fleet config + SSH/client orchestration
+        |
+        v
+self-hosted sites
+  @pocketcloud/web-lib
+  clean URLs · AI chat · contact funnel · admin
+  presence · backups · bot traffic · SEO Pilot
+        |
+        v
+PocketBusiness
+  native iPhone/Mac control center
 ```
-workspace root/
-├── Package.swift              # Workspace manifest
-├── Packages/
-│   ├── Kernel/                # Core systems (AIStack, Core, AML, DevTools)
-│   └── Toolkit/               # Higher-level utilities (UI, Build, Infrastructure)
-├── Apps/                      # Platform apps
-├── Frameworks/                # Binary MLX XCFrameworks
-└── .build/                    # Centralized Swift build artifacts
+
+The web fleet is designed to replace a pile of hosted dashboards with one owned control plane.
+
+---
+
+## App Store Automation
+
+ADR-0048 introduced a source-of-truth metadata and storefront automation flow:
+
+```text
+App metadata AML
+  |
+  +-- generated website app pages
+  +-- TestFlight/public beta CTAs
+  +-- screenshot capture and evaluation
+  +-- App Store Connect metadata/screenshot push
 ```
 
-All builds run from the workspace root to centralize artifacts. The `pocket ops build` command
-wraps `swift build` with additional steps for MLX framework setup and CLI installation.
+This is why the official site and preview repo should use the same app names and product taxonomy.
 
 ---
 
 ## Verification Architecture
 
-Every layer is continuously verified via `pocket system verify --exhaustive`:
+The verification system is an operational subsystem, not just a test command:
 
-```
-pocket system verify --exhaustive --local-first
+- `pocket system verify --exhaustive`
+- integrated exhaustive profiles
+- run budgets for long operations
+- timeout and SwiftPM contention handling
+- RAG and MLX daemon bootstrap/self-healing
+- build failure classification
+- verify run history and observability UI
 
-Endpoints verified (24):
-  filesystem · logs · workspace · dev · ai · providers
-  docs · analyze · mcp-server · git · rag · apple
-  apple-simulator · apple-project · apple-archive
-  apple-ecosystem-deploy · apple-cleanup
-  ai-agents · project-management · project-onboarding
+Historical baseline: the early preview reported `109/112` operations passing in March 2026. Current public docs should treat that as historical, not the latest score.
 
-Operations verified (112):
-  97.3% pass rate as of 2026-03-01
-```
+---
 
-The verify command runs in under 12 minutes and is a required gate before every release.
+## Privacy Boundaries
+
+| Boundary | Default |
+|---|---|
+| Prompts and documents | stay local |
+| RAG indexes | local filesystem |
+| MLX/llama models | local model store |
+| Logs and verify artifacts | local log roots |
+| MCP tools | local process communication |
+| Cloud providers | explicit opt-in |
+| Web analytics | owned/self-hosted fleet data |
+
+PocketCloud's architecture is hybrid, but control stays with the user.

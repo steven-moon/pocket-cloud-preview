@@ -1,6 +1,6 @@
 # The PocketCloud Story
 
-**How one developer and a team of AI agents built an AI operating system in 101 days.**
+**How one developer and a team of AI agents built a local-first AI operating system, then pushed it toward open source.**
 
 ---
 
@@ -48,9 +48,9 @@ That's PocketCloud.
 
 ## The Build
 
-### 101 Days. 2,140 Commits. One Developer. Multiple AI Agents.
+### The First Milestone: 101 Days. 2,140 Commits. One Developer. Multiple AI Agents.
 
-PocketCloud development started on **December 5, 2025**. In the 101 days since:
+PocketCloud development started on **December 5, 2025**. The original public preview captured the first 101 days:
 
 - **2,140 commits** — averaging 21.2 per day, with commits on 100 of 101 days
 - **474,294 lines of Swift** across 7,556 files
@@ -70,6 +70,23 @@ This wasn't a prototype or a proof of concept. This is a production system with:
 - A 3-prompt oracle verification suite that catches degenerate model outputs
 - A self-healing build infrastructure that recovers from stale caches and vendor conflicts
 - A verification system that tests 112 operations across 24 endpoints on every run
+
+### The June 2026 State
+
+The project did not stop at the March preview. A June 13, 2026 review of the main workspace shows:
+
+- **2,772 commits** since December 5, 2025
+- **291 commits in the last 30 days**
+- **45 Architecture Decision Records**
+- **3,631 tracked Swift files** and roughly **747K lines of Swift**
+- **8 app projects**: PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase, and PocketCloudInstaller
+- a public-facing **Blueprint Apps** taxonomy, reflected on pocketcloud.org
+- a Swift-native web fleet with deploy, sync, rollback, backup, analytics, jobs, and admin control-plane commands
+- App Store metadata, screenshot capture, screenshot evaluation, and App Store Connect read/push automation
+- observability hubs, verify run history, MCP execution logging, and build-failure classification
+- cross-platform hardening through llama.cpp, SwiftNIO, and Linux/Windows compatibility work
+
+That is the current story: the original 101-day sprint proved the engine could exist. The next phase is turning it into a public ecosystem that developers can inspect, run, and extend.
 
 ### The AI Partnership
 
@@ -107,11 +124,15 @@ PocketCloud is organized as a **Kernel/Toolkit** architecture — deliberately e
 **Toolkit Layer** — higher-level capabilities:
 - Build orchestration, infrastructure automation, cross-platform UI components, test drivers, vision/AR integration
 
-**Apps Layer** — four applications:
-- **PocketMind** (iOS): AI chat with daemon warmup, RAG toggle, local AI status
-- **BrainDeck** (macOS): Study notes with RAG-powered search and learning signals
-- **PocketHub** (macOS): Developer dashboard with live verification, AI diagnosis
-- **EmotionalIntelligence** (tvOS): Mood tracking with enforced local-only AI policy
+**Apps Layer** — blueprint applications:
+- **PocketMind**: private AI chat, notes, local knowledge, daily review
+- **PocketLearning**: study notes, flashcards, quizzes, spaced repetition
+- **PocketWellness**: mood tracking, journaling, mindfulness, local reflection
+- **PocketBusiness**: native control center for servers, deployments, leads, and BI
+- **PocketHub**: code, prompts, providers, telemetry, and developer diagnostics
+- **PocketGamer**: Swift-native game engine and AI-assisted gameplay playground
+- **PocketShowcase**: living gallery of the UI kit
+- **PocketCloudInstaller**: installation and bootstrap path
 
 ### The AI Router
 
@@ -119,26 +140,29 @@ The heart of PocketCloud is the **AI Router** — a local-first routing engine t
 
 1. Tries **Apple MLX** first (on-device, zero latency, zero cost)
 2. Falls back to **LM Studio** or **Ollama** (local network)
-3. Only reaches for **cloud providers** when local options can't serve the request
+3. Uses **llama.cpp** for cross-platform local inference where appropriate
+4. Only reaches for **cloud providers** when local options can't serve the request and the provider is configured
 
 This isn't just a preference — it's an architecture. The router scores candidates by SoC memory bandwidth, model fit level, and oracle reputation. It injects RAG context proportional to the latency budget. It emits learning signals that improve future selections.
 
 ### The Verification System
 
-Every feature claim is backed by automated verification:
+Every feature claim is intended to be backed by automated verification. The historical March preview baseline was:
 
 ```
 pocket system verify --exhaustive --local-first
 # 109/112 operations (97.3%) passing
 ```
 
-This isn't just a test suite. It's a continuous confidence system that:
+That exact number is no longer presented as the latest run. The current value is the verification architecture itself:
 - Tests 112 operations across 24 endpoints
 - Runs in parallel with a TaskGroup-based executor
 - Caches results with workspace-hash-aware invalidation
 - Auto-starts the MLX daemon if needed
 - Generates AI-powered failure explanations
 - Produces remediation plans for failures
+- Records verify run history and surfaces it in observability views
+- Self-heals common RAG and daemon bootstrap issues
 
 ### Zero Telemetry
 
@@ -183,9 +207,10 @@ I want every developer to be able to build amazing AI-powered software without n
 
 ## About the Author
 
-**Steven Moon** is a software developer with 26+ years of experience and 18+ years building on Apple platforms. He wrote one of the first 2,000 iPhone apps and founded a Utah-based development agency that employed 100+ engineers over 15+ years.
+**Steven Moon** is a software developer with 26+ years of experience and 18+ years building on Apple platforms. He wrote one of the first 2,000 iPhone apps and founded [Clever Coding](https://clevercoding.com), a development agency in Utah that employed 100+ engineers over 15+ years.
 
 PocketCloud is the culmination of decades of platform experience meeting the most transformative technology shift since the smartphone.
 
 - [LinkedIn](https://www.linkedin.com/in/stevenmoon/)
 - [X/Twitter](https://x.com/stevenmoon)
+- [Clever Coding](https://clevercoding.com/about)

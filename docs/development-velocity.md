@@ -1,8 +1,8 @@
 # Development Velocity
 
-**PocketCloud by the numbers: December 5, 2025 – March 16, 2026 (101 days)**
+**PocketCloud by the numbers: December 5, 2025 – June 13, 2026**
 
-This document captures the development velocity of PocketCloud — a project built by a solo developer (Steven Moon, 26+ years experience) working with AI coding agents.
+This document started as the 101-day build report and now includes the June 13, 2026 state review from the main workspace.
 
 ---
 
@@ -11,18 +11,17 @@ This document captures the development velocity of PocketCloud — a project bui
 | Metric | Value |
 |---|---|
 | First commit | December 5, 2025 |
-| Days elapsed | 101 |
-| Total commits | 2,140 |
-| Days with at least one commit | 100 of 101 (99%) |
-| Average commits per day | 21.2 |
+| Latest reviewed commit date | June 13, 2026 |
+| Total commits | 2,772 |
+| Last 30 days | 291 commits |
 | Peak day | 127 commits (Jan 12, 2026) |
 | Peak week | 345 commits (Jan 5-11, 2026) |
-| Current consecutive streak | 66 days (ongoing) |
-| Swift source files | 7,556 |
-| Lines of Swift code | 474,294 |
-| Test files | 2,180 |
-| Architecture Decision Records | 18 |
-| Git tags (release candidates) | 20 |
+| Swift source files | 3,631 tracked Swift files |
+| Lines of Swift code | roughly 747K |
+| Architecture Decision Records | 45 |
+| App projects | 8 |
+
+The original March preview reported 2,140 commits in 101 days. That milestone remains useful because it shows the initial build velocity, but it is no longer the current state of the workspace.
 
 ---
 
@@ -34,6 +33,7 @@ This document captures the development velocity of PocketCloud — a project bui
 | January 2026 | 860 | 40.2% | Peak velocity — orchestration, providers, apps, RAG |
 | February 2026 | 310 | 14.5% | Hardening — verify system, oracle suite, model selection |
 | March 2026 (partial) | 133 | 6.2% | Convergence — app integration, Apple Intelligence, open-source prep |
+| May-June 2026 | 291 in last 30 days | Current review window | Web fleet, App Store automation, Blueprint Apps, observability, cross-platform hardening |
 
 ---
 
@@ -143,25 +143,27 @@ Beyond Claude, the development workflow involved multiple AI tools for architect
 
 | Metric | Count |
 |---|---|
-| Swift source files | 7,556 |
-| Lines of Swift code | 474,294 |
-| Test files | 2,180 |
-| Total files changed (lifetime) | 7,190 |
-| Lines inserted (lifetime) | 3,685,464 |
-| Lines deleted (lifetime) | 1,717,021 |
-| Net lines added | 1,968,443 |
+| Current tracked Swift files | 3,631 |
+| Current tracked Swift lines | roughly 747K |
+| Current ADRs | 45 |
+| Current app projects | 8 |
+| Original 101-day Swift files | 7,556 reported at the March preview milestone |
+| Original 101-day Swift lines | 474,294 reported at the March preview milestone |
 
 ### Where the Code Lives
 
-| Area | File Touches (180 days) |
+| Area | Current role |
 |---|---|
-| Packages/Kernel/AIStack | 3,526 |
-| Packages/Kernel/Core | 1,754 |
-| Packages/Toolkit/PocketCloudUI | 342 |
-| Apps/BrainDeck | 350 |
-| Apps/PocketMind | 345 |
-| Packages/Kernel/GameStack | 245 |
-| Apps/PocketHub | 182 |
+| Packages/Kernel/AIStack | AI routing, providers, MLX, llama.cpp, RAG, CLI surfaces |
+| Packages/Kernel/Core | MCP, logging, privacy, FileKit, platform/runtime, unified provider protocols |
+| Packages/Toolkit | UI, admin, infrastructure, starter kit, shared app surfaces |
+| Apps/PocketMind | private AI assistant and local knowledge |
+| Apps/PocketLearning | study workflows, notes, flashcards, quizzes |
+| Apps/PocketWellness | mood, journaling, privacy-first wellness |
+| Apps/PocketBusiness | native web fleet and business control center |
+| Apps/PocketHub | developer diagnostics, code, prompts, providers, telemetry |
+| Apps/PocketGamer | Swift-native game engine and AI-assisted gameplay |
+| web fleet | owned sites, web-lib, admin, deploy/backup/analytics pipeline |
 
 The Kernel — AIStack and Core — accounts for the majority of development effort, reflecting the bottom-up "build the engine first" philosophy.
 
@@ -169,7 +171,7 @@ The Kernel — AIStack and Core — accounts for the majority of development eff
 
 ## Architecture Decisions
 
-18 formal Architecture Decision Records (ADRs) were created, tracking decisions from initial package structure through to Apple Intelligence integration:
+The March preview had 18 ADRs. The June 13 review found 45 ADRs, now reaching web fleet deployment, App Store storefront automation, cross-platform provider work, and shell abstraction:
 
 | ADR Range | Focus Areas |
 |---|---|
@@ -182,9 +184,22 @@ Each ADR contains enumerated tasks (T01, T02, etc.) with explicit priority level
 
 ---
 
+## June 2026 Addendum
+
+Recent commits materially expanded the story:
+
+- Blueprint Apps replaced the older sample-app framing.
+- PocketCloudHub became PocketHub.
+- PocketGameEngine became PocketGamer.
+- Web fleet work moved into Swift-native `pocket web` commands.
+- App Store metadata, screenshots, evaluation, and App Store Connect automation became core workflows.
+- Observability moved into app settings and verify run history.
+- llama.cpp and SwiftNIO work advanced Linux/Windows readiness.
+- `PCUnifiedProvider` replaced the older broad `UnifiedProvider` naming in code.
+
 ## What This Means
 
-A solo developer with 26+ years of experience, working with AI agents, produced in 101 days:
+A solo developer with 26+ years of experience, working with AI agents, produced the initial 101-day milestone:
 
 - A complete local-first AI inference stack
 - 8 provider integrations
@@ -196,6 +211,6 @@ A solo developer with 26+ years of experience, working with AI agents, produced 
 - 18 tracked architecture decisions
 - All at an average pace of 21 commits per day, 7 days a week
 
-This is what AI-assisted solo development looks like in 2026. The velocity is real. The code is real. The system works.
+The June continuation shows the next phase: productizing the ecosystem, hardening distribution, and preparing the source workspace for public access.
 
 **The future of software development is a human with deep experience directing AI agents at problems that matter.**

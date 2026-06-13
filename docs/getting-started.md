@@ -1,7 +1,8 @@
 # Getting Started with PocketCloud
 
 > **Preview Repository** — PocketCloud is preparing for open-source release. This repository
-> contains documentation and the public roadmap. The full source code will be published soon.
+> contains the public narrative, engineering overview, and roadmap. The preview repo is public;
+> the main source workspace is still in controlled rollout.
 
 ---
 
@@ -11,7 +12,6 @@
 |---|---|
 | macOS | 14+ (Sonoma) |
 | iOS | 17+ |
-| tvOS | 17+ |
 | visionOS | 1+ |
 | Hardware | Apple Silicon (M1 or later) for local MLX inference |
 | Xcode | 16+ |
@@ -19,7 +19,7 @@
 
 **For local AI inference:** Any Apple Silicon Mac. A Mac Mini M4 ($599) or MacBook Neo ($599) is sufficient to run 7B-parameter models at 28-35 tokens/second.
 
-**For cloud providers (optional):** API keys from any supported provider (OpenAI, Anthropic, Google, XAI, OpenRouter).
+**For cloud providers (optional):** API keys from supported providers such as OpenAI, Anthropic, Google, XAI, and OpenRouter.
 
 ---
 
@@ -48,6 +48,13 @@ pocket system verify --exhaustive --local-first
 
 # Start the persistent MLX daemon
 pocket system local serve --warmup
+
+# Run the canonical build workflow
+pocket build
+
+# Manage the web fleet
+pocket web status
+pocket web deploy
 
 # Schedule recurring tasks
 pocket quality test --daily

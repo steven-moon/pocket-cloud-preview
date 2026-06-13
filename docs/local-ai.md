@@ -23,25 +23,27 @@ rate limits, no service disruptions.
 
 ## How It Works
 
-PocketCloud uses Apple's [MLX framework](https://github.com/ml-explore/mlx) — an array
-framework designed specifically for Apple Silicon's unified memory architecture.
+PocketCloud starts with Apple's [MLX framework](https://github.com/ml-explore/mlx), an array
+framework designed specifically for Apple Silicon's unified memory architecture. The current
+workspace also includes llama.cpp integration work for Linux, Unix, and Windows expansion.
 
 ```
 Your prompt
     │
     ▼
-PocketCloudMLX
+AIRouter
     │
-    ├── Model selection (ModelRegistry)
-    │   Finds a compatible quantized model in ~/.pocketcloud/models/
+    ├── Local MLX path
+    │   Selects compatible quantized models in ~/.pocketcloud/models/
     │
-    ├── Model loading (MLXEngine)
-    │   Loads weights into Apple Silicon unified memory
-    │   Typical cold start: under 2 seconds on M-series
+    ├── Local server path
+    │   LM Studio or Ollama when available
     │
-    └── Token generation
-        Runs entirely on-chip (CPU + GPU + Neural Engine)
-        No network connection required
+    ├── Cross-platform path
+    │   llama.cpp provider for GGUF-compatible models
+    │
+    └── Explicit cloud path
+        Uses a configured provider only when you choose one
 ```
 
 ---
@@ -84,6 +86,9 @@ Request arrives
     ├── Ollama running on localhost:11434?
     │   Yes → Use Ollama
     │
+    ├── llama.cpp model available?
+    │   Yes → Use llama.cpp
+    │
     └── Cloud provider configured?
         Yes → Use configured cloud provider (OpenAI, Claude, etc.)
 ```
@@ -93,26 +98,20 @@ to a cloud provider without your knowledge.
 
 ---
 
-## Coming Soon: Persistent Daemon
+## Persistent Daemon
 
-*(Near-term roadmap — ADR-0013)*
-
-The current architecture loads the model on each request. A persistent MLX daemon will
-keep the model in memory between requests, eliminating the cold-start latency for
-all subsequent calls.
-
-Target: sub-100ms time-to-first-token after the initial load.
+PocketCloud includes a persistent local AI daemon path so models can stay warm between
+requests. Recent verification work also auto-heals daemon startup when exhaustive checks
+need local inference.
 
 ---
 
-## Coming Soon: RAG-Augmented Context
+## RAG-Augmented Context
 
-*(Near-term roadmap — ADR-0013)*
-
-RAG (Retrieval-Augmented Generation) will index your codebase, documents, and notes
-into a local vector store. The AI router will automatically inject relevant context
-from your indexed knowledge into every request — making local inference codebase-aware
-without you having to manually paste code into prompts.
+RAG (Retrieval-Augmented Generation) indexes your codebase, documents, and notes
+into a local vector store. The AI router can inject relevant context from your indexed
+knowledge into requests, making local inference codebase-aware without forcing you to
+manually paste source files into prompts.
 
 The indexing pipeline is already working:
 ```bash
@@ -120,4 +119,4 @@ pocket knowledge rag index     # Index workspace
 pocket knowledge rag query "..." # Query the index
 ```
 
-Context injection into the AI router is in active development.
+The June 2026 source history includes RAG bootstrap and self-healing work in verification.

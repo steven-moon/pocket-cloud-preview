@@ -1,217 +1,160 @@
 # PocketCloud Features
 
-All features listed here are verified working as of 2026-03-16.
-Verification baseline: `pocket system verify --exhaustive --local-first` — 109/112 (97.3%)
+This file summarizes the public feature story as of the June 13, 2026 git review of the main workspace.
 
-For the story behind PocketCloud, see [STORY.md](STORY.md).
-For development statistics, see [docs/development-velocity.md](docs/development-velocity.md).
-For the case for local AI, see [docs/why-local-ai.md](docs/why-local-ai.md).
+The source repo is still private, so this document favors verifiable engineering claims over marketing breadth. Where the website says what PocketCloud is, this file says what has been implemented or actively hardened.
 
 ---
 
-## Local MLX Inference
+## Local and Hybrid AI
 
-**What it does:** Runs large language models entirely on-device using Apple's MLX framework.
-No internet connection required. No data leaves your machine.
+PocketCloud prioritizes local inference and treats cloud providers as explicit fallbacks.
 
-**Verify:**
-```bash
-pocket system local list
-# Lists all downloaded MLX models
+| Feature | State |
+|---|---|
+| MLX local inference | Implemented and actively hardened |
+| llama.cpp provider | Implemented for cross-platform expansion |
+| LM Studio and Ollama routing | Supported as local server options |
+| Cloud providers | Opt-in provider layer for frontier models |
+| Hardware-aware model selection | Implemented with model fit and reputation signals |
+| Local model benchmarking | Exposed through the `pocket` CLI |
+| RAG context | Implemented through local indexing, query, and verification bootstrap |
+| Persistent daemon | Implemented with verify self-healing paths |
 
-pocket system local verify
-# Runs a local inference round-trip and verifies the response contains an expected token
-```
-
-**Evidence:**
-- 33+ models supported including Mistral, Llama, Qwen, and Phi variants
-- Cold start typically under 2 seconds on Apple Silicon M-series
-- Quantized models (4-bit) fit comfortably in unified memory alongside the OS
-- Supports chat templates for instruction-tuned models
+Recent git evidence includes llama.cpp ADR work, MLX daemon and cache fixes, model reputation cleanup, RAG self-healing, and iOS Simulator MLX hardening.
 
 ---
 
-## Multi-Provider AI Integration
+## The `pocket` CLI
 
-**What it does:** Routes AI requests to any of 7+ providers with a unified interface.
-Local MLX inference is the priority; cloud providers are optional complements.
+`pocket` is the operational interface for the ecosystem.
 
-**Verify:**
-```bash
-pocket dev providers list
-# Shows all configured providers and their status
+```text
+pocket system      # health, verify, local AI, logs, workspace
+pocket build       # canonical build workflow
+pocket dev         # providers, Apple tooling, App Store, ASC
+pocket quality     # platform checks, analysis, tests, docs
+pocket ops         # CI, monitoring, bootstrapping, web fleet ops
+pocket knowledge   # RAG, model registry, document search
+pocket task        # scheduling and lifecycle
+pocket web         # deploy, sync, rollback, backup, analytics, jobs
 ```
 
-**Supported providers:**
-| Provider | Type | Notes |
-|---|---|---|
-| MLX (local) | On-device | Apple Silicon required |
-| OpenAI | Cloud | Requires API key |
-| Claude (Anthropic) | Cloud | Requires API key |
-| Gemini (Google) | Cloud | Requires API key |
-| XAI (Grok) | Cloud | Requires API key |
-| OpenRouter | Cloud aggregator | Single key, many models |
-| LM Studio | Local server | localhost:1234 |
-| Ollama | Local server | localhost:11434 |
+Recent changes added or hardened:
+
+- top-level `pocket build`
+- `pocket quality platform-check`
+- web fleet deploy/sync/rollback/backup/jobs/logs/analytics commands
+- App Store storefront generation, screenshot capture, evaluation, and push commands
+- App Store Connect read commands
+- verify run history and observability surfaces
 
 ---
 
-## `pocket` CLI
+## Blueprint Apps
 
-**What it does:** Full-featured CLI with five command domains, 50+ commands, universal
-scheduling support, and task management.
+The public site now frames the app suite as **Blueprint Apps**. The source workspace mirrors that direction.
 
-**Verify:**
-```bash
-pocket system health
-# Reports system health across all subsystems
+| App | Current role |
+|---|---|
+| PocketMind | Private AI chat, notes, local knowledge, daily review |
+| PocketLearning | AI study notes, flashcards, quizzes, spaced repetition |
+| PocketWellness | Mood tracking, journaling, mindfulness, local reflection |
+| PocketBusiness | Native control center for web fleet, servers, deployments, leads, and BI |
+| PocketHub | Code, telemetry, prompts, providers, and developer diagnostics |
+| PocketGamer | Swift-native game engine and AI-assisted gameplay playground |
+| PocketShowcase | UI kit gallery and provider/prompt playground |
+| PocketCloudInstaller | install and bootstrap path |
 
-pocket system verify --exhaustive --local-first
-# Runs 112 verification operations across 24 endpoints
-```
-
-**Five command domains:**
-```
-pocket system      — verify, health, local AI, workspace, hub management
-pocket dev         — providers, Apple build tools, configuration, REPL
-pocket quality     — analyze, review, test, docs audit/validate/generate
-pocket ops         — build, CI/CD, monitor, bootstrap, planner
-pocket knowledge   — RAG index/query, document search, model registry
-```
-
-**Scheduling:** Every command supports immediate, one-time scheduled, and recurring execution:
-```bash
-pocket quality test contract           # Immediate
-pocket quality test --at "9am"         # One-time scheduled
-pocket quality test --daily            # Recurring
-pocket task list                       # View all scheduled/recurring tasks
-```
+The June history includes the rename from `PocketCloudHub` to `PocketHub`, from `PocketGameEngine` to `PocketGamer`, public TestFlight framing, screenshot automation, and refreshed app metadata.
 
 ---
 
-## MCP Server (40+ Tools)
+## Web Fleet
 
-**What it does:** Model Context Protocol server exposing PocketCloud capabilities as tools
-for Claude and other MCP-compatible clients.
+PocketCloud now includes a self-hostable web fleet, not just native apps.
 
-**Verify:**
-```bash
-pocket system verify --exhaustive --local-first
-# Verifies all MCP endpoints and tools
-# Baseline: 109/112 (97.3%) pass rate
-```
+Implemented or recently hardened:
 
-**Tool categories:**
-| Category | Tools | Status |
-|---|---|---|
-| File system | file_operations, directory_operations, search | ✅ |
-| Git | git (status, diff, log, branch, commit) | ✅ |
-| Code analysis | code_analysis, coverage_analysis | ✅ |
-| Documentation | documentation, document_workspace | ✅ |
-| MLX models | model_registry, model_compatibility | ✅ |
-| Apple build | apple_build, apple_simulator, apple_project | ✅ |
-| AI inference | orchestrated_inference, lmstudio, cloud_provider | ✅ |
-| Logging | log_analysis, error_analysis | ✅ |
-| RAG | rag_query, knowledge_context | ✅ |
+- `@pocketcloud/web-lib` shared site runtime
+- Swift-native `pocket web` deployment flow
+- zero-downtime hot swaps and rollback support
+- Cloudflare tunnel sync
+- local admin control plane
+- multi-user JWT auth with fail-closed APIs
+- lead capture and contact funnel
+- real-time presence and operator messaging
+- APNs-backed push notifications for fleet events
+- bot and AI-agent traffic intelligence
+- `/robots.txt` and `/llms.txt` AI-crawl readiness
+- data lifecycle services for rollup, archive, prune, eviction, and vacuum
+- local mirror store, job runner, and SEO Pilot services
+
+This is the largest difference from the original March preview docs.
 
 ---
 
-## Cross-Platform Apps
+## App Store and Source Rollout Automation
 
-**What it does:** Native Swift apps for four Apple platforms sharing a common Kernel package.
+The current workspace has a full App Store metadata and screenshot pipeline:
 
-**Verify:**
-```bash
-pocket system verify --operation apple.test
-# Runs Xcode unit tests for PocketMind (iOS)
+- ADR-0048 App Store storefront automation and SSOT metadata
+- generated site pages from app metadata
+- iPhone and iPad screenshot capture
+- screenshot evaluation and feature cataloging
+- App Store Connect metadata/screenshot push tooling
+- App Store Connect read commands
+- public TestFlight call-to-action framing
 
-pocket system verify --operation apple.archive
-# Produces a signed IPA archive for PocketMind
-```
-
-**Apps:**
-| App | Platform | Description |
-|---|---|---|
-| PocketMind | iOS 17+ | AI chat assistant |
-| PocketHub | macOS 14+ | AI agent serving + developer tools |
-| BrainDeck | macOS 14+ | Study notes + learning workflows |
-| EmotionalIntelligence | tvOS 17+ | Mood tracking + emotional insights |
+The preview repo should therefore describe PocketCloud as preparing for source rollout, while the apps already have a public beta path.
 
 ---
 
-## Privacy-First Architecture
+## Observability
 
-**What it does:** Ensures your data stays on your device by design.
+PocketCloud's observability layer is local-first and increasingly visible inside the apps.
 
-**Verify:**
-```bash
-pocket system verify --operation workspace.integrity
-# Verifies no unexpected external calls in workspace configuration
-```
+Recent work includes:
 
-**Privacy guarantees:**
-- **On-device inference:** MLX runs entirely locally. Tokens never leave your device.
-- **SecureEnclave secrets:** API keys stored in macOS Keychain, never in plaintext files.
-- **Zero telemetry:** No analytics, no usage reporting, no crash reporting to external servers.
-- **Local-first storage:** All chat history, RAG indexes, and model files stay in `~/.pocketcloud/`.
-- **Explicit provider choice:** Cloud providers are opt-in and require explicit configuration.
+- verify run history model and UI
+- observability hub integration in settings
+- MCP tool execution logging
+- shared log roots
+- process terminal and terminal manager hardening
+- local log viewers
+- build failure classification and remediation signals
 
----
-
-## RAG-Augmented Local Inference
-
-**What it does:** Indexes your codebase into a local vector store and automatically injects
-relevant context into every AI request — making local inference context-aware.
-
-**Verify:**
-```bash
-pocket knowledge rag index
-# Indexes your workspace into the local vector store
-
-pocket knowledge rag query "how does the AI router work"
-# Retrieves relevant context from your codebase
-
-pocket system verify --operation ai_orchestration.knowledge_context_injection
-# Verifies end-to-end RAG context injection into the AI pipeline
-```
-
-**Evidence:**
-- Budget-proportional RAG timeout (25% of latency budget, max 30s)
-- RAG metadata on every ChatResponse (`rag_status`, `rag_injected`)
-- Recursive component exclusion for index quality
-- RAG index seeding on daemon warmup
+The public site calls this "Unified Intelligence & Observability." In code, recent work renamed the generic provider foundation to `PCUnifiedProvider` to avoid collisions.
 
 ---
 
-## Hardware-Aware Model Selection
+## Privacy and Control
 
-**What it does:** Automatically selects the best local model for your specific hardware,
-tracks model quality over time, and blacklists degenerate models.
+PocketCloud's privacy posture remains consistent:
 
-**Evidence:**
-- SoC-aware bandwidth scoring (M1 through M4 Ultra)
-- Safe memory budget gating (45% of physical RAM)
-- 3-prompt oracle verification (JSON output, word count, exact constraint)
-- Oracle feedback loop: every inference emits quality signals
-- Model reputation service: auto-blacklists consistently low-quality models
-- Benchmark auto-enqueuer for models lacking fresh signals
+- local inference first
+- no cloud provider unless configured
+- local RAG indexes
+- local logs and verify artifacts
+- Keychain or local secret storage for credentials
+- no product analytics dependency required for core AI workflows
+- MCP server as a local process, not a hosted control point
+
+Web fleet analytics are owned and self-hostable rather than outsourced to third-party SaaS.
 
 ---
 
-## Self-Healing Build Infrastructure
+## Verification
 
-**What it does:** Automatically detects and recovers from common build failures without
-manual intervention.
+The main workspace continues to use `pocket system verify --exhaustive` as the core confidence gate. Recent history shows work on:
 
-**Verify:**
-```bash
-pocket system verify --operation apple.swift_build
-# Builds PocketCloudCLI via SwiftPM; auto-recovers stale vendor state on retry
-```
+- integrated exhaustive profiles
+- run budgets
+- timeout hardening
+- SwiftPM contention serialization
+- RAG and MLX daemon self-healing
+- platform checks before app builds
+- build failure classification
+- verify run pruning and history UI
 
-**Self-healing capabilities:**
-- **Lock contention:** Detects competing `swift build` processes and cleans lock files before retrying
-- **Stale vendor mirrors:** Automatically clears stale `workspace-state.json` and `checkouts/`
-  when vendor mirrors are out of sync; retries with clean resolution
-- **Derived data detection:** Identifies and reuses valid Xcode derived data to speed up builds
-- **Offline mode:** Falls back to cached SwiftPM checkouts when network is unavailable
+The older March baseline of `109/112` operations is preserved in the story as historical evidence, but current docs should not present it as the latest verified run.
