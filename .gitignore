@@ -1,0 +1,15 @@
+.DS_Store
+*.swp
+*.tmp
+
+# Local build and editor state
+.build/
+.swiftpm/
+.vscode/
+.idea/
+
+# Local secrets and generated exports
+.env
+.env.*
+!.env.example
+test-results/
