@@ -84,7 +84,7 @@ The project did not stop at the March preview. A June 13, 2026 review of the mai
 - a Swift-native web fleet with deploy, sync, rollback, backup, analytics, jobs, and admin control-plane commands
 - App Store metadata, screenshot capture, screenshot evaluation, and App Store Connect read/push automation
 - observability hubs, verify run history, MCP execution logging, and build-failure classification
-- cross-platform hardening through llama.cpp, SwiftNIO, and Linux/Windows compatibility work
+- cross-platform hardening through llama.cpp, SwiftNIO, and Linux/Windows support
 
 That is the current story: the original 101-day sprint proved the engine could exist. The next phase is turning it into a public ecosystem that developers can inspect, run, and extend.
 
