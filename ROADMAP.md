@@ -46,7 +46,7 @@ This roadmap reflects the June 13, 2026 state review from the main workspace and
 
 - llama.cpp provider integration
 - Swift 6.2 concurrency hardening
-- Linux/Windows compatibility work on AIStack and Core
+- Linux/Windows cross-platform support on AIStack and Core
 - platform checks before app builds
 - MLX simulator and daemon fixes
 
@@ -77,7 +77,7 @@ Prepare the main workspace for public source access:
 
 ### Cross-Platform Expansion
 
-Apple Silicon remains the lead platform, but recent work is already moving AIStack/Core toward Linux and Windows:
+Apple Silicon remains the lead platform, and recent work has successfully extended AIStack/Core to Linux and Windows:
 
 - llama.cpp provider hardening
 - FoundationNetworking and platform stubs

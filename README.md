@@ -4,7 +4,7 @@
 
 This is the public narrative repository for PocketCloud: a local-first, privacy-first AI ecosystem built in Swift. It mirrors the positioning from [pocketcloud.org](https://pocketcloud.org) while adding the engineering context GitHub readers need before the primary source repository opens.
 
-PocketCloud starts with Apple Silicon and is actively expanding toward Linux, Unix, and Windows through Swift 6.2, MLX, llama.cpp, MCP, and the `pocket` CLI.
+PocketCloud is a cross-platform engine supporting Apple Silicon, Linux, Unix, and Windows through Swift 6.2, MLX, llama.cpp, MCP, and the `pocket` CLI.
 
 ---
 

@@ -194,7 +194,7 @@ Recent commits materially expanded the story:
 - Web fleet work moved into Swift-native `pocket web` commands.
 - App Store metadata, screenshots, evaluation, and App Store Connect automation became core workflows.
 - Observability moved into app settings and verify run history.
-- llama.cpp and SwiftNIO work advanced Linux/Windows readiness.
+- llama.cpp and SwiftNIO work secured robust Linux/Windows support.
 - `PCUnifiedProvider` replaced the older broad `UnifiedProvider` naming in code.
 
 ## What This Means

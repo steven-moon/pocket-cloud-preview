@@ -25,7 +25,7 @@ rate limits, no service disruptions.
 
 PocketCloud starts with Apple's [MLX framework](https://github.com/ml-explore/mlx), an array
 framework designed specifically for Apple Silicon's unified memory architecture. The current
-workspace also includes llama.cpp integration work for Linux, Unix, and Windows expansion.
+workspace also includes fully integrated llama.cpp support for cross-platform Linux, Unix, and Windows capabilities.
 
 ```
 Your prompt
