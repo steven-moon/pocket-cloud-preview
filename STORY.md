@@ -71,15 +71,19 @@ This wasn't a prototype or a proof of concept. This is a production system with:
 - A self-healing build infrastructure that recovers from stale caches and vendor conflicts
 - A verification system that tests 112 operations across 24 endpoints on every run
 
-### The June 2026 State
+### The Mid-2026 State (through July 9, 2026)
 
-The project did not stop at the March preview. A June 13, 2026 review of the main workspace shows:
+The project did not stop at the March preview. A July 9, 2026 review of the main workspace shows:
 
-- **2,772 commits** since December 5, 2025
-- **291 commits in the last 30 days**
-- **45 Architecture Decision Records**
-- **3,631 tracked Swift files** and roughly **747K lines of Swift**
-- **8 app projects**: PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase, and PocketCloudInstaller
+- **3,439 commits** since December 5, 2025
+- **739 commits in the last 30 days**
+- **58 Architecture Decision Records**
+- **4,068 tracked Swift files** and roughly **800K lines of Swift**
+- **7 app projects**: PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, and PocketShowcase (the standalone installer was retired — machine setup now lives inside every app)
+- **PocketGamer grew into a real game engine**: voice-native branching adventures, an AI Dungeon Master narrating procedurally generated dungeons, on-device classic board games, endless procedural worlds, device-to-device multiplayer, and a "invent a game" mode
+- an **ecosystem-wide accessibility pass** — VoiceOver labels, audit suites, and regression tests across all seven apps
+- a **SwiftUI adaptive layout policy** so every app reflows cleanly from iPhone to iPad to Mac
+- an **App Feature Catalog SSOT** (ADR-0061) and a **Skill Taxonomy curriculum** in PocketLearning (ADR-0062)
 - a public-facing **Blueprint Apps** taxonomy, reflected on pocketcloud.org
 - a Swift-native web fleet with deploy, sync, rollback, backup, analytics, jobs, and admin control-plane commands
 - App Store metadata, screenshot capture, screenshot evaluation, and App Store Connect read/push automation
@@ -90,7 +94,7 @@ That is the current story: the original 101-day sprint proved the engine could e
 
 ### The AI Partnership
 
-246 commits — about 11.5% — carry a `Co-Authored-By` trailer from Claude (Sonnet 4.5 and 4.6). But that number undersells the collaboration. Every major architectural decision was developed in conversation with AI agents. The ADR system, the Kernel/Toolkit package reorganization, the command orchestration framework, the oracle verification suite, the parallel verify execution — all of these emerged from sustained human-AI pair programming sessions.
+711 commits — about 21% — carry a `Co-Authored-By` trailer from Claude. But that number undersells the collaboration. Every major architectural decision was developed in conversation with AI agents. The ADR system, the Kernel/Toolkit package reorganization, the command orchestration framework, the oracle verification suite, the parallel verify execution — all of these emerged from sustained human-AI pair programming sessions.
 
 The workflow was: I set the architectural direction and made the judgment calls. The AI agents helped me execute at a velocity that would be impossible alone. Together, we maintained a pace of **21 commits per day for over three months** — not by cutting corners, but by building the right abstractions and letting AI handle the mechanical work while I focused on design.
 
@@ -106,6 +110,10 @@ The commit distribution tells its own story:
 | January 2026 | 860 | Peak velocity: Command orchestration, provider integrations, app development, RAG pipeline |
 | February 2026 | 310 | Hardening: Verify system, oracle suite, model selection, file organization standards |
 | March 2026 | 133 | Convergence: App integration (ADR-0017), Apple Intelligence, open-source prep |
+| April 2026 | 187 | Expansion: web fleet control plane, distribution tooling, cross-platform groundwork |
+| May 2026 | 221 | Kernel migration, verify resilience, RAG index performance, app repair waves |
+| June 2026 | 611 | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows support |
+| July 2026 | 202 | PocketGamer game engine, ecosystem accessibility, adaptive layout, ADR-0061/0062 |
 
 The most active day of the week? **Sunday** — 466 commits (21.8% of all commits). The most active hour? **10 PM**. This was a labor of passion, built in the hours between everything else.
 
@@ -130,9 +138,8 @@ PocketCloud is organized as a **Kernel/Toolkit** architecture — deliberately e
 - **PocketWellness**: mood tracking, journaling, mindfulness, local reflection
 - **PocketBusiness**: native control center for servers, deployments, leads, and BI
 - **PocketHub**: code, prompts, providers, telemetry, and developer diagnostics
-- **PocketGamer**: Swift-native game engine and AI-assisted gameplay playground
+- **PocketGamer**: on-device AI games — voice adventures, procedural dungeons, board games, and a build-your-own engine
 - **PocketShowcase**: living gallery of the UI kit
-- **PocketCloudInstaller**: installation and bootstrap path
 
 ### The AI Router
 

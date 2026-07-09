@@ -1,6 +1,6 @@
 # PocketCloud Features
 
-This file summarizes the public feature story as of the June 13, 2026 git review of the main workspace.
+This file summarizes the public feature story as of the July 9, 2026 git review of the main workspace.
 
 The source repo is still private, so this document favors verifiable engineering claims over marketing breadth. Where the website says what PocketCloud is, this file says what has been implemented or actively hardened.
 
@@ -58,15 +58,14 @@ The public site now frames the app suite as **Blueprint Apps**. The source works
 | App | Current role |
 |---|---|
 | PocketMind | Private AI chat, notes, local knowledge, daily review |
-| PocketLearning | AI study notes, flashcards, quizzes, spaced repetition |
+| PocketLearning | AI study notes, flashcards, quizzes, spaced repetition, skill-graph curriculum (ADR-0062) |
 | PocketWellness | Mood tracking, journaling, mindfulness, local reflection |
 | PocketBusiness | Native control center for web fleet, servers, deployments, leads, and BI |
 | PocketHub | Code, telemetry, prompts, providers, and developer diagnostics |
-| PocketGamer | Swift-native game engine and AI-assisted gameplay playground |
+| PocketGamer | On-device AI games: voice adventures, procedural dungeons, board games, build-your-own engine |
 | PocketShowcase | UI kit gallery and provider/prompt playground |
-| PocketCloudInstaller | install and bootstrap path |
 
-The June history includes the rename from `PocketCloudHub` to `PocketHub`, from `PocketGameEngine` to `PocketGamer`, public TestFlight framing, screenshot automation, and refreshed app metadata.
+The mid-2026 history includes the rename from `PocketCloudHub` to `PocketHub` and `PocketGameEngine` to `PocketGamer`, public TestFlight framing, screenshot automation, refreshed app metadata, an App Feature Catalog SSOT (ADR-0061), and the retirement of the standalone installer (machine setup now lives inside every app). All seven apps received an accessibility audit pass — VoiceOver labels, audit suites, and regression tests — plus a SwiftUI adaptive layout policy for iPhone/iPad/Mac.
 
 ---
 

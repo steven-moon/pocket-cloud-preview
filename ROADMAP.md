@@ -1,10 +1,24 @@
 # PocketCloud Roadmap
 
-This roadmap reflects the June 13, 2026 state review from the main workspace and the official website.
+This roadmap reflects the July 9, 2026 state review from the main workspace and the official website.
 
 ---
 
 ## Recently Completed or Substantially Implemented
+
+### PocketGamer Game Engine
+
+- Voice-native branching adventures with a live AI Dungeon Master
+- Procedurally generated dungeon crawls, endless Explore worlds, and an "invent a game" mode
+- On-device classic board games (chess, checkers, and more) with device-to-device multiplayer
+- Swift-native engine with a build-and-remix scene editor
+
+### Ecosystem Accessibility and Adaptive Layout
+
+- VoiceOver labels, per-app accessibility audit suites, and regression tests across all seven apps
+- SwiftUI adaptive layout policy so every app reflows from iPhone to iPad to Mac
+- App Feature Catalog SSOT (ADR-0061) and a Skill Taxonomy curriculum in PocketLearning (ADR-0062)
+- Standalone installer retired — machine setup now lives inside every app
 
 ### Blueprint Apps and Public Beta Framing
 
