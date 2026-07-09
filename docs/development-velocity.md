@@ -1,8 +1,8 @@
 # Development Velocity
 
-**PocketCloud by the numbers: December 5, 2025 – June 13, 2026**
+**PocketCloud by the numbers: December 5, 2025 – July 9, 2026**
 
-This document started as the 101-day build report and now includes the June 13, 2026 state review from the main workspace.
+This document started as the 101-day build report and now includes the July 9, 2026 state review from the main workspace.
 
 ---
 
@@ -11,15 +11,15 @@ This document started as the 101-day build report and now includes the June 13, 
 | Metric | Value |
 |---|---|
 | First commit | December 5, 2025 |
-| Latest reviewed commit date | June 13, 2026 |
-| Total commits | 2,772 |
-| Last 30 days | 291 commits |
+| Latest reviewed commit date | July 9, 2026 |
+| Total commits | 3,439 |
+| Last 30 days | 739 commits |
 | Peak day | 127 commits (Jan 12, 2026) |
 | Peak week | 345 commits (Jan 5-11, 2026) |
-| Swift source files | 3,631 tracked Swift files |
-| Lines of Swift code | roughly 747K |
-| Architecture Decision Records | 45 |
-| App projects | 8 |
+| Swift source files | 4,068 tracked Swift files |
+| Lines of Swift code | roughly 800K |
+| Architecture Decision Records | 58 |
+| App projects | 7 |
 
 The original March preview reported 2,140 commits in 101 days. That milestone remains useful because it shows the initial build velocity, but it is no longer the current state of the workspace.
 
@@ -29,15 +29,20 @@ The original March preview reported 2,140 commits in 101 days. That milestone re
 
 | Month | Commits | % of Total | Phase |
 |---|---|---|---|
-| December 2025 | 837 | 39.1% | Foundation — architecture, CLI, MLX, MCP server |
-| January 2026 | 860 | 40.2% | Peak velocity — orchestration, providers, apps, RAG |
-| February 2026 | 310 | 14.5% | Hardening — verify system, oracle suite, model selection |
-| March 2026 (partial) | 133 | 6.2% | Convergence — app integration, Apple Intelligence, open-source prep |
-| May-June 2026 | 291 in last 30 days | Current review window | Web fleet, App Store automation, Blueprint Apps, observability, cross-platform hardening |
+| December 2025 | 837 | 24.3% | Foundation — architecture, CLI, MLX, MCP server |
+| January 2026 | 860 | 25.0% | Peak velocity — orchestration, providers, apps, RAG |
+| February 2026 | 310 | 9.0% | Hardening — verify system, oracle suite, model selection |
+| March 2026 | 133 | 3.9% | Convergence — app integration, Apple Intelligence, open-source prep |
+| April 2026 | 187 | 5.4% | Web fleet control plane, distribution tooling, cross-platform groundwork |
+| May 2026 | 221 | 6.4% | Kernel migration, verify resilience, RAG index performance, app repair |
+| June 2026 | 611 | 17.8% | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows |
+| July 2026 (partial) | 202 | 5.9% | PocketGamer game engine, accessibility, adaptive layout, ADR-0061/0062 |
 
 ---
 
 ## Commits by Week
+
+> The week/day/hour breakdowns below profile the initial build window (Dec 2025 – Mar 2026), the period with the detailed commit analysis. The headline totals above are current through July 9, 2026.
 
 | Week | Dates | Commits |
 |---|---|---|
@@ -129,11 +134,10 @@ Peak hour: **10 PM** (133 commits). Secondary peaks at 11 AM (120), 10 AM (114),
 
 | Agent | Co-authored Commits |
 |---|---|
-| Claude Sonnet 4.5 | 209 |
-| Claude Sonnet 4.6 | 37 |
-| **Total AI co-authored** | **246 (11.5%)** |
+| Claude (Sonnet/Opus, all models) | 711 |
+| **Total AI co-authored** | **711 (~21%)** |
 
-The 246 co-authored commits represent the formally attributed AI contributions. In practice, every commit was developed in an AI-assisted workflow — the co-author trailers indicate pair-programming sessions where the AI agent made substantial code contributions.
+The 711 co-authored commits represent the formally attributed AI contributions. In practice, every commit was developed in an AI-assisted workflow — the co-author trailers indicate pair-programming sessions where the AI agent made substantial code contributions.
 
 Beyond Claude, the development workflow involved multiple AI tools for architecture discussions, code review, research, and testing strategy.
 
@@ -143,10 +147,10 @@ Beyond Claude, the development workflow involved multiple AI tools for architect
 
 | Metric | Count |
 |---|---|
-| Current tracked Swift files | 3,631 |
-| Current tracked Swift lines | roughly 747K |
-| Current ADRs | 45 |
-| Current app projects | 8 |
+| Current tracked Swift files | 4,068 |
+| Current tracked Swift lines | roughly 800K |
+| Current ADRs | 58 |
+| Current app projects | 7 |
 | Original 101-day Swift files | 7,556 reported at the March preview milestone |
 | Original 101-day Swift lines | 474,294 reported at the March preview milestone |
 
@@ -162,7 +166,7 @@ Beyond Claude, the development workflow involved multiple AI tools for architect
 | Apps/PocketWellness | mood, journaling, privacy-first wellness |
 | Apps/PocketBusiness | native web fleet and business control center |
 | Apps/PocketHub | developer diagnostics, code, prompts, providers, telemetry |
-| Apps/PocketGamer | Swift-native game engine and AI-assisted gameplay |
+| Apps/PocketGamer | On-device AI games — adventures, dungeons, board games, build-your-own engine |
 | web fleet | owned sites, web-lib, admin, deploy/backup/analytics pipeline |
 
 The Kernel — AIStack and Core — accounts for the majority of development effort, reflecting the bottom-up "build the engine first" philosophy.
@@ -171,7 +175,7 @@ The Kernel — AIStack and Core — accounts for the majority of development eff
 
 ## Architecture Decisions
 
-The March preview had 18 ADRs. The June 13 review found 45 ADRs, now reaching web fleet deployment, App Store storefront automation, cross-platform provider work, and shell abstraction:
+The March preview had 18 ADRs. The July 9 review found 58 ADRs, now reaching web fleet deployment, App Store storefront automation, cross-platform provider work, game engine systems, accessibility, and app feature cataloging:
 
 | ADR Range | Focus Areas |
 |---|---|
@@ -179,12 +183,14 @@ The March preview had 18 ADRs. The June 13 review found 45 ADRs, now reaching we
 | ADR-0006 through ADR-0010 | Platform: Apple Intelligence, model selection, verification system |
 | ADR-0011 through ADR-0015 | Quality: concurrency cleanup, model scoring, RAG pipeline, preview strategy |
 | ADR-0016 through ADR-0017 | Convergence: log system, app integration |
+| ADR-0018 through ADR-0048 | Distribution: web fleet, storefront automation, cross-platform, on-device audio |
+| ADR-0049 through ADR-0062 | Ecosystem: game engine systems, App Feature Catalog, skill-taxonomy curriculum |
 
 Each ADR contains enumerated tasks (T01, T02, etc.) with explicit priority levels and completion tracking.
 
 ---
 
-## June 2026 Addendum
+## Mid-2026 Addendum
 
 Recent commits materially expanded the story:
 
@@ -196,6 +202,10 @@ Recent commits materially expanded the story:
 - Observability moved into app settings and verify run history.
 - llama.cpp and SwiftNIO work secured robust Linux/Windows support.
 - `PCUnifiedProvider` replaced the older broad `UnifiedProvider` naming in code.
+- PocketGamer matured into a real game engine: voice-native adventures, an AI Dungeon Master, procedural dungeons, on-device board games, endless worlds, and device-to-device multiplayer.
+- All seven apps received an accessibility audit pass (VoiceOver labels, audit suites, regression tests) and a SwiftUI adaptive layout policy for iPhone/iPad/Mac.
+- App Feature Catalog SSOT (ADR-0061) and a PocketLearning skill-graph curriculum (ADR-0062) landed.
+- The standalone PocketCloudInstaller was retired — machine setup now lives inside every app.
 
 ## What This Means
 

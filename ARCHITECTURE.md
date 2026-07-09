@@ -13,7 +13,7 @@ PocketCloud is built as a Swift-native local AI platform with three public promi
 ```text
 Blueprint Apps
   PocketMind · PocketLearning · PocketWellness · PocketBusiness
-  PocketHub · PocketGamer · PocketShowcase · PocketCloudInstaller
+  PocketHub · PocketGamer · PocketShowcase
         |
         v
 Toolkit Layer
@@ -50,11 +50,10 @@ The app layer is now aligned with the public **Blueprint Apps** story:
 | PocketWellness | Mood, journaling, mindfulness, local reflection |
 | PocketBusiness | Native web fleet and business control center |
 | PocketHub | Developer AI hub for code, prompts, telemetry, and providers |
-| PocketGamer | Swift-native game engine and AI-assisted gameplay playground |
+| PocketGamer | On-device AI games: voice adventures, procedural dungeons, board games, build-your-own engine |
 | PocketShowcase | UI component and design-system gallery |
-| PocketCloudInstaller | Bootstrap/install path |
 
-The June 2026 workspace includes project manifests and Xcode projects for all eight.
+The mid-2026 workspace includes project manifests and Xcode projects for all seven. The standalone installer was retired — machine setup now lives inside every app.
 
 ---
 

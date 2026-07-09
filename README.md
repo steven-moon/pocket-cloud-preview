@@ -39,17 +39,17 @@ The line from the website is the short version:
 
 ## State of the Code
 
-Reviewed from the main workspace git history through **June 13, 2026**:
+Reviewed from the main workspace git history through **July 9, 2026**:
 
 | Area | Current state |
 |---|---|
-| Main workspace commits | 2,772 since December 5, 2025 |
-| Last 30 days | 291 commits across apps, AIStack, Core, web fleet, distribution, observability, and verification |
-| Swift code | 3,631 tracked Swift files, roughly 747K lines |
-| ADRs | 45 architecture decision records |
-| App projects | PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase, PocketCloudInstaller |
+| Main workspace commits | 3,439 since December 5, 2025 |
+| Last 30 days | 739 commits across apps, AIStack, GameStack, Core, web fleet, distribution, accessibility, observability, and verification |
+| Swift code | 4,068 tracked Swift files, roughly 800K lines |
+| ADRs | 58 architecture decision records |
+| App projects | PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase (7 apps) |
 | Verification culture | `pocket system verify --exhaustive` remains the core confidence gate |
-| Recent focus | App Store automation, Blueprint Apps, web fleet control plane, ASC read tooling, observability hubs, cross-platform hardening, PCUnifiedProvider naming |
+| Recent focus | PocketGamer game engine (voice adventures, procedural dungeons, on-device board games), ecosystem-wide accessibility audits, SwiftUI adaptive layout, App Feature Catalog SSOT (ADR-0061), Skill Taxonomy curriculum (ADR-0062), in-app machine setup (installer retired) |
 
 The older "101 days" story is still true as an early milestone. It is no longer the whole story.
 
@@ -85,9 +85,8 @@ PocketCloud is more than one app. The current ecosystem is organized around blue
 | PocketWellness | Mood, journaling, reflection, privacy-first wellness |
 | PocketBusiness | Native control center for servers, deployments, leads, and BI |
 | PocketHub | AI hub for code, telemetry, prompts, providers, and docs |
-| PocketGamer | Swift-native game engine and AI-assisted gameplay playground |
+| PocketGamer | On-device AI games: voice adventures, procedural dungeons, board games, and a build-your-own engine |
 | PocketShowcase | Living gallery of the PocketCloud UI kit |
-| PocketCloudInstaller | Install/bootstrap path for the ecosystem |
 
 These map to the public site’s **Blueprint Apps** section and the App Store metadata automation in the main repo.
 
@@ -98,7 +97,7 @@ These map to the public site’s **Blueprint Apps** section and the App Store me
 ```text
 Blueprint Apps
   PocketMind · PocketLearning · PocketWellness · PocketBusiness
-  PocketHub · PocketGamer · PocketShowcase · PocketCloudInstaller
+  PocketHub · PocketGamer · PocketShowcase
         |
         v
 Toolkit Layer
@@ -138,7 +137,7 @@ Repository automation in the source workspace should use `./scripts/swiftw` or `
 
 ## Learn More
 
-- [STORY.md](STORY.md) - the original build narrative, updated with the June state
+- [STORY.md](STORY.md) - the original build narrative, updated through the July state
 - [FEATURES.md](FEATURES.md) - current capability map
 - [ARCHITECTURE.md](ARCHITECTURE.md) - system architecture
 - [ROADMAP.md](ROADMAP.md) - completed, active, and future work
