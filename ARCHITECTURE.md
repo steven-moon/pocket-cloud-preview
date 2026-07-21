@@ -52,8 +52,17 @@ The app layer is now aligned with the public **Blueprint Apps** story:
 | PocketHub | Developer AI hub for code, prompts, telemetry, and providers |
 | PocketGamer | On-device AI games: voice adventures, procedural dungeons, board games, build-your-own engine |
 | PocketShowcase | UI component and design-system gallery |
+| PocketDesktop | Tauri shell — the Windows and Linux surface |
 
-The mid-2026 workspace includes project manifests and Xcode projects for all seven. The standalone installer was retired — machine setup now lives inside every app.
+The mid-2026 workspace includes project manifests and Xcode projects for the seven
+Apple apps, plus the Tauri manifest for PocketDesktop. The standalone installer was
+retired — machine setup now lives inside every app.
+
+Each Apple app also embeds a hybrid web surface built from the same
+`@pocketcloud/web-lib` custom elements that PocketDesktop and the web fleet mount.
+One component therefore renders on iPhone, iPad, Mac, Windows, and Linux — and is
+loaded from inside the `.app` over `file://` on Apple platforms, which is a
+materially stricter environment than a browser or a Tauri webview (ADR-0066).
 
 ---
 

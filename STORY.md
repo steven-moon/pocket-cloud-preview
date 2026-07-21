@@ -71,15 +71,15 @@ This wasn't a prototype or a proof of concept. This is a production system with:
 - A self-healing build infrastructure that recovers from stale caches and vendor conflicts
 - A verification system that tests 112 operations across 24 endpoints on every run
 
-### The Mid-2026 State (through July 9, 2026)
+### The Mid-2026 State (through July 21, 2026)
 
-The project did not stop at the March preview. A July 9, 2026 review of the main workspace shows:
+The project did not stop at the March preview. A July 21, 2026 review of the main workspace shows:
 
-- **3,439 commits** since December 5, 2025
-- **739 commits in the last 30 days**
-- **58 Architecture Decision Records**
-- **4,068 tracked Swift files** and roughly **800K lines of Swift**
-- **7 app projects**: PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, and PocketShowcase (the standalone installer was retired — machine setup now lives inside every app)
+- **3,874 commits** since December 5, 2025
+- **795 commits in the last 30 days**
+- **73 Architecture Decision Records**
+- **4,096 tracked Swift files** and roughly **790K lines of Swift**
+- **8 app projects**: PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, and PocketShowcase on Apple platforms, plus **PocketDesktop** — the Tauri shell that carries the same experience to Windows and Linux (the standalone installer was retired — machine setup now lives inside every app)
 - **PocketGamer grew into a real game engine**: voice-native branching adventures, an AI Dungeon Master narrating procedurally generated dungeons, on-device classic board games, endless procedural worlds, device-to-device multiplayer, and a "invent a game" mode
 - an **ecosystem-wide accessibility pass** — VoiceOver labels, audit suites, and regression tests across all seven apps
 - a **SwiftUI adaptive layout policy** so every app reflows cleanly from iPhone to iPad to Mac
@@ -89,6 +89,16 @@ The project did not stop at the March preview. A July 9, 2026 review of the main
 - App Store metadata, screenshot capture, screenshot evaluation, and App Store Connect read/push automation
 - observability hubs, verify run history, MCP execution logging, and build-failure classification
 - cross-platform hardening through llama.cpp, SwiftNIO, and Linux/Windows support
+
+- a **shared hybrid surface**: every Apple app embeds the same `@pocketcloud/web-lib`
+  components that PocketDesktop and the web fleet mount, so one screen renders on
+  iPhone, iPad, Mac, Windows, and Linux
+- **verification you can see**: `pocket dev apple build-app --simulator --scene`
+  builds an app, installs it on a simulator, opens a named screen, and captures it —
+  because "it compiles" was never the same claim as "it renders"
+- a **Customer Zero inventory** — 152 GitHub repositories and 50 App Store apps
+  captured as durable, regenerable snapshots, so modernization is ranked against
+  measured reality rather than memory
 
 That is the current story: the original 101-day sprint proved the engine could exist. The next phase is turning it into a public ecosystem that developers can inspect, run, and extend.
 

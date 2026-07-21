@@ -39,17 +39,17 @@ The line from the website is the short version:
 
 ## State of the Code
 
-Reviewed from the main workspace git history through **July 9, 2026**:
+Reviewed from the main workspace git history through **July 21, 2026**:
 
 | Area | Current state |
 |---|---|
-| Main workspace commits | 3,439 since December 5, 2025 |
-| Last 30 days | 739 commits across apps, AIStack, GameStack, Core, web fleet, distribution, accessibility, observability, and verification |
-| Swift code | 4,068 tracked Swift files, roughly 800K lines |
-| ADRs | 58 architecture decision records |
-| App projects | PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase (7 apps) |
-| Verification culture | `pocket system verify --exhaustive` remains the core confidence gate |
-| Recent focus | PocketGamer game engine (voice adventures, procedural dungeons, on-device board games), ecosystem-wide accessibility audits, SwiftUI adaptive layout, App Feature Catalog SSOT (ADR-0061), Skill Taxonomy curriculum (ADR-0062), in-app machine setup (installer retired) |
+| Main workspace commits | 3,874 since December 5, 2025 |
+| Last 30 days | 795 commits across apps, AIStack, GameStack, Core, web fleet, distribution, accessibility, observability, and verification |
+| Swift code | 4,096 tracked Swift files, roughly 790K lines |
+| ADRs | 73 architecture decision records |
+| App projects | 8 — seven Apple apps (PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase) plus **PocketDesktop**, the Tauri shell that is the Windows and Linux surface |
+| Verification culture | `pocket system verify --exhaustive` remains the core confidence gate, now joined by deterministic scanners (`pocket quality scan paths\|flywheel\|aml\|hybrid`) that run in the pre-commit hook and in the build |
+| Recent focus | Hybrid web shell repair across all seven Apple apps, credential-store durability, simulator-driven visual verification (`pocket dev apple build-app --simulator --scene`), and the Customer Zero inventory (152 repos + 50 App Store apps captured) |
 
 The older "101 days" story is still true as an early milestone. It is no longer the whole story.
 
@@ -87,6 +87,11 @@ PocketCloud is more than one app. The current ecosystem is organized around blue
 | PocketHub | AI hub for code, telemetry, prompts, providers, and docs |
 | PocketGamer | On-device AI games: voice adventures, procedural dungeons, board games, and a build-your-own engine |
 | PocketShowcase | Living gallery of the PocketCloud UI kit |
+| PocketDesktop | The Tauri shell that carries PocketCloud to **Windows and Linux** |
+
+Every Apple app also ships a hybrid web surface built from the same
+`@pocketcloud/web-lib` components that PocketDesktop and the web fleet mount, so a
+screen written once renders on iPhone, iPad, Mac, Windows, and Linux.
 
 These map to the public site’s **Blueprint Apps** section and the App Store metadata automation in the main repo.
 

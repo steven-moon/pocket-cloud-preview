@@ -1,8 +1,8 @@
 # Development Velocity
 
-**PocketCloud by the numbers: December 5, 2025 – July 9, 2026**
+**PocketCloud by the numbers: December 5, 2025 – July 21, 2026**
 
-This document started as the 101-day build report and now includes the July 9, 2026 state review from the main workspace.
+This document started as the 101-day build report and now includes the July 21, 2026 state review from the main workspace.
 
 ---
 
@@ -11,15 +11,15 @@ This document started as the 101-day build report and now includes the July 9, 2
 | Metric | Value |
 |---|---|
 | First commit | December 5, 2025 |
-| Latest reviewed commit date | July 9, 2026 |
-| Total commits | 3,439 |
-| Last 30 days | 739 commits |
+| Latest reviewed commit date | July 21, 2026 |
+| Total commits | 3,874 |
+| Last 30 days | 795 commits |
 | Peak day | 127 commits (Jan 12, 2026) |
 | Peak week | 345 commits (Jan 5-11, 2026) |
-| Swift source files | 4,068 tracked Swift files |
-| Lines of Swift code | roughly 800K |
-| Architecture Decision Records | 58 |
-| App projects | 7 |
+| Swift source files | 4,096 tracked Swift files |
+| Lines of Swift code | roughly 790K |
+| Architecture Decision Records | 73 |
+| App projects | 8 (7 Apple + PocketDesktop for Windows/Linux) |
 
 The original March preview reported 2,140 commits in 101 days. That milestone remains useful because it shows the initial build velocity, but it is no longer the current state of the workspace.
 
@@ -29,20 +29,20 @@ The original March preview reported 2,140 commits in 101 days. That milestone re
 
 | Month | Commits | % of Total | Phase |
 |---|---|---|---|
-| December 2025 | 837 | 24.3% | Foundation — architecture, CLI, MLX, MCP server |
-| January 2026 | 860 | 25.0% | Peak velocity — orchestration, providers, apps, RAG |
-| February 2026 | 310 | 9.0% | Hardening — verify system, oracle suite, model selection |
-| March 2026 | 133 | 3.9% | Convergence — app integration, Apple Intelligence, open-source prep |
-| April 2026 | 187 | 5.4% | Web fleet control plane, distribution tooling, cross-platform groundwork |
-| May 2026 | 221 | 6.4% | Kernel migration, verify resilience, RAG index performance, app repair |
-| June 2026 | 611 | 17.8% | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows |
-| July 2026 (partial) | 202 | 5.9% | PocketGamer game engine, accessibility, adaptive layout, ADR-0061/0062 |
+| December 2025 | 837 | 21.6% | Foundation — architecture, CLI, MLX, MCP server |
+| January 2026 | 860 | 22.2% | Peak velocity — orchestration, providers, apps, RAG |
+| February 2026 | 310 | 8.0% | Hardening — verify system, oracle suite, model selection |
+| March 2026 | 206 | 5.3% | Convergence — app integration, Apple Intelligence, open-source prep |
+| April 2026 | 188 | 4.9% | Web fleet control plane, distribution tooling, cross-platform groundwork |
+| May 2026 | 226 | 5.8% | Kernel migration, verify resilience, RAG index performance, app repair |
+| June 2026 | 610 | 15.7% | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows |
+| July 2026 (partial) | 637 | 16.4% | Hybrid shell repair, credential durability, simulator verification, Customer Zero inventory |
 
 ---
 
 ## Commits by Week
 
-> The week/day/hour breakdowns below profile the initial build window (Dec 2025 – Mar 2026), the period with the detailed commit analysis. The headline totals above are current through July 9, 2026.
+> The week/day/hour breakdowns below profile the initial build window (Dec 2025 – Mar 2026), the period with the detailed commit analysis. The headline totals above are current through July 21, 2026.
 
 | Week | Dates | Commits |
 |---|---|---|
@@ -147,8 +147,8 @@ Beyond Claude, the development workflow involved multiple AI tools for architect
 
 | Metric | Count |
 |---|---|
-| Current tracked Swift files | 4,068 |
-| Current tracked Swift lines | roughly 800K |
+| Current tracked Swift files | 4,096 |
+| Current tracked Swift lines | roughly 790K |
 | Current ADRs | 58 |
 | Current app projects | 7 |
 | Original 101-day Swift files | 7,556 reported at the March preview milestone |

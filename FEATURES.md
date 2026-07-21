@@ -1,6 +1,6 @@
 # PocketCloud Features
 
-This file summarizes the public feature story as of the July 9, 2026 git review of the main workspace.
+This file summarizes the public feature story as of the July 21, 2026 git review of the main workspace.
 
 The source repo is still private, so this document favors verifiable engineering claims over marketing breadth. Where the website says what PocketCloud is, this file says what has been implemented or actively hardened.
 
@@ -64,6 +64,11 @@ The public site now frames the app suite as **Blueprint Apps**. The source works
 | PocketHub | Code, telemetry, prompts, providers, and developer diagnostics |
 | PocketGamer | On-device AI games: voice adventures, procedural dungeons, board games, build-your-own engine |
 | PocketShowcase | UI kit gallery and provider/prompt playground |
+| PocketDesktop | Tauri shell — the Windows and Linux surface |
+
+Every Apple app also embeds a hybrid web surface built from the same
+`@pocketcloud/web-lib` components PocketDesktop and the web fleet mount, so one
+screen renders across iPhone, iPad, Mac, Windows, and Linux.
 
 The mid-2026 history includes the rename from `PocketCloudHub` to `PocketHub` and `PocketGameEngine` to `PocketGamer`, public TestFlight framing, screenshot automation, refreshed app metadata, an App Feature Catalog SSOT (ADR-0061), and the retirement of the standalone installer (machine setup now lives inside every app). All seven apps received an accessibility audit pass — VoiceOver labels, audit suites, and regression tests — plus a SwiftUI adaptive layout policy for iPhone/iPad/Mac.
 

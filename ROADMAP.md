@@ -1,6 +1,6 @@
 # PocketCloud Roadmap
 
-This roadmap reflects the July 9, 2026 state review from the main workspace and the official website.
+This roadmap reflects the July 21, 2026 state review from the main workspace and the official website.
 
 ---
 
@@ -12,6 +12,19 @@ This roadmap reflects the July 9, 2026 state review from the main workspace and 
 - Procedurally generated dungeon crawls, endless Explore worlds, and an "invent a game" mode
 - On-device classic board games (chess, checkers, and more) with device-to-device multiplayer
 - Swift-native engine with a build-and-remix scene editor
+
+### Cross-Platform Surface and Verification You Can See
+
+- One hybrid web surface shared by all seven Apple apps, PocketDesktop, and the web
+  fleet — repaired end to end so a screen written once renders on iPhone, iPad, Mac,
+  Windows, and Linux
+- `pocket dev apple build-app --simulator --scene <name>` builds an app, installs it
+  on a simulator, opens a named screen, and captures it — "it compiles" is not the
+  same claim as "it renders"
+- Deterministic pre-commit and build gates for hardcoded paths, telemetry
+  violations, AML contracts, platform hygiene, and hybrid bundle integrity
+- Customer Zero inventory: 152 GitHub repositories and 50 App Store apps captured as
+  durable, regenerable snapshots
 
 ### Ecosystem Accessibility and Adaptive Layout
 
