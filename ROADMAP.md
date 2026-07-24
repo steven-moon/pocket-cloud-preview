@@ -61,6 +61,16 @@ This roadmap reflects the July 21, 2026 state review from the main workspace and
 - `/robots.txt` and `/llms.txt` shared routes
 - local mirror store, job runner, and SEO Pilot
 
+### Membership and Subscriptions (ADR-0065)
+
+- a single supporter tier ($9.99) with a two-week free trial as the model
+- StoreKit runtime for the Apple apps (`PocketCloudSubscriptions`)
+- shared support/paywall UI with an A/B paywall-name experiment (`PocketCloudSubscriptionsUI`)
+- canonical web membership bridge in `web-lib` (MembershipController + Stripe
+  service + subscriber accounts), driven by a Swift-generated payment projection —
+  the full web loop (checkout → webhook → entitlement) is sandbox-verified
+- Apple in-app purchase submission is the remaining live-launch step
+
 ### Observability and Settings
 
 - verify run history and UI
