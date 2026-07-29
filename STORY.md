@@ -65,7 +65,7 @@ PocketCloud development started on **December 5, 2025**. The original public pre
 - **Current streak**: 66 consecutive days of commits (and counting)
 
 This wasn't a prototype or a proof of concept. This is a production system with:
-- Strict Swift 6.2 concurrency across every package
+- Strict Swift 6.3 concurrency across every package
 - Hardware-aware model selection that scores candidates by SoC bandwidth and memory fit
 - A 3-prompt oracle verification suite that catches degenerate model outputs
 - A self-healing build infrastructure that recovers from stale caches and vendor conflicts

@@ -82,7 +82,7 @@ This roadmap reflects the July 21, 2026 state review from the main workspace and
 ### Cross-Platform AI Hardening
 
 - llama.cpp provider integration
-- Swift 6.2 concurrency hardening
+- Swift 6.3 concurrency hardening
 - Linux/Windows cross-platform support on AIStack and Core
 - platform checks before app builds
 - MLX simulator and daemon fixes
