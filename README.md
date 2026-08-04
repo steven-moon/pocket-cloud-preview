@@ -39,17 +39,18 @@ The line from the website is the short version:
 
 ## State of the Code
 
-Reviewed from the main workspace git history through **July 21, 2026**:
+Reviewed from the main workspace git history through **August 3, 2026**:
 
 | Area | Current state |
 |---|---|
-| Main workspace commits | 3,874 since December 5, 2025 |
-| Last 30 days | 795 commits across apps, AIStack, GameStack, Core, web fleet, distribution, accessibility, observability, and verification |
-| Swift code | 4,096 tracked Swift files, roughly 790K lines |
-| ADRs | 73 architecture decision records |
-| App projects | 8 — seven Apple apps (PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase) plus **PocketDesktop**, the Tauri shell that is the Windows and Linux surface |
-| Verification culture | `pocket system verify --exhaustive` remains the core confidence gate, now joined by deterministic scanners (`pocket quality scan paths\|flywheel\|aml\|hybrid`) that run in the pre-commit hook and in the build |
-| Recent focus | Hybrid web shell repair across all seven Apple apps, credential-store durability, simulator-driven visual verification (`pocket dev apple build-app --simulator --scene`), and the Customer Zero inventory (152 repos + 50 App Store apps captured) |
+| Main workspace commits | 4,205 since December 5, 2025 |
+| Last 30 days | 892 commits across apps, AIStack, GameStack, Core, web fleet, distribution, hybrid shells, knowledge mesh, and verification — July 2026 was the busiest month in the project's history (923 commits, ahead of January's 860) |
+| Swift code | 4,502 tracked Swift files, roughly 872K lines |
+| ADRs | 81 architecture decision records (through ADR-0084) |
+| App projects | 8 — seven Apple apps (PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase) plus **PocketDesktop**, the Tauri shell that is the Windows and Linux surface. An **Android lane is in progress**: one Tauri shell now compiles for all eight apps and installs as a real APK, running as a remote-core client of a paired node (ADR-0082) |
+| Build workflow | Tiered composites — `pocket build bronze` (fast iteration), `silver` (pre-merge), `gold` (release: clean → all → test) — with strict-by-default tests where a vacuous run fails loudly |
+| Verification culture | `pocket system verify --exhaustive` remains the core confidence gate, joined by deterministic scanners (`pocket quality scan paths\|flywheel\|aml\|tests`) in the pre-commit hook and the build — including a scanner that hunts **tests no target compiles**, after an audit proved green gates can hide suites that never run |
+| Recent focus | Cross-platform trust (a fork had silently disabled Metal GPU inference — caught and replaced with verified artifacts), the Android/Windows lanes, a distributed knowledge mesh with encrypted snapshot sync (ADR-0080), fleet server lifecycle tooling (ADR-0084), and the first commercial implementation offer built on the platform (ADR-0081) |
 
 The older "101 days" story is still true as an early milestone. It is no longer the whole story.
 
@@ -66,8 +67,10 @@ The older "101 days" story is still true as an early milestone. It is no longer 
 | MCP server | Working | local tool execution, dry-run hardening, workspace and agent instruction tools |
 | RAG and knowledge context | Working | local index/query, verification bootstrap/self-healing |
 | Blueprint Apps | Public beta path | TestFlight-oriented app pages and screenshot automation |
-| Web fleet | Working | Swift-native deploy/sync/rollback/backup, admin control plane, local mirror, SEO Pilot |
-| Observability | Working | local logs, verify run history, settings observability hubs |
+| Web fleet | Working | Swift-native deploy/sync/rollback/backup, admin control plane, fleet presence monitoring, config audits, server lifecycle tiers (lease/reap/spend ceilings), local mirror, SEO Pilot |
+| Membership | Web loop verified in sandbox | account-based membership with a single supporter tier, Stripe checkout → webhook → entitlement wired through the shared web library; Apple in-app purchase submission is the remaining live step |
+| Knowledge mesh | Tier 1 working | local entity/knowledge processing with encrypted-by-default snapshot bundles and LAN sync groundwork (ADR-0080) |
+| Observability | Working | local logs, verify run history, settings observability hubs, unified web-to-hub telemetry |
 | App Store automation | Working | ADR-0048 metadata SSOT, screenshot capture/eval/push, ASC read commands |
 
 See [FEATURES.md](FEATURES.md) for a fuller engineering breakdown.
@@ -91,7 +94,10 @@ PocketCloud is more than one app. The current ecosystem is organized around blue
 
 Every Apple app also ships a hybrid web surface built from the same
 `@pocketcloud/web-lib` components that PocketDesktop and the web fleet mount, so a
-screen written once renders on iPhone, iPad, Mac, Windows, and Linux.
+screen written once renders on iPhone, iPad, Mac, Windows, and Linux. An **Android
+lane is in progress** (ADR-0082): a single shared Tauri shell now compiles for all
+eight apps and installs as a real APK, running at launch as a client of models on a
+paired PocketCloud node rather than on-device.
 
 These map to the public site’s **Blueprint Apps** section and the App Store metadata automation in the main repo.
 
@@ -102,11 +108,13 @@ These map to the public site’s **Blueprint Apps** section and the App Store me
 ```text
 Blueprint Apps
   PocketMind · PocketLearning · PocketWellness · PocketBusiness
-  PocketHub · PocketGamer · PocketShowcase
+  PocketHub · PocketGamer · PocketShowcase · PocketDesktop (Win/Linux)
+  Android remote-core client (in progress, ADR-0082)
         |
         v
 Toolkit Layer
   PocketCloudUI · AI UI · Infrastructure UI · Admin UI · StarterKit
+  Subscriptions + Subscriptions UI
         |
         v
 Kernel Layer
@@ -127,7 +135,7 @@ The main workspace has converged on `pocket` as the operating surface:
 
 ```text
 pocket system      # health, verify, local AI, logs, workspace
-pocket build       # canonical gold-standard build workflow
+pocket build       # tiered build workflow: bronze (iterate) · silver (pre-merge) · gold (release)
 pocket dev         # providers, Apple tooling, App Store, ASC
 pocket quality     # platform checks, analysis, tests, docs
 pocket ops         # CI, monitoring, bootstrapping, web fleet ops

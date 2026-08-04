@@ -1,8 +1,8 @@
 # Development Velocity
 
-**PocketCloud by the numbers: December 5, 2025 – July 21, 2026**
+**PocketCloud by the numbers: December 5, 2025 – August 3, 2026**
 
-This document started as the 101-day build report and now includes the July 21, 2026 state review from the main workspace.
+This document started as the 101-day build report and now includes the August 3, 2026 state review from the main workspace.
 
 ---
 
@@ -11,15 +11,16 @@ This document started as the 101-day build report and now includes the July 21, 
 | Metric | Value |
 |---|---|
 | First commit | December 5, 2025 |
-| Latest reviewed commit date | July 21, 2026 |
-| Total commits | 3,874 |
-| Last 30 days | 795 commits |
+| Latest reviewed commit date | August 3, 2026 |
+| Total commits | 4,205 |
+| Last 30 days | 892 commits |
 | Peak day | 127 commits (Jan 12, 2026) |
 | Peak week | 345 commits (Jan 5-11, 2026) |
-| Swift source files | 4,096 tracked Swift files |
-| Lines of Swift code | roughly 790K |
-| Architecture Decision Records | 73 |
-| App projects | 8 (7 Apple + PocketDesktop for Windows/Linux) |
+| Peak month | 923 commits (July 2026 — the busiest month in the project's history) |
+| Swift source files | 4,502 tracked Swift files |
+| Lines of Swift code | roughly 872K |
+| Architecture Decision Records | 81 |
+| App projects | 8 (7 Apple + PocketDesktop for Windows/Linux), with an Android lane in progress (ADR-0082) |
 
 The original March preview reported 2,140 commits in 101 days. That milestone remains useful because it shows the initial build velocity, but it is no longer the current state of the workspace.
 
@@ -35,8 +36,9 @@ The original March preview reported 2,140 commits in 101 days. That milestone re
 | March 2026 | 206 | 5.3% | Convergence — app integration, Apple Intelligence, open-source prep |
 | April 2026 | 188 | 4.9% | Web fleet control plane, distribution tooling, cross-platform groundwork |
 | May 2026 | 226 | 5.8% | Kernel migration, verify resilience, RAG index performance, app repair |
-| June 2026 | 610 | 15.7% | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows |
-| July 2026 (partial) | 637 | 16.4% | Hybrid shell repair, credential durability, simulator verification, Customer Zero inventory |
+| June 2026 | 610 | 14.5% | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows |
+| July 2026 | 923 | 22.0% | The peak month: Swift 6.3, hybrid trust pass, Android lane, knowledge mesh (ADR-0080), membership (ADR-0065), the commercial offer (ADR-0081) |
+| August 2026 (through Aug 3) | 44 | 1.0% | Fleet server tiers (ADR-0084), presence monitoring, unified web telemetry |
 
 ---
 
@@ -134,10 +136,10 @@ Peak hour: **10 PM** (133 commits). Secondary peaks at 11 AM (120), 10 AM (114),
 
 | Agent | Co-authored Commits |
 |---|---|
-| Claude (Sonnet/Opus, all models) | 711 |
-| **Total AI co-authored** | **711 (~21%)** |
+| Claude (Sonnet/Opus, all models) | 1,279 |
+| **Total AI co-authored** | **1,279 (~30%)** |
 
-The 711 co-authored commits represent the formally attributed AI contributions. In practice, every commit was developed in an AI-assisted workflow — the co-author trailers indicate pair-programming sessions where the AI agent made substantial code contributions.
+The 1,279 co-authored commits represent the formally attributed AI contributions. In practice, every commit was developed in an AI-assisted workflow — the co-author trailers indicate pair-programming sessions where the AI agent made substantial code contributions.
 
 Beyond Claude, the development workflow involved multiple AI tools for architecture discussions, code review, research, and testing strategy.
 
@@ -147,10 +149,10 @@ Beyond Claude, the development workflow involved multiple AI tools for architect
 
 | Metric | Count |
 |---|---|
-| Current tracked Swift files | 4,096 |
-| Current tracked Swift lines | roughly 790K |
-| Current ADRs | 58 |
-| Current app projects | 7 |
+| Current tracked Swift files | 4,502 |
+| Current tracked Swift lines | roughly 872K |
+| Current ADRs | 81 |
+| Current app projects | 8 |
 | Original 101-day Swift files | 7,556 reported at the March preview milestone |
 | Original 101-day Swift lines | 474,294 reported at the March preview milestone |
 
@@ -175,7 +177,7 @@ The Kernel — AIStack and Core — accounts for the majority of development eff
 
 ## Architecture Decisions
 
-The March preview had 18 ADRs. The July 9 review found 58 ADRs, now reaching web fleet deployment, App Store storefront automation, cross-platform provider work, game engine systems, accessibility, and app feature cataloging:
+The March preview had 18 ADRs. The August 3 review finds 81 ADRs, now reaching web fleet deployment, App Store storefront automation, cross-platform provider work, game engine systems, accessibility, app feature cataloging, payments, the knowledge mesh, and the commercial offer:
 
 | ADR Range | Focus Areas |
 |---|---|
@@ -185,6 +187,8 @@ The March preview had 18 ADRs. The July 9 review found 58 ADRs, now reaching web
 | ADR-0016 through ADR-0017 | Convergence: log system, app integration |
 | ADR-0018 through ADR-0048 | Distribution: web fleet, storefront automation, cross-platform, on-device audio |
 | ADR-0049 through ADR-0062 | Ecosystem: game engine systems, App Feature Catalog, skill-taxonomy curriculum |
+| ADR-0063 through ADR-0074 | Hardening and reach: payments/subscriptions, Windows/Linux Tauri architecture, thin web clients, analytics/experimentation contract |
+| ADR-0075 through ADR-0084 | Platform as product: product model as goal driver, distributed knowledge mesh, company brain, commercial implementation offer, Android remote-core client, brand contract, fleet server tiers |
 
 Each ADR contains enumerated tasks (T01, T02, etc.) with explicit priority levels and completion tracking.
 
@@ -206,6 +210,12 @@ Recent commits materially expanded the story:
 - All seven apps received an accessibility audit pass (VoiceOver labels, audit suites, regression tests) and a SwiftUI adaptive layout policy for iPhone/iPad/Mac.
 - App Feature Catalog SSOT (ADR-0061) and a PocketLearning skill-graph curriculum (ADR-0062) landed.
 - The standalone PocketCloudInstaller was retired — machine setup now lives inside every app.
+- The toolchain advanced to Swift 6.3 across every package (July 2026).
+- A hybrid trust pass (ADR-0082) replaced a fork that had silently disabled GPU inference, made "Online" indicators facts rather than timers, and stood up Android (remote-core client APK) and Windows build lanes.
+- A distributed knowledge mesh (ADR-0080) shipped Tier 1: encrypted-by-default snapshot bundles behind a single portability filter.
+- Membership landed end-to-end on the web (ADR-0065): account-based register → subscribe → entitlement through the shared web library.
+- The first commercial offer built on the platform went live (ADR-0081), with prices as operator-editable data and a delivery gate proving advertised platforms build.
+- Fleet server lifecycle tooling (ADR-0084) added presence monitoring, config audits, and lease/reap server tiers with spend ceilings.
 
 ## What This Means
 

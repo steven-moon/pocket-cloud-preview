@@ -1,10 +1,57 @@
 # PocketCloud Roadmap
 
-This roadmap reflects the July 21, 2026 state review from the main workspace and the official website.
+This roadmap reflects the August 3, 2026 state review from the main workspace and the official website.
 
 ---
 
 ## Recently Completed or Substantially Implemented
+
+### Cross-Platform Trust Pass and the Android Lane (ADR-0082)
+
+- A task-by-task audit of the hybrid stack found and fixed real trust defects: a
+  vendored fork had **silently disabled Metal GPU inference** while every gate
+  stayed green (replaced with verified official artifacts), a test verb reported
+  success over failed runs, and desktop "Online" indicators are now facts the
+  core states rather than timers
+- One shared Tauri shell now serves all eight apps; an **Android build lane**
+  (`pocket build android`) produces a real, installable APK that runs as a
+  remote-core client of a paired node — on-device Android inference is
+  explicitly out of launch scope
+- Windows parity work made the quality gates, test runner, and build bundles run
+  on Windows itself
+
+### Distributed Knowledge Mesh — Tier 1 (ADR-0080)
+
+- Local knowledge processing with addressable derived snapshots, a single
+  portability filter deciding what may leave a device, and
+  **encrypted-by-default snapshot bundles**
+- LAN sync groundwork with honest JSON contracts for the knowledge verbs
+
+### Fleet Server Lifecycle and Presence (ADR-0084)
+
+- Typed cloud-provider API client and a `pocket web server` verb family: tier
+  inventory, snapshot, safe prod-clone with first-boot lockdown, lease/connect/
+  reap with rolling spend ceilings
+- `pocket web presence` and scheduled config audits — built after real incidents
+  where most fleet sites were silently unmonitored and a missing port config
+  caused a long-running crash loop
+- The fleet now carries its own SSH identity instead of borrowing the
+  workstation's
+
+### Commercial Implementation Offer (ADR-0081)
+
+- PocketCloud's first commercial offer — a fixed-price custom implementation
+  delivered by Clever Coding as founding official implementation provider — is
+  live, with prices served as operator-editable data rather than code constants,
+  and a delivery gate that proves every advertised platform surface actually
+  builds
+
+### Test Integrity Hardening
+
+- New scanners catch **test files no target compiles** and scan verbs that pass
+  vacuously over zero files; several never-running suites were found and adopted
+  or deleted — the standing lesson is that a green gate must be proven capable of
+  failing
 
 ### PocketGamer Game Engine
 
@@ -116,10 +163,12 @@ Prepare the main workspace for public source access:
 
 Apple Silicon remains the lead platform, and recent work has successfully extended AIStack/Core to Linux and Windows:
 
-- llama.cpp provider hardening
+- llama.cpp provider hardening (now on verified, Metal-enabled artifacts)
 - FoundationNetworking and platform stubs
 - SwiftNIO server path
 - package and build compatibility cleanup
+- finish the Android remote-core client lane (ADR-0082) and verify in-process
+  inference on the Windows/Linux desktop shells
 
 ### Web Fleet Productization
 

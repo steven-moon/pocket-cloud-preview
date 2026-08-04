@@ -15,7 +15,9 @@
 | visionOS | 1+ |
 | Hardware | Apple Silicon (M1 or later) for local MLX inference |
 | Xcode | 16+ |
-| Swift | 6.2 |
+| Swift | 6.3 |
+| Windows / Linux | via **PocketDesktop** (Tauri shell) with llama.cpp inference |
+| Android | in progress — remote-core client of a paired PocketCloud node (ADR-0082) |
 
 **For local AI inference:** Any Apple Silicon Mac. A Mac Mini M4 ($599) or MacBook Neo ($599) is sufficient to run 7B-parameter models at 28-35 tokens/second.
 
@@ -43,14 +45,16 @@ pocket knowledge rag index
 # Query your codebase
 pocket knowledge rag query "how does authentication work"
 
-# Full system verification (112 operations)
+# Full system verification
 pocket system verify --exhaustive --local-first
 
 # Start the persistent MLX daemon
 pocket system local serve --warmup
 
-# Run the canonical build workflow
-pocket build
+# Run the tiered build workflow
+pocket build bronze   # fast iteration: incremental CLI compile
+pocket build silver   # pre-merge: incremental build + full strict tests
+pocket build gold     # release gate: clean → build all → test
 
 # Manage the web fleet
 pocket web status

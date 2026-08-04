@@ -113,7 +113,7 @@ PocketCloud doesn't reject cloud AI. It **prioritizes local AI** and treats clou
 1. **Try local first**: MLX on-device → LM Studio → Ollama → cloud providers
 2. **Score by hardware**: SoC bandwidth, memory fit, model reputation
 3. **Inject context locally**: RAG pipeline runs entirely on-device
-4. **Verify continuously**: 112 operations, 97%+ pass rate
+4. **Verify continuously**: an exhaustive verification suite gates every claim
 5. **Fall back gracefully**: Cloud providers available when local can't serve
 
 The goal isn't to replace OpenAI or Anthropic. It's to ensure you can **still work** when they're not available — and that you're not paying for inference you could be running for free on hardware you already own.

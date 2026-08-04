@@ -62,7 +62,7 @@ PocketCloud development started on **December 5, 2025**. The original public pre
 - **8 AI provider integrations** (MLX, OpenAI, Claude, Gemini, XAI, OpenRouter, LM Studio, Ollama)
 - **Peak day**: 127 commits on January 12, 2026
 - **Peak week**: 345 commits in the week of January 5-11, 2026
-- **Current streak**: 66 consecutive days of commits (and counting)
+- **Streak at the milestone**: 66 consecutive days of commits
 
 This wasn't a prototype or a proof of concept. This is a production system with:
 - Strict Swift 6.3 concurrency across every package
@@ -71,14 +71,14 @@ This wasn't a prototype or a proof of concept. This is a production system with:
 - A self-healing build infrastructure that recovers from stale caches and vendor conflicts
 - A verification system that tests 112 operations across 24 endpoints on every run
 
-### The Mid-2026 State (through July 21, 2026)
+### The Mid-2026 State (through August 3, 2026)
 
-The project did not stop at the March preview. A July 21, 2026 review of the main workspace shows:
+The project did not stop at the March preview. An August 3, 2026 review of the main workspace shows:
 
-- **3,874 commits** since December 5, 2025
-- **795 commits in the last 30 days**
-- **73 Architecture Decision Records**
-- **4,096 tracked Swift files** and roughly **790K lines of Swift**
+- **4,205 commits** since December 5, 2025
+- **892 commits in the last 30 days** — and July 2026 was the busiest month in the project's history (923 commits, ahead of January's peak)
+- **81 Architecture Decision Records**
+- **4,502 tracked Swift files** and roughly **872K lines of Swift**
 - **8 app projects**: PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, and PocketShowcase on Apple platforms, plus **PocketDesktop** — the Tauri shell that carries the same experience to Windows and Linux (the standalone installer was retired — machine setup now lives inside every app)
 - **PocketGamer grew into a real game engine**: voice-native branching adventures, an AI Dungeon Master narrating procedurally generated dungeons, on-device classic board games, endless procedural worlds, device-to-device multiplayer, and a "invent a game" mode
 - an **ecosystem-wide accessibility pass** — VoiceOver labels, audit suites, and regression tests across all seven apps
@@ -99,12 +99,23 @@ The project did not stop at the March preview. A July 21, 2026 review of the mai
 - a **Customer Zero inventory** — 152 GitHub repositories and 50 App Store apps
   captured as durable, regenerable snapshots, so modernization is ranked against
   measured reality rather than memory
+- an **Android lane in progress** (ADR-0082): one shared Tauri shell compiles for
+  all eight apps and installs as a real APK, running as a remote-core client of a
+  paired node
+- a **distributed knowledge mesh** (ADR-0080) with encrypted-by-default snapshot
+  bundles and a single portability filter deciding what may leave a device
+- **fleet server lifecycle tooling** (ADR-0084) — presence monitoring, config
+  audits, and lease/reap server tiers with spend ceilings — built from real
+  production incidents
+- the **first commercial offer built on the platform** (ADR-0081): a fixed-price
+  custom implementation, with prices served as operator-editable data and a
+  delivery gate proving every advertised platform actually builds
 
-That is the current story: the original 101-day sprint proved the engine could exist. The next phase is turning it into a public ecosystem that developers can inspect, run, and extend.
+That is the current story: the original 101-day sprint proved the engine could exist. The next phase is turning it into a public ecosystem that developers can inspect, run, and extend — and a platform real client work ships on.
 
 ### The AI Partnership
 
-711 commits — about 21% — carry a `Co-Authored-By` trailer from Claude. But that number undersells the collaboration. Every major architectural decision was developed in conversation with AI agents. The ADR system, the Kernel/Toolkit package reorganization, the command orchestration framework, the oracle verification suite, the parallel verify execution — all of these emerged from sustained human-AI pair programming sessions.
+1,279 commits — about 30% — carry a `Co-Authored-By` trailer from Claude. But that number undersells the collaboration. Every major architectural decision was developed in conversation with AI agents. The ADR system, the Kernel/Toolkit package reorganization, the command orchestration framework, the oracle verification suite, the parallel verify execution — all of these emerged from sustained human-AI pair programming sessions.
 
 The workflow was: I set the architectural direction and made the judgment calls. The AI agents helped me execute at a velocity that would be impossible alone. Together, we maintained a pace of **21 commits per day for over three months** — not by cutting corners, but by building the right abstractions and letting AI handle the mechanical work while I focused on design.
 
@@ -123,7 +134,8 @@ The commit distribution tells its own story:
 | April 2026 | 187 | Expansion: web fleet control plane, distribution tooling, cross-platform groundwork |
 | May 2026 | 221 | Kernel migration, verify resilience, RAG index performance, app repair waves |
 | June 2026 | 611 | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows support |
-| July 2026 | 202 | PocketGamer game engine, ecosystem accessibility, adaptive layout, ADR-0061/0062 |
+| July 2026 | 923 | The biggest month yet: Swift 6.3, hybrid trust pass, Android lane, knowledge mesh, membership, the commercial offer |
+| August 2026 (first 3 days) | 44 | Fleet server tiers, presence monitoring, unified web telemetry |
 
 The most active day of the week? **Sunday** — 466 commits (21.8% of all commits). The most active hour? **10 PM**. This was a labor of passion, built in the hours between everything else.
 
@@ -150,6 +162,7 @@ PocketCloud is organized as a **Kernel/Toolkit** architecture — deliberately e
 - **PocketHub**: code, prompts, providers, telemetry, and developer diagnostics
 - **PocketGamer**: on-device AI games — voice adventures, procedural dungeons, board games, and a build-your-own engine
 - **PocketShowcase**: living gallery of the UI kit
+- **PocketDesktop**: the Tauri shell that carries the same experience to Windows and Linux
 
 ### The AI Router
 

@@ -37,7 +37,8 @@ If you configure a cloud provider (OpenAI, Claude, Gemini, etc.):
 
 ## API Key Security
 
-PocketCloud uses macOS Keychain for API key storage. Keys are:
+PocketCloud stores API keys in an encrypted credential store, backed by the platform
+Keychain on Apple platforms. Keys are:
 
 - Loaded at runtime from Keychain into process memory
 - Never written to log files
@@ -61,8 +62,9 @@ PocketCloud contains no external telemetry:
 - No "Phone home on startup" behavior
 - All telemetry and logging stays on device
 
-This is verifiable. The `pocket system verify --exhaustive` suite runs 112 operations and
-includes workspace integrity checks. The source code contains no third-party analytics imports.
+This is verifiable. The `pocket system verify --exhaustive` suite runs an exhaustive
+operation suite that includes workspace integrity checks. The source code contains no
+third-party analytics imports.
 
 ---
 

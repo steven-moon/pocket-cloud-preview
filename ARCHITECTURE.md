@@ -13,13 +13,14 @@ PocketCloud is built as a Swift-native local AI platform with three public promi
 ```text
 Blueprint Apps
   PocketMind · PocketLearning · PocketWellness · PocketBusiness
-  PocketHub · PocketGamer · PocketShowcase
+  PocketHub · PocketGamer · PocketShowcase · PocketDesktop (Win/Linux)
         |
         v
 Toolkit Layer
   PocketCloudUI · PocketCloudAIUI · PocketCloudAdminUI
   PocketCloudInfrastructureUI · PocketCloudInfrastructureKit
-  PocketCloudStarterKit · app-specific UI/tooling packages
+  PocketCloudStarterKit · PocketCloudSubscriptions(+UI)
+  app-specific UI/tooling packages
         |
         v
 Kernel Layer
@@ -64,6 +65,13 @@ One component therefore renders on iPhone, iPad, Mac, Windows, and Linux — and
 loaded from inside the `.app` over `file://` on Apple platforms, which is a
 materially stricter environment than a browser or a Tauri webview (ADR-0066).
 
+As of August 2026, one shared Tauri shell serves all eight apps, and an Android
+lane (ADR-0082) builds an installable APK that runs as a **remote-core client**:
+it reaches models running on a paired PocketCloud node rather than running them
+on the phone. A distributed knowledge mesh (ADR-0080) adds encrypted-by-default
+snapshot sync between devices, with a single portability filter deciding what may
+leave a device at all.
+
 ---
 
 ## AI Routing
@@ -105,14 +113,16 @@ The current system includes a complete web platform:
 ```text
 pocket web CLI
   deploy · sync · rollback · backup · jobs · logs · analytics
+  presence · audit-config · server (tiers · lease · reap · spend ceilings)
         |
         v
 web fleet config + SSH/client orchestration
+  (the fleet carries its own SSH identity — ADR-0084)
         |
         v
 self-hosted sites
   @pocketcloud/web-lib
-  clean URLs · AI chat · contact funnel · admin
+  clean URLs · AI chat · contact funnel · admin · membership
   presence · backups · bot traffic · SEO Pilot
         |
         v
@@ -120,7 +130,7 @@ PocketBusiness
   native iPhone/Mac control center
 ```
 
-The web fleet is designed to replace a pile of hosted dashboards with one owned control plane.
+The web fleet is designed to replace a pile of hosted dashboards with one owned control plane. Fleet server lifecycle management (ADR-0084) adds provider-API server tiers with lease/reap semantics and rolling spend ceilings, and `pocket web presence` treats a site that stops answering as a finding rather than a blank row. The shared web library also carries the account-based membership bridge (register → subscribe → entitlement), driven by a Swift-generated payment projection so web and native stay on one catalog (ADR-0065).
 
 ---
 

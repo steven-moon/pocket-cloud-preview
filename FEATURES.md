@@ -1,6 +1,6 @@
 # PocketCloud Features
 
-This file summarizes the public feature story as of the July 21, 2026 git review of the main workspace.
+This file summarizes the public feature story as of the August 3, 2026 git review of the main workspace.
 
 The source repo is still private, so this document favors verifiable engineering claims over marketing breadth. Where the website says what PocketCloud is, this file says what has been implemented or actively hardened.
 
@@ -42,9 +42,13 @@ pocket web         # deploy, sync, rollback, backup, analytics, jobs
 
 Recent changes added or hardened:
 
-- top-level `pocket build`
-- `pocket quality platform-check`
+- top-level `pocket build` with bronze/silver/gold tiers
+- `pocket quality platform-check` and `pocket quality scan` deterministic scanners
 - web fleet deploy/sync/rollback/backup/jobs/logs/analytics commands
+- `pocket web presence` and scheduled fleet config audits
+- `pocket web server` lifecycle verbs (tiers, lease, reap, spend ceilings — ADR-0084)
+- `pocket build android` / `pocket dev android` mirroring the Apple lane (ADR-0082)
+- `pocket task preset` scheduled-automation presets (ADR-0078) on a persistent orchestrator host
 - App Store storefront generation, screenshot capture, evaluation, and push commands
 - App Store Connect read commands
 - verify run history and observability surfaces
@@ -68,7 +72,10 @@ The public site now frames the app suite as **Blueprint Apps**. The source works
 
 Every Apple app also embeds a hybrid web surface built from the same
 `@pocketcloud/web-lib` components PocketDesktop and the web fleet mount, so one
-screen renders across iPhone, iPad, Mac, Windows, and Linux.
+screen renders across iPhone, iPad, Mac, Windows, and Linux. As of August 2026 a
+single shared Tauri shell serves all eight apps, and an Android lane (ADR-0082)
+builds a real, installable APK that runs as a remote-core client of a paired
+PocketCloud node.
 
 The mid-2026 history includes the rename from `PocketCloudHub` to `PocketHub` and `PocketGameEngine` to `PocketGamer`, public TestFlight framing, screenshot automation, refreshed app metadata, an App Feature Catalog SSOT (ADR-0061), and the retirement of the standalone installer (machine setup now lives inside every app). All seven apps received an accessibility audit pass — VoiceOver labels, audit suites, and regression tests — plus a SwiftUI adaptive layout policy for iPhone/iPad/Mac.
 
@@ -87,12 +94,22 @@ Implemented or recently hardened:
 - local admin control plane
 - multi-user JWT auth with fail-closed APIs
 - lead capture and contact funnel
-- real-time presence and operator messaging
+- real-time presence and operator messaging, plus fleet-wide presence
+  monitoring (`pocket web presence`) that treats a silent site as a finding,
+  not a blank row
 - APNs-backed push notifications for fleet events
-- bot and AI-agent traffic intelligence
+- bot and AI-agent traffic intelligence, with bot writes isolated from the
+  transactional funnel store
 - `/robots.txt` and `/llms.txt` AI-crawl readiness
 - data lifecycle services for rollup, archive, prune, eviction, and vacuum
 - local mirror store, job runner, and SEO Pilot services
+- fleet server lifecycle tooling (ADR-0084): tier inventory, safe prod clones,
+  lease/reap with rolling spend ceilings, and scheduled config audits
+- account-based membership: register → subscribe → entitlement through the
+  shared web library, verified end-to-end against the Stripe sandbox
+- operator-editable commercial offers: prices are database rows edited from the
+  admin surface, with the total computed from instalments so a wrong total is
+  unrepresentable
 
 This is the largest difference from the original March preview docs.
 
@@ -127,6 +144,8 @@ Recent work includes:
 - process terminal and terminal manager hardening
 - local log viewers
 - build failure classification and remediation signals
+- per-app activation analytics flowing into the owned, self-hosted analytics pipeline
+- unified web-to-hub telemetry mirroring the Swift logging vocabulary
 
 The public site calls this "Unified Intelligence & Observability." In code, recent work renamed the generic provider foundation to `PCUnifiedProvider` to avoid collisions.
 

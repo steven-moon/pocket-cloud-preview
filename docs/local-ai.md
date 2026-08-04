@@ -50,7 +50,7 @@ AIRouter
 
 ## Supported Models
 
-PocketCloud supports 33+ quantized models in the MLX format, including:
+PocketCloud supports a growing registry of quantized models in the MLX format (see the live list with `pocket system local list`), including:
 
 | Family | Examples |
 |---|---|
