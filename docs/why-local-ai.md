@@ -48,7 +48,7 @@ This isn't hypothetical. It's the same lesson the industry learned with cloud ho
 
 Every API call sends your data to someone else's servers. For many use cases — code analysis, personal chat, health data, financial analysis — that's an unacceptable trade-off.
 
-PocketCloud's privacy model: **zero telemetry**. No analytics. No crash reporting. No phone-home. Your data stays on your device. Your API keys stay in the macOS Keychain.
+PocketCloud's privacy model: **no third-party telemetry**. No vendor analytics SDKs. No third-party crash reporting. No phone-home. The only analytics layer is first-party, reports to your own control plane, and is off until you opt in. Your data stays on your device. Your API keys stay in the macOS Keychain.
 
 ### Cost Trajectory
 

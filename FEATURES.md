@@ -73,9 +73,10 @@ The public site now frames the app suite as **Blueprint Apps**. The source works
 Every Apple app also embeds a hybrid web surface built from the same
 `@pocketcloud/web-lib` components PocketDesktop and the web fleet mount, so one
 screen renders across iPhone, iPad, Mac, Windows, and Linux. As of August 2026 a
-single shared Tauri shell serves all eight apps, and an Android lane (ADR-0082)
-builds a real, installable APK that runs as a remote-core client of a paired
-PocketCloud node.
+single shared Tauri shell serves all eight apps, and the Android lane (ADR-0082)
+shipped its packaging milestone: `pocket build android` produces both APK and AAB,
+and all eight apps build, install, and launch on Android emulators as remote-core
+clients of a paired PocketCloud node.
 
 The mid-2026 history includes the rename from `PocketCloudHub` to `PocketHub` and `PocketGameEngine` to `PocketGamer`, public TestFlight framing, screenshot automation, refreshed app metadata, an App Feature Catalog SSOT (ADR-0061), and the retirement of the standalone installer (machine setup now lives inside every app). All seven apps received an accessibility audit pass — VoiceOver labels, audit suites, and regression tests — plus a SwiftUI adaptive layout policy for iPhone/iPad/Mac.
 

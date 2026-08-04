@@ -44,7 +44,7 @@ The original March preview reported 2,140 commits in 101 days. That milestone re
 
 ## Commits by Week
 
-> The week/day/hour breakdowns below profile the initial build window (Dec 2025 – Mar 2026), the period with the detailed commit analysis. The headline totals above are current through July 21, 2026.
+> The week/day/hour breakdowns below profile the initial build window (Dec 2025 – Mar 2026), the period with the detailed commit analysis. The headline totals above are current through August 3, 2026.
 
 | Week | Dates | Commits |
 |---|---|---|
@@ -231,6 +231,6 @@ A solo developer with 26+ years of experience, working with AI agents, produced 
 - 18 tracked architecture decisions
 - All at an average pace of 21 commits per day, 7 days a week
 
-The June continuation shows the next phase: productizing the ecosystem, hardening distribution, and preparing the source workspace for public access.
+The 2026 continuation shows the next phase: productizing the ecosystem, hardening distribution, and preparing the source workspace for public access.
 
 **The future of software development is a human with deep experience directing AI agents at problems that matter.**

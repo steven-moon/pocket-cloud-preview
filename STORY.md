@@ -99,9 +99,10 @@ The project did not stop at the March preview. An August 3, 2026 review of the m
 - a **Customer Zero inventory** — 152 GitHub repositories and 50 App Store apps
   captured as durable, regenerable snapshots, so modernization is ranked against
   measured reality rather than memory
-- an **Android lane in progress** (ADR-0082): one shared Tauri shell compiles for
-  all eight apps and installs as a real APK, running as a remote-core client of a
-  paired node
+- the **Android packaging milestone shipped** (ADR-0082, 2026-08-02):
+  `pocket build android` produces both APK and AAB, and all eight apps build,
+  install, and launch on Android emulators as remote-core clients of a paired
+  node — store distribution is the remaining step
 - a **distributed knowledge mesh** (ADR-0080) with encrypted-by-default snapshot
   bundles and a single portability filter deciding what may leave a device
 - **fleet server lifecycle tooling** (ADR-0084) — presence monitoring, config
@@ -130,10 +131,10 @@ The commit distribution tells its own story:
 | December 2025 | 837 | Foundation: Kernel/Toolkit architecture, CLI framework, MLX integration, MCP server |
 | January 2026 | 860 | Peak velocity: Command orchestration, provider integrations, app development, RAG pipeline |
 | February 2026 | 310 | Hardening: Verify system, oracle suite, model selection, file organization standards |
-| March 2026 | 133 | Convergence: App integration (ADR-0017), Apple Intelligence, open-source prep |
-| April 2026 | 187 | Expansion: web fleet control plane, distribution tooling, cross-platform groundwork |
-| May 2026 | 221 | Kernel migration, verify resilience, RAG index performance, app repair waves |
-| June 2026 | 611 | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows support |
+| March 2026 | 206 | Convergence: App integration (ADR-0017), Apple Intelligence, open-source prep |
+| April 2026 | 188 | Expansion: web fleet control plane, distribution tooling, cross-platform groundwork |
+| May 2026 | 226 | Kernel migration, verify resilience, RAG index performance, app repair waves |
+| June 2026 | 610 | Blueprint Apps, App Store storefront automation, ASC tooling, Linux/Windows support |
 | July 2026 | 923 | The biggest month yet: Swift 6.3, hybrid trust pass, Android lane, knowledge mesh, membership, the commercial offer |
 | August 2026 (first 3 days) | 44 | Fleet server tiers, presence monitoring, unified web telemetry |
 
@@ -194,14 +195,18 @@ That exact number is no longer presented as the latest run. The current value is
 - Records verify run history and surfaces it in observability views
 - Self-heals common RAG and daemon bootstrap issues
 
-### Zero Telemetry
+### No Third-Party Telemetry
 
-PocketCloud collects **nothing**:
-- No analytics SDK
-- No crash reporting
-- No usage telemetry
-- No A/B testing
-- No phone-home
+PocketCloud ships with **no third-party tracking of any kind**:
+- No third-party analytics SDK (no Firebase, Amplitude, Mixpanel)
+- No third-party crash reporting (no Sentry, Crashlytics)
+- No ad networks, no fingerprinting
+- No phone-home on startup
+
+There is an optional, first-party analytics layer (installs, sessions, activation, and
+A/B experiment exposures reported to your own PocketCloud control plane) — it is **off
+until the user affirmatively opts in**, and the data goes to infrastructure you run,
+not to a vendor.
 
 Your data stays on your device. Your API keys live in the macOS Keychain. Your chat history never leaves your machine. This isn't a feature — it's a foundation.
 

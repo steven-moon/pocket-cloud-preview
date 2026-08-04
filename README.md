@@ -47,7 +47,7 @@ Reviewed from the main workspace git history through **August 3, 2026**:
 | Last 30 days | 892 commits across apps, AIStack, GameStack, Core, web fleet, distribution, hybrid shells, knowledge mesh, and verification — July 2026 was the busiest month in the project's history (923 commits, ahead of January's 860) |
 | Swift code | 4,502 tracked Swift files, roughly 872K lines |
 | ADRs | 81 architecture decision records (through ADR-0084) |
-| App projects | 8 — seven Apple apps (PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase) plus **PocketDesktop**, the Tauri shell that is the Windows and Linux surface. An **Android lane is in progress**: one Tauri shell now compiles for all eight apps and installs as a real APK, running as a remote-core client of a paired node (ADR-0082) |
+| App projects | 8 — seven Apple apps (PocketMind, PocketLearning, PocketWellness, PocketBusiness, PocketHub, PocketGamer, PocketShowcase) plus **PocketDesktop**, the Tauri shell that is the Windows and Linux surface. The **Android packaging milestone shipped 2026-08-02**: `pocket build android` produces both APK and AAB, and all eight apps build, install, and launch on Android emulators as remote-core clients of a paired node (ADR-0082); store distribution is the remaining step |
 | Build workflow | Tiered composites — `pocket build bronze` (fast iteration), `silver` (pre-merge), `gold` (release: clean → all → test) — with strict-by-default tests where a vacuous run fails loudly |
 | Verification culture | `pocket system verify --exhaustive` remains the core confidence gate, joined by deterministic scanners (`pocket quality scan paths\|flywheel\|aml\|tests`) in the pre-commit hook and the build — including a scanner that hunts **tests no target compiles**, after an audit proved green gates can hide suites that never run |
 | Recent focus | Cross-platform trust (a fork had silently disabled Metal GPU inference — caught and replaced with verified artifacts), the Android/Windows lanes, a distributed knowledge mesh with encrypted snapshot sync (ADR-0080), fleet server lifecycle tooling (ADR-0084), and the first commercial implementation offer built on the platform (ADR-0081) |
@@ -68,7 +68,7 @@ The older "101 days" story is still true as an early milestone. It is no longer 
 | RAG and knowledge context | Working | local index/query, verification bootstrap/self-healing |
 | Blueprint Apps | Public beta path | TestFlight-oriented app pages and screenshot automation |
 | Web fleet | Working | Swift-native deploy/sync/rollback/backup, admin control plane, fleet presence monitoring, config audits, server lifecycle tiers (lease/reap/spend ceilings), local mirror, SEO Pilot |
-| Membership | Web loop verified in sandbox | account-based membership with a single supporter tier, Stripe checkout → webhook → entitlement wired through the shared web library; Apple in-app purchase submission is the remaining live step |
+| Membership | Web loop verified in sandbox | account-based membership with a single supporter tier, Stripe checkout → webhook → entitlement wired through the shared web library; the Apple side — server entitlement unification, a PocketMind pilot, then the seven-app rollout and App Review submission — is still in progress |
 | Knowledge mesh | Tier 1 working | local entity/knowledge processing with encrypted-by-default snapshot bundles and LAN sync groundwork (ADR-0080) |
 | Observability | Working | local logs, verify run history, settings observability hubs, unified web-to-hub telemetry |
 | App Store automation | Working | ADR-0048 metadata SSOT, screenshot capture/eval/push, ASC read commands |
@@ -94,10 +94,11 @@ PocketCloud is more than one app. The current ecosystem is organized around blue
 
 Every Apple app also ships a hybrid web surface built from the same
 `@pocketcloud/web-lib` components that PocketDesktop and the web fleet mount, so a
-screen written once renders on iPhone, iPad, Mac, Windows, and Linux. An **Android
-lane is in progress** (ADR-0082): a single shared Tauri shell now compiles for all
-eight apps and installs as a real APK, running at launch as a client of models on a
-paired PocketCloud node rather than on-device.
+screen written once renders on iPhone, iPad, Mac, Windows, and Linux. The **Android
+packaging milestone shipped** (ADR-0082, 2026-08-02): `pocket build android`
+produces both APK and AAB, and all eight apps build, install, and launch on Android
+emulators, running at launch as clients of models on a paired PocketCloud node
+rather than on-device. Store distribution is the remaining step.
 
 These map to the public site’s **Blueprint Apps** section and the App Store metadata automation in the main repo.
 
@@ -109,7 +110,7 @@ These map to the public site’s **Blueprint Apps** section and the App Store me
 Blueprint Apps
   PocketMind · PocketLearning · PocketWellness · PocketBusiness
   PocketHub · PocketGamer · PocketShowcase · PocketDesktop (Win/Linux)
-  Android remote-core client (in progress, ADR-0082)
+  Android remote-core client (packaging shipped, ADR-0082)
         |
         v
 Toolkit Layer
@@ -118,7 +119,8 @@ Toolkit Layer
         |
         v
 Kernel Layer
-  AIStack · Core · MCP · FileKit · Privacy · Logger · Platform · Runtime
+  AIStack · Core · GameStack · AML · AMLFormat · Flywheel · DevTools · HardwareDiagnostics
+  (Core modules include MCP · FileKit · Privacy · Logger)
         |
         v
 Inference + Operations

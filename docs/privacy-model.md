@@ -53,14 +53,18 @@ Keychain with appropriate access controls.
 
 ## Zero External Telemetry
 
-PocketCloud contains no external telemetry:
+PocketCloud contains no third-party telemetry:
 
 - No External Analytics SDK (no Firebase, Amplitude, Mixpanel, etc.)
 - No External Crash reporting service (no Sentry, Crashlytics, etc.)
-- No External Usage telemetry (no "what features are used" reporting)
-- No A/B testing infrastructure
+- No third-party usage telemetry (no vendor learns "what features are used")
 - No "Phone home on startup" behavior
-- All telemetry and logging stays on device
+- Telemetry and logging stay on device by default
+
+There is one first-party exception, and it is opt-in: an optional analytics layer
+(installs, sessions, activation, and A/B experiment exposures) that reports to **your
+own PocketCloud control plane** — infrastructure you run — and is **off until the user
+affirmatively opts in**. No data ever goes to a third-party vendor.
 
 This is verifiable. The `pocket system verify --exhaustive` suite runs an exhaustive
 operation suite that includes workspace integrity checks. The source code contains no

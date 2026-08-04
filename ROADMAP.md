@@ -13,10 +13,11 @@ This roadmap reflects the August 3, 2026 state review from the main workspace an
   stayed green (replaced with verified official artifacts), a test verb reported
   success over failed runs, and desktop "Online" indicators are now facts the
   core states rather than timers
-- One shared Tauri shell now serves all eight apps; an **Android build lane**
-  (`pocket build android`) produces a real, installable APK that runs as a
-  remote-core client of a paired node — on-device Android inference is
-  explicitly out of launch scope
+- One shared Tauri shell now serves all eight apps; the **Android packaging
+  milestone shipped 2026-08-02** — `pocket build android` produces both APK and
+  AAB, and all eight apps build, install, and launch on Android emulators as
+  remote-core clients of a paired node. On-device Android inference is
+  explicitly out of launch scope; store distribution is the remaining step
 - Windows parity work made the quality gates, test runner, and build bundles run
   on Windows itself
 
@@ -116,7 +117,8 @@ This roadmap reflects the August 3, 2026 state review from the main workspace an
 - canonical web membership bridge in `web-lib` (MembershipController + Stripe
   service + subscriber accounts), driven by a Swift-generated payment projection —
   the full web loop (checkout → webhook → entitlement) is sandbox-verified
-- Apple in-app purchase submission is the remaining live-launch step
+- the Apple side is still in progress: server entitlement unification, a
+  PocketMind pilot, then the seven-app rollout and App Review submission
 
 ### Observability and Settings
 
@@ -167,8 +169,9 @@ Apple Silicon remains the lead platform, and recent work has successfully extend
 - FoundationNetworking and platform stubs
 - SwiftNIO server path
 - package and build compatibility cleanup
-- finish the Android remote-core client lane (ADR-0082) and verify in-process
-  inference on the Windows/Linux desktop shells
+- take the Android remote-core lane (ADR-0082, packaging shipped) through store
+  distribution, and verify in-process inference on the Windows/Linux desktop
+  shells on real non-Apple hosts
 
 ### Web Fleet Productization
 

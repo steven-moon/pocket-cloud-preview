@@ -65,10 +65,11 @@ One component therefore renders on iPhone, iPad, Mac, Windows, and Linux — and
 loaded from inside the `.app` over `file://` on Apple platforms, which is a
 materially stricter environment than a browser or a Tauri webview (ADR-0066).
 
-As of August 2026, one shared Tauri shell serves all eight apps, and an Android
-lane (ADR-0082) builds an installable APK that runs as a **remote-core client**:
-it reaches models running on a paired PocketCloud node rather than running them
-on the phone. A distributed knowledge mesh (ADR-0080) adds encrypted-by-default
+As of August 2026, one shared Tauri shell serves all eight apps, and the Android
+lane (ADR-0082) has shipped its packaging milestone: `pocket build android`
+produces both APK and AAB, and all eight apps build, install, and launch on
+Android emulators as **remote-core clients** — they reach models running on a
+paired PocketCloud node rather than running them on the phone. A distributed knowledge mesh (ADR-0080) adds encrypted-by-default
 snapshot sync between devices, with a single portability filter deciding what may
 leave a device at all.
 
