@@ -170,3 +170,19 @@ Star this repository to follow the open-source rollout.
 Questions, corrections, and early community feedback are welcome through GitHub issues.
 
 **Author:** [Steven Moon](https://www.linkedin.com/in/stevenmoon/) · [Clever Coding](https://clevercoding.com/about) · [@stevenmoon](https://x.com/stevenmoon)
+
+<!-- pocketcloud:docs-index:start -->
+## PocketCloud docs (authoritative)
+
+- **[Documentation/Runbook/index.md](Documentation/Runbook/index.md)** — build, verify, git sync, hooks
+- **[Documentation/Standards/](Documentation/Standards/)** — day-one copies of Swift 6.3 + Unified Providers Flywheel; query the rest via `pocket knowledge rag query --namespace docs.standards`
+- **[Documentation/ADRs/](Documentation/ADRs/)** — decisions *about this repo*
+
+```bash
+pocket ops git sync --preview          # from this repo root (or pass an absolute path)
+pocket ops git-hook status
+pocket knowledge rag query --namespace docs.standards "<question>"
+```
+
+Role: **other** · Platform template: **other-non-code**
+<!-- pocketcloud:docs-index:end -->
