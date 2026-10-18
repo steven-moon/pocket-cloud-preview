@@ -175,7 +175,7 @@ Questions, corrections, and early community feedback are welcome through GitHub 
 ## PocketCloud docs (authoritative)
 
 - **[Documentation/Runbook/index.md](Documentation/Runbook/index.md)** — build, verify, git sync, hooks
-- **[Documentation/Standards/](Documentation/Standards/)** — day-one copies of Swift 6.3 + Unified Providers Flywheel; query the rest via `pocket knowledge rag query --namespace docs.standards`
+- **[Documentation/Standards/](Documentation/Standards/)** — day-one copies of Swift 6 + Unified Providers Flywheel; query the rest via `pocket knowledge rag query --namespace docs.standards`
 - **[Documentation/ADRs/](Documentation/ADRs/)** — decisions *about this repo*
 
 ```bash
