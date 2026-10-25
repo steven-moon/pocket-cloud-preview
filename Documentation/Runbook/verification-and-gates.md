@@ -6,8 +6,8 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "verification", "git-hooks", "pre-commit", "commit-msg", "git-sync"]
 owners: ["@steven"]
-version: "1.12.0"
-last_updated: "2026-10-07T00:00:00Z"
+version: "1.13.1"
+last_updated: "2026-10-19T00:00:00Z"
 last_reviewed: "2026-10-07"
 is_archived: false
 ---
@@ -36,7 +36,64 @@ lease never frees inside the wait, that endpoint is reported **blocked** — `su
 false`, with a note saying the endpoint did not run — never skipped, because a skip
 reads as green.
 
+### An endpoint that never finishes
+
+Every operation is bounded by its timeout and by the run budget (`--run-budget`,
+45 min for an exhaustive run with Apple), the intercepted runners included (Story,
+MCP smoke, Web Fleet, Brand). An operation that does not return in time is reported
+as `Timed out after Ns: the <tool>.<op> runner did not return`, or as a clean
+budget skip, and the run ends with its summary. That bound is ADR-0010 T24. Before
+it, `story.render` sat 88 minutes past both bounds under `budget reached — finishing
+up`. If a run is quiet, look at its children before you Ctrl-C, because Ctrl-C loses
+the summary:
+
+```bash
+ps -axo pid,ppid,pgid,tpgid,stat,command | grep -v grep | grep -E "<verify pid>"
+```
+
+`T` in `stat` means a child has **stopped**: it is not hung and it is not slow.
+A child whose `pgid` is not the terminal's `tpgid` and whose fd 0 is the tty
+(`lsof -p <pid>`) is a background job that touched the terminal. It got SIGTTOU or
+SIGTTIN and will never exit on its own. That is a defect in whatever spawned it,
+which must give the child the null device as stdin
+([Swift 6 standard](../Standards/swift-6-implementation-standard.md#concurrency-and-data-race-safety), rule 10).
+`kill -TERM <pid>; kill -CONT <pid>` ends it, and the run then records that
+operation as failed and writes its summary.
+
+### A UI "permission missing" warning that granting does not fix
+
+macOS judges `pocket`, and everything it spawns, as the app that ran it: your
+terminal, IDE or agent. Grant Screen & System Audio Recording and Accessibility
+to that app, then reopen it. On macOS 27 the Accessibility pane is titled
+**Device Control and Data Access**. Open it directly with
+`open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`.
+Under Claude Code the responsible app is the lowercase `claude` row, not the
+capital `Claude` desktop app. The `pocket` and PocketHub rows in the pane are not consulted
+for a command run from a terminal. The `pocket` row also goes stale on every
+rebuild, because an ad-hoc re-sign changes its identity.
+
+If the warning persists after that, ask TCC before granting anything again
+(ADR-0010 T26):
+
+```bash
+/usr/bin/log show --last 1h --predicate 'subsystem == "com.apple.TCC" AND eventMessage CONTAINS "AUTHREQ_RESULT"' --style compact | tail
+/usr/bin/log show --last 1h --predicate 'sender == "Sandbox" AND (eventMessage CONTAINS "screencapture" OR eventMessage CONTAINS "osascript")' --style compact | tail
+```
+
+`authValue=2` means TCC allowed the request, and the problem is downstream. A
+`Sandbox: … deny(1)` line names it. That pair is how the App Store PocketHub,
+used as verify's helper until T26, produced months of false permission warnings.
+A sandboxed helper is now never used for UI automation.
+
 ### Reading Test Evidence
+
+For a targeted distributed-package test, select the package explicitly from the workspace root:
+
+```bash
+pocket quality test SearchResultCacheTests --package-path Packages/Kernel/AIStack
+```
+
+The root package is the SDK; a filter for an AIStack test does not select AIStack automatically. The quality command retains the shared build-root lease and rejects output without a positive XCTest or Swift Testing test count. Package selection also survives scheduled command serialization.
 
 Every `pocket build test` run persists the full `swift test` transcript
 (ADR-0082 T14):
@@ -140,8 +197,10 @@ whole tree, explicit file args = judge exactly those files.
 | ™️ brands | `pocket quality scan brands` | `--skip-brand-scan` |
 | 🗣️ client-terminology | `pocket quality scan client-terminology` | `--skip-client-terminology-scan` |
 | 🌀 streams | `pocket quality scan streams` | `--skip-stream-scan` |
+| 🚰 pipes | `pocket quality scan pipes` | `--skip-pipe-scan` |
 | 🚩 cli-flags | *(gate only)* | `--skip-cli-flag-scan` |
 | 📦 imports | *(gate only)* | `--skip-import-scan` |
+| 🧭 orphans | `pocket quality scan orphans` | `--skip-orphan-scan` |
 | 💥 blast-radius | `pocket knowledge graph impact <module>` | `--skip-impact-scan` |
 | 📜 adr-decision | *(gate only)* | `--skip-adr-decision-scan` |
 | 📦 offer | `pocket quality offer-gate` | `--skip-offer-gate` |
@@ -167,7 +226,8 @@ pocket ops git sync --preview              # CWD
 pocket ops git sync --preview /path/to/repo
 pocket ops git sync --preview --json
 pocket ops git sync --push
-pocket ops git status [--json] [<path>]
+pocket ops git sync --push --only <file-or-dir>   # only your own paths; the rest stays uncommitted
+pocket ops git status [--json] [--only <path>…] [<path>]
 ```
 
 Clustering (tags → task ledgers → subsystem matrix → nested repos → submodules →
