@@ -6,9 +6,9 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "apple", "ios", "macos", "tvos", "iphone-duo", "storefront", "testflight", "ship"]
 owners: ["@steven"]
-version: "1.12.0"
-last_updated: "2026-10-07T00:00:00Z"
-last_reviewed: "2026-10-07"
+version: "1.12.1"
+last_updated: "2026-10-25T00:00:00Z"
+last_reviewed: "2026-10-25"
 is_archived: false
 ---
 # 2. Apple Apps, Simulators, Storefront & Ship
@@ -107,7 +107,7 @@ pocket dev apple simulator --boot --name "iPhone 16 Pro"
 
 Apple's checklist: [Prepare for iPhone Duo](https://developer.apple.com/iphone-duo/prepare/).
 Policy (anti-patterns + shell rules) lives in the
-[Swift 6.3 Implementation Standard — Adaptive Layout §10](../Standards/swift-6-3-implementation-standard.md).
+[Swift 6 Implementation Standard — Adaptive Layout §10](../Standards/swift-6-implementation-standard.md).
 
 **What this tree already does**
 
@@ -172,6 +172,15 @@ pocket dev apple build-app PocketMind --simulator --scene knowledge --screenshot
 Alpha stripping (32-bit RGBA → 24-bit RGB, which App Store Connect requires) is
 **not** a verb you call — `AppStoreScreenshotService` applies it to every capture
 on the way out. There is no `storefront strip-alpha` subcommand.
+
+Each family's capture also leaves **`capture-record.json`** beside its shots
+(ADR-0162 T06): the data the screens showed (`demo` when the capture seeded demo
+content, absent otherwise), the captured app's version and build, and every
+shot's SHA-256. The Marketing Graph turns a screenshot into a `media-asset` only
+while its file still hashes to that record, so a hand-edited or pre-T06 shot is
+reported by `pocket knowledge graph build --domain marketing` as having no
+matching capture record — re-capture to record it. The upload reads only images,
+so the record never reaches App Store Connect.
 
 Screenshot manifest scenes can specify `formats` (for example `["appletv"]` or
 `["iphone", "ipad", "mac"]`). Filtering happens before the screenshot budget,
@@ -277,7 +286,7 @@ one fetch or 60 s — and a `✅ Ticket redeemed` line. Switching users is
 relaunching with another profile; there is no in-app picker. Profiles are
 tenant-scoped through `PocketCloudTenant.credentialKey`, so a client
 project's profiles resolve only from that client's checkout (or `--tenant`).
-Reference: [`pocket auth`](../Reference/PocketCLI/auth/README.md).
+Reference: `pocket auth` (`Documentation/Reference/PocketCLI/auth/README.md`).
 
 ---
 
@@ -347,6 +356,47 @@ pocket dev apple ship --scheme PocketMind-iOS                 # archive → expo
 platform's* next version and build number — iOS and macOS are independent trains
 sharing a bundle id, which is why versions are never pinned in `project.yml`.
 
+**Every archive is audited for secrets before anything leaves the machine**
+(ADR-0065 T12). Straight after the archive stage — `--archive-only` included,
+since Xcode's Organizer can upload an archive on its own — `ship` scans the
+archive's `Products/Applications` byte for byte. It looks for files that are
+secrets by kind (`.env`, `.p8`, `.p12`, keystores, SSH keys), secret key
+shapes (Stripe secret, restricted and webhook keys, PEM private keys with a
+body, GitHub, AWS, AI-provider, Hugging Face, Slack, Resend), and the exact
+secrets configured on this machine, which it reports by key name only.
+Publishable values are expected and pass: product IDs, URLs, a Stripe
+`pk_live_` key. A finding, or an archive with no apps to audit, stops the
+pipeline with nothing exported or uploaded; remove the secret from the target
+and rotate it. The same scan runs by hand on any build:
+```bash
+pocket quality scan bundle ~/Applications/PocketMind.app      # or an .xcarchive / .appex
+pocket quality scan bundle build/PocketMind.xcarchive --json
+```
+
+**A cold package cache is slow, not stuck** (ADR-0144 T10). The archive resolves
+packages before it compiles, into the project's own SourcePackages bucket. A
+project's first archive, and the first after its bucket is cleaned, clones every
+package. That includes `mlx-swift`'s `mlx` submodule: 70 MiB and 58,843 deltas,
+50 s on a quiet machine and minutes at a load average of 200. The preflight keeps
+running while it visibly advances: output, bytes arriving under SourcePackages, or
+CPU in its own process tree. It ends in one of two ways, and the error names which:
+
+- **stalled**: nothing changed for 180 s. CPU alone can stretch this to 540 s. The
+  cause is a network or a lock, and a longer wait will not help.
+- **ceiling**: still advancing at 1800 s. The machine or the link is slow. Raise the
+  ceiling and rerun. Repositories that finished cloning are kept, so the next run
+  starts further along.
+
+Both errors print the SourcePackages state at the start and at the end, plus every
+submodule not yet fetched. A long resolve prints a `⏳ Resolving packages …` line
+every 30 s, and `--dry-run` prints both budgets.
+```bash
+pocket dev apple ship --scheme PocketMind-iOS --archive-only --archive-timeout 3600   # slow link: raise the ceiling
+```
+`--archive-timeout` also puts a wall clock on the archive build, which has none
+by default. The flag is not called `--timeout` because the root `pocket` command
+claims that name, so a leaf flag spelled the same would be accepted and ignored.
+
 If development provisioning blocks a distribution archive because no physical
 device is registered (for example, a first tvOS upload), use:
 ```bash
@@ -355,6 +405,13 @@ pocket dev apple ship --scheme PocketBusiness-tvOS --archive-only --defer-signin
 This leaves archive signing to the distribution export; it does not disable
 export signing. Export with `pocket dev apple export`, then inspect the exported
 `DistributionSummary.plist` before upload.
+
+The shared iOS export plist uses automatic signing without a bundle-specific
+provisioning-profile map. This lets each sample app resolve its own App Store
+profile. PocketGamer iOS build 31 verified this path on 2026-10-22 (`A14E1A95`):
+the exported summary names its own bundle/profile, the intended team, production
+entitlements and a cloud-managed Apple Distribution certificate. Keep a manual
+profile selection in an explicitly supplied app-specific export plist.
 
 For headless export with an existing file-based App Store Connect key, set
 `APP_STORE_CONNECT_KEY_PATH`, `APP_STORE_CONNECT_KEY_ID`, and
