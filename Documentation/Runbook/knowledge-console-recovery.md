@@ -6,9 +6,9 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "knowledge", "rag", "secondbrain", "console", "disk-space", "recovery"]
 owners: ["@steven"]
-version: "1.11.0"
-last_updated: "2026-10-04T00:00:00Z"
-last_reviewed: "2026-10-04"
+version: "1.11.1"
+last_updated: "2026-10-27T00:00:00Z"
+last_reviewed: "2026-10-27"
 is_archived: false
 ---
 # 6. Knowledge Systems, Console Contracts & Recovery
@@ -28,6 +28,14 @@ pocket knowledge rag query --namespace docs.adr "<question>"
 non-existent namespace returns nothing and looks exactly like a broken index —
 and on a fresh clone the index does not exist at all (`0 document(s)`), because
 it is generated, not tracked.
+
+**On a Mac, the apps read a different copy.** PocketBusiness's Knowledge tab reads
+the App Group's store; a bare `pocket` writes `~/knowledge-engine/…` and cannot
+publish into the group (ADR-0110 D2). So `rag index` does not change what the tab
+shows, and the tab says which root it reads. Its **Check Again** only re-reads
+that store. No app re-indexes the shared store from Settings any more: the button
+indexed the app's working directory, which is `/` (ADR-0110 T12). PocketLearning
+still indexes its own courses from its search view.
 
 Routing, with no `--namespace` (ADR-0076 §4):
 
@@ -67,9 +75,51 @@ pocket knowledge secondbrain sync-gmail --account <you@domain> --authorize
 
 # 3. Thereafter, incremental. Resumes from its own checkpoint.
 pocket knowledge secondbrain sync-gmail --account <you@domain>
+
+# 4. Repair/rebuild specific complete threads without clearing the checkpoint.
+pocket knowledge secondbrain sync-gmail --account <you@domain> --repair-thread <threadId>
 ```
 
 Consent binds an ephemeral loopback port, which only a **Desktop app** client may use.
+
+---
+
+## GitHub Repositories, the Record of What Was Built (ADR-0148 T34)
+
+The business history (Summa's companies, projects and time) says who the clients
+were; the repositories say what was built for them and when. Both land in the
+same archive ledger and history store, which PocketBusiness's Archives tab and
+Business History card read:
+
+```bash
+pocket tenant                                   # whose repositories: sourceControl.owner
+pocket business archive repos                   # that account, else the signed-in gh account
+pocket business archive repos --owner <org>     # another account or organisation
+pocket business archive repos --skip-commits    # names and dates only; no commit history
+pocket task preset install github-repos-daily   # daily at 05:15, tracked in `pocket system sources`
+```
+
+It reads through the already-signed-in GitHub CLI (`gh auth status`), metadata
+only: name, description, homepage, language, visibility, creation, and first and
+last commit with the commit count, one call or two per repository. No code is
+copied. A repository migrated to GitHub is younger there than its history, which
+is why the first commit, not the creation date, says when work began.
+
+The inventory is written to `~/.pocketcloud/archive/sources/github/` and imported
+like any archive file, so the same file also imports from the Archives tab on any
+device. An unchanged inventory records nothing; a newer one replaces the older
+batch (rolled back in the ledger, file removed). Repositories link to the
+history's companies by homepage domain, then the company's domain name inside
+the repository name, then its name, six characters or more; the output counts
+each kind. Repositories that link to nothing are recorded as a to-do in the
+flywheel. Internal and product repositories are expected to stay unlinked.
+A failure to read GitHub (no `gh`, not signed in, an account it cannot see)
+prints its fix and records it as a flywheel error with a stable fingerprint, so a
+scheduled run that keeps failing is answered with that fix.
+
+`pocket business archive calibrate-vetting --tenant <id>` joins the same
+inventories, so commits after a lead came in label it converted
+(`later-commits`), apart from logged time (`later-work`).
 
 ---
 
@@ -139,7 +189,10 @@ du -sh ~/.pocketcloud/build/pocketcloud/swiftpm/* | sort -rh | head
 pocket ops disk runtimes                      # report
 pocket ops disk runtimes --superseded         # only redundant builds
 pocket ops disk runtimes --keep iOS --apply   # prune non-iOS
-pocket ops disk runtimes --apply              # newest-per-platform
+pocket ops disk runtimes --keep "iOS 26.5" --delete-devices --apply
+                                              # newest-per-platform, except iOS 26.5;
+                                              # deletes the pruned runtimes' simulators
+                                              # (read the report first: Runbook ops §4)
 
 # Regenerable build output sweep
 pocket ops disk sweep reference-repos         # report

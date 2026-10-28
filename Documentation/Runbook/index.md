@@ -6,9 +6,9 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "build", "verification", "android", "apple", "hybrid", "deploy", "disk-space", "git-sync"]
 owners: ["@steven"]
-version: "1.15.3"
-last_updated: "2026-10-23T01:15:00-06:00"
-last_reviewed: "2026-10-23"
+version: "1.15.8"
+last_updated: "2026-10-28T14:00:00-06:00"
+last_reviewed: "2026-10-26"
 is_archived: false
 ---
 # PocketCloud Build, Run, and Verify Runbook
@@ -112,10 +112,15 @@ composition, narration, explicit edits, render and delivery evidence, including
 operator interventions still required before unattended marketing automation.
 
 The completion audit (`Documentation/ADRs/Tasks/0165/completion-audit.md`) reviews
-workflow/staging evidence and records source blockers before
-adoption. T12 gameplay capture (`Documentation/ADRs/Tasks/0165/T12.md`) continues verification.
-T13 composition (`Documentation/ADRs/Tasks/0165/T13.md`) has passing StoryKit tests and a portable render.
-T14 preparation (`Documentation/ADRs/Tasks/0165/T14.md`) repairs missing included-app version inputs found during the app build.
+newer workflow/staging completion claims and records source blockers before
+adoption. T12 gameplay capture (`Documentation/ADRs/Tasks/0165/T12.md`) is a verified leaf with
+an installed passing gameplay test, finalized result bundle and visually checked
+ready/result screenshots. CLI `.23.13` also passed the capture-specific
+diagnostic policy, with 22 focused tests and a second installed gameplay run.
+T13 composition (`Documentation/ADRs/Tasks/0165/T13.md`) has 10
+passing StoryKit tests and a successful portable render, with clipped text
+refusing visual acceptance. T14 preparation (`Documentation/ADRs/Tasks/0165/T14.md`)
+repairs missing included-app version inputs found during the app build.
 
 The T09 custody and receipt slice (`Documentation/ADRs/Tasks/0165/T09.md`) rehashes render-used
 catalog media and separates input reuse from output freshness. Its task records
@@ -130,6 +135,15 @@ once. State what you re-ran when you edit here:
 
 | Section | Last Actually Run |
 |---|---|
+| testing.md (ADR-0166 screen configuration gate & launch seams) | 2026-10-28 — ADR-0166 T01, T02, T12, T14: `AppearanceVariationTests` 5/5 (`B3109558`), `UITestAppearanceOverrideTests` 3/3 (`897DB53C`), `ScreenConfigurationScannerTests` 3/3 (`CFB8F243`), `MCPDevToolScanScreensTests` 3/3 (`9EB01B66`), `ScreenConfigurationGuidanceTests` 3/3 (`96C37A40`). Rebuilt CLI `1.0.26.10.28.7` (`DF8BA950`), `pocket quality scan cli-flags --all` 0 collisions (`C0988491`), and `pocket quality scan screens --all` tallied 217 findings across 1,589 governed files in 6.31s (`481290CC`). |
+| testing.md (auditing a page that scrolls) | 2026-10-27 — ADR-0143 T05: PocketWellness's iPhone UI suite went from 6/8 to **8/8** on the iPhone 17 Pro simulator (iOS 26.5, `--clean`). Its two audits now page through each surface and judge only what is shown whole, on a pass that held still. Analytics reached the foot in 3 pages and check-in in 3; on check-in the audit moved the page on 4 passes, and those were discarded. Both original contrast findings were the floating tab bar's glass. Paging found two real defects below the first screen, both fixed: a Recent Activity icon VoiceOver read as `book.closed.fill`, and "Save check-in" in white on the pale root tint (2.0:1; now `accent`/`onAccent`, 10.5:1). ADR-0063 T06: the walkthrough's gear test used the gear's identifier from before July. Not exercised: macOS, iPad, light mode. |
+| testing.md (trivia Revisit) | 2026-10-27 — ADR-0149 T12: GameStack `TriviaRevisitTests` (a miss becomes one due card once, a right answer moves it, a replay adds nothing), Core `SpacedRepetitionSchedulerTests` 23/23, GameUI `TriviaRevisitModelTests` 4/4. On the iPhone 17 Pro simulator (iOS 26.5), PocketGamer passed 16/16 (`TriviaRevisitUITests`, the Revisit accessibility audit, `TriviaLearnUITests`, `NavigationUITests`); on the iPad Pro 13-inch (M5), 3/3. Mac windows looked at 560 and 1400 pt. The phone run found the shared `PCAppShell` labelling a tab's whole content with the tab's title, so the Revisit row read "Learn"; fixed (ADR-0141 T16). Not exercised: a course page on iPad or macOS. |
+| testing.md (an app's working directory is `/`) | 2026-10-27 — ADR-0113 T34: `pocket quality scan cwd` and pre-commit gate `cwd` judge reads of the working directory in code an app compiles. `WorkingDirectoryScannerTests` 11/11 hold its exemptions to the manifests. `--all` with `pocket` 1.0.26.10.27.10 found 174 reads in 13 targets. PocketBusiness (macOS, iOS, tvOS), PocketHub and PocketMind (macOS, iOS) built with the six sites fixed. |
+| testing.md (From a Fresh Worktree) | 2026-10-27 — ADR-0038 T22. In a fresh `.claude/worktrees` checkout, the pipeline's automatic step copied 97 ignored inputs (28.7 MB) from the main checkout, and the branch CLI's `pocket --dry-run build worktree` then found 0 left to copy. `WorktreeBuildInputsTests` 16/16. Before the step, `pocket build app PocketGamer` died at xcodegen (`2 Spec validations errors`) after a 19m35s lane wait. In a second new worktree, `pocket build worktree` copied 119 inputs in 0.86 s and a GameUI filter passed 15/15. `build app` compiled, then hit a full disk at link; rerun with disk, it built macOS, iOS and tvOS and exited 0 with no hand copies. |
+| testing.md (simulator apps keep their App Group) | 2026-10-26 — ADR-0110 T11: `pocket dev apple build-app PocketBusiness --simulator` (CLI 1.0.26.10.26.16) built ad hoc; the app had an entitlements section, `simctl … groups` listed its group, and it wrote the iOS widget's `stats.json` there. `SimulatorRunSigningTests` and `StorefrontSimulatorSigningTests` pass. A storefront capture was not re-run. |
+| testing.md (auditing a page that scrolls) | 2026-10-27 — ADR-0143 T05: PocketWellness's iPhone UI suite went from 6/8 to **8/8** on the iPhone 17 Pro simulator (iOS 26.5, `--clean`). Its two audits now page through each surface and judge only what is shown whole, on a pass that held still. Analytics reached the foot in 3 pages and check-in in 3; on check-in the audit moved the page on 4 passes, and those were discarded. Both original contrast findings were the floating tab bar's glass. Paging found two real defects below the first screen, both fixed: a Recent Activity icon VoiceOver read as `book.closed.fill`, and "Save check-in" in white on the pale root tint (2.0:1; now `accent`/`onAccent`, 10.5:1). ADR-0063 T01: the walkthrough's gear test used the gear's identifier from before July. Not exercised: macOS, iPad, light mode. |
+| apple-apps.md (Ship: resume, generated project, hand upload) | 2026-10-26 — PocketBusiness tvOS 1.0.0 build 4 shipped from a clean `origin/develop` worktree and reached TestFlight `processing=VALID`, after an arm64 plist fix (ADR-0148 T36) and a hand-finished export and upload. ADR-0029 T24–T26 make that rerun a plain `ship`: `AppleShipResumeTests` and `SourceSnapshotWorkingTreeTests` with the existing `AppleShip*` and `SourceSnapshotTests` suites. Not yet exercised against App Store Connect: the resume path itself. |
+| testing.md (Apple TV live Top Shelf) / apple-apps.md (tvOS 26 devices) | 2026-10-26 — ADR-0148 T36: `BusinessGlanceTests` 10/10 with `TVWallSceneTests` (19); `PocketBusiness-tvOS` with the `PocketBusinessTopShelf` extension built and run on the tvOS 27 simulator through `pocket dev apple run`; the Top Shelf row showed the four tiles from sample data, refreshed after a republish, and the Leads tile opened the wall's Leads page with the same figures. ADR-0137 T18: develop builds `PocketBusiness-tvOS` and `PocketGamer-tvOS` again (0 `mlx::core` symbols); the develop build installed and launched on an Apple TV HD running tvOS 26.6 through `pocket dev apple run`, no crash logged. |
 | testing.md (MCP timeout regression) | 2026-10-24 — 72-hour Git and timeout audit (`Documentation/ADRs/Tasks/0164/mcp-timeout-audit.md`). Explicit concurrent dispatch, bounded/cancellable markdown listing and isolated RAG probes pass 25 focused tests. CLI `1.0.26.10.24.4` installed (`77728C8A`). Exhaustive local-first verification (`E27C7EF4`): 116 operation rows pass, 13 profile skips, two environment warnings, zero failures; release gate passes. All 28 failures from the October 23 report now pass. |
 | testing.md (production trivia pack) | 2026-10-23 — owner-approved `trivia-core@2026.9.30.2` bundles 15,483 questions in fourteen shards. Package verification passed 84 tests (`BACB5322`); four Release UI tests passed (`845C39E5`). Normal simulator computer use verified all four modes with no launch flags. TestFlight 1.0.0 (31) is VALID, external beta review APPROVED, assigned to `initial-beta-testers` (`329AD5C1` upload). Physical gameplay remains blocked by runner signing (`0xe8008018`). Exhaustive workspace verification failed on 28 operations (`C79B3FB9`); see testing.md for scope and evidence. |
 | app-media-creation.md / testing.md (app capture & Story Maker ingestion) | 2026-10-23 — ADR-0165 T01–T07 verified: `StorefrontCaptureVerificationTests` (6/6), `StorefrontCaptureIngestorTests` (5/5), `AppCapturePlannerTests` (4/4), `SimulatorVideoRecorderTests` (3/3), `StoryCaptureRunnerTests` (2/2), `StoryComposerTests` (4/4), `StoryComposeCommandTests` (6/6), `TargetDeliveryProfileTests` (5/5), `StoryDeliveryCommandTests` (7/7), `StoryWorkflowCheckpointTests` (4/4), `StoryWorkflowOrchestratorTests` (4/4), `StoryWorkflowCommandTests` (6/6), `DeliveryStagingPackageTests` (5/5), and `StoryDeliveryStageCommandTests` (4/4). Shared capture records, video recorders, branded story composer, delivery profiles, and `StoryWorkflowOrchestrator` deployed with durable checkpoints (`26.10.21`), resume support, exact-hash destination review, stale review refusal, publication reconciliation, profile-scoped cache key invalidation (T07), and CLI commands `pocket story ingest`, `capture`, `compose`, `variants plan|render`, `delivery validate|stage`, and `workflow run`. Platform check passed (session `F0FD1C6A`). |
@@ -145,7 +159,7 @@ once. State what you re-ran when you edit here:
 | web-fleet.md | 2026-08-18 — full 9-site redeploy, verify + presence green |
 | apple-apps.md | 2026-10-21 — PocketBusiness iOS, macOS, and tvOS apps uploaded to App Store Connect / TestFlight via Apple runbook (`pocket dev apple ship` / `export` / `appstore`). iOS: v1.0.0 build 28 uploaded (session `BFBE2A28`, clean bundle secret audit). macOS: v1.0.0 build 16 exported and uploaded (clean bundle secret audit, headless ASC key export). tvOS: v1.0.0 build 3 uploaded (session `8CF62A51`, clean bundle secret audit, signing deferred to export per runbook). `KnownVendorDomainStore` decoupled from tvOS platform exclusion. |
 | verification-and-gates.md / build-tiers.md | 2026-09-08 — bronze ×4, gold attempts, ADR-0117 lease proved live |
-| knowledge-console-recovery.md (disk) | 2026-10-14 — Gmail thread repair (--repair-thread) and resilient lead source reconciliation |
+| knowledge-console-recovery.md (disk) | 2026-10-27 — the apps read a different knowledge copy on a Mac; Settings no longer re-indexes `/` (ADR-0110 T09, T12) |
 | android-and-hybrid.md | 2026-08-15 (Windows cross-compile), otherwise 2026-08-03 |
 
 ---
@@ -235,8 +249,9 @@ export POCKETCLOUD_SKIP_DOCTOR=1
 
 For ongoing ADR-0165 gameplay/composition work, see
 T12 (`Documentation/ADRs/Tasks/0165/T12.md`) and T13 (`Documentation/ADRs/Tasks/0165/T13.md`).
-The gameplay/composition CLI rebuilt as `1.0.26.10.23.3`; live gameplay remains
-pending. Build/test snapshots allow
+CLI `1.0.26.10.23.6` completed a real automated gameplay capture with a hashed
+raw video and one passing test in a finalized xcresult. Its raw footage includes
+startup and post-test time; it is not a marketing-ready cut. Build/test snapshots allow
 continued source editing while gates run; shared leases still serialize compiler
 resources. Preserve the gate's snapshot and caches. Verification and publication
 remain distinct milestones.

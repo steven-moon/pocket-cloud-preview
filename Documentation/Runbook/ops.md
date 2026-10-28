@@ -6,8 +6,8 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "ops", "git", "git-sync", "git-hooks", "orchestrator", "disk-space"]
 owners: ["@steven"]
-version: "1.21.1"
-last_updated: "2026-10-19T00:00:00Z"
+version: "1.21.2"
+last_updated: "2026-10-28T14:00:00-06:00"
 last_reviewed: "2026-10-14"
 is_archived: false
 ---
@@ -314,6 +314,7 @@ Escapes: `ADR-Exempt: <why>` trailer → `POCKETCLOUD_SKIP_ADR_REF=1` →
 | Blast radius | `pocket knowledge graph impact <mod>` | `--skip-impact-scan` | `POCKETCLOUD_SKIP_IMPACT_SCAN=1` |
 | ADR decisions | *(gate only)* | `--skip-adr-decision-scan` | `POCKETCLOUD_SKIP_ADR_DECISION_SCAN=1` |
 | Offer | `pocket quality offer-gate` | `--skip-offer-gate` | `POCKETCLOUD_SKIP_OFFER_GATE=1` |
+| Screens (ADR-0166 T12) | `pocket quality scan screens` | `--skip-screen-scan` | `POCKETCLOUD_SKIP_SCREEN_SCAN=1` |
 | Docs | `pocket quality docs validate-all` | `--skip-docs` | `POCKETCLOUD_SKIP_DOCS=1` |
 
 > Note: `git commit --skip-*-scan` is **not** forwarded by the installed hook.
@@ -361,14 +362,23 @@ pocket task list --recurring
 pocket ops disk runtimes
 pocket ops disk runtimes --superseded
 pocket ops disk runtimes --keep iOS --apply
-pocket ops disk runtimes --apply
+pocket ops disk runtimes --keep "iOS 26.5" --delete-devices --apply
 
 pocket ops disk sweep reference-repos
 pocket ops disk sweep reference-repos --apply
 ```
 
 Both verbs report unless given `--apply`. A sweep's `--apply` refuses while a build
-is running; a report reads sizes and removes nothing, so it runs any time. To
+is running; a report reads sizes and removes nothing, so it runs any time.
+
+Every runtime Xcode installs comes with its own simulators, and `--apply` will not
+strand them: a runtime that still has simulators is pruned only with
+`--delete-devices`, which deletes those simulators first, apps and data included.
+Read the report before adding it. It names each pruned runtime's simulators and
+which have apps installed. The newest runtime is not always the one in use: on
+2026-10-27 the `iPhone 17 Pro` the UI-test destinations pin ran on iOS 26.5 beside
+an installed 27.0, so keep such a runtime by version with
+`--keep "<platform> <version>"` (ADR-0111 T08). To
 notice growth at 20 GB rather than at 93% full, schedule the weekly report
 (ADR-0111 T05):
 

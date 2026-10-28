@@ -6,9 +6,9 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "apple", "ios", "macos", "tvos", "iphone-duo", "storefront", "testflight", "ship"]
 owners: ["@steven"]
-version: "1.12.1"
-last_updated: "2026-10-25T00:00:00Z"
-last_reviewed: "2026-10-25"
+version: "1.12.3"
+last_updated: "2026-10-26T20:30:00Z"
+last_reviewed: "2026-10-26"
 is_archived: false
 ---
 # 2. Apple Apps, Simulators, Storefront & Ship
@@ -393,6 +393,28 @@ every 30 s, and `--dry-run` prints both budgets.
 ```bash
 pocket dev apple ship --scheme PocketMind-iOS --archive-only --archive-timeout 3600   # slow link: raise the ceiling
 ```
+
+**A package cache that predates its pins heals itself** (ADR-0144 T11). `pocket build app`,
+`apps` and `all` build every sample app from one shared cache,
+`~/.pocketcloud/build/sample-apps/pocketcloud/SourcePackages`, with `-skipPackageUpdates`, so
+xcodebuild never fetches. When a commit pins a version newer than the cache's last fetch, every
+app build fails: `Dependencies could not be resolved because no versions of 'mlx-audio-swift'
+match the requirement 0.1.6`. On 2026-10-26 the cache had last fetched on 2026-09-03, and
+ADR-0137 T13 had pinned three newer versions the day before. The build now heals it, on two
+facts: xcodebuild could not resolve, and a cached clone under `repositories/` lacks a revision
+`Package.resolved` pins. It prints one line per clone and rebuilds once:
+```
+📦 'mlx-audio-swift' is pinned at 0.1.6 by …/Package.resolved, and the shared package cache's clone predates it. Fetching into …/repositories/mlx-audio-swift-4f05d7e9, then rebuilding once (ADR-0144 T11).
+```
+The fetch only adds tags and branches; nothing is deleted or reset, so the rebuild is
+incremental. It leaves the cache alone, and the build fails as before, when another process's
+command line names the cache, when the process table cannot be read, or when the build is
+`--offline`. If the fetch works and the revision is still missing, the error says the pin names a
+version its upstream lacks: fix `Package.resolved`, not the cache. To check the cache by hand:
+```bash
+SP=~/.pocketcloud/build/sample-apps/pocketcloud/SourcePackages
+git -C "$SP/repositories/mlx-audio-swift-4f05d7e9" cat-file -e <pinned-revision>^{commit} && echo present
+```
 `--archive-timeout` also puts a wall clock on the archive build, which has none
 by default. The flag is not called `--timeout` because the root `pocket` command
 claims that name, so a leaf flag spelled the same would be accepted and ignored.
@@ -405,6 +427,68 @@ pocket dev apple ship --scheme PocketBusiness-tvOS --archive-only --defer-signin
 This leaves archive signing to the distribution export; it does not disable
 export signing. Export with `pocket dev apple export`, then inspect the exported
 `DistributionSummary.plist` before upload.
+
+**A ship that failed after its archive does not archive again** (ADR-0029 T26). Once the archive
+passes its secret audit, `ship` writes `<archive>.ship-receipt.json` beside it, naming the version,
+build and source tree it was built from: HEAD plus every uncommitted change, ignored files left
+out. A rerun that plans the same version and build reuses the archive when the receipt matches, the
+archive's own `Info.plist` carries that version and build, and the source still hashes the same.
+Otherwise it archives, and the plan line says why, for example `archive  build: the source changed
+since … was archived: 2 file(s), e.g. …`. `--fresh-archive` forces a new archive. On 2026-10-26 a
+transient Apple ID login failure at export cost a tvOS ship its 14-minute archive; now a rerun of
+`ship` goes straight to export.
+
+**A missing project is generated first** (T25). `PocketMind.xcodeproj` is gitignored, so a fresh
+clone or worktree has none, and `ship` used to fail in 3 s with "… does not exist". It now runs
+xcodegen beside the project's `project.yml` before archiving, and the plan says so. The gitignored
+inputs that spec reads (`Generated/Apple`, `Apps/PocketMind/*/Generated`, the MLX metallib) are
+not generated: copy them from a working checkout first.
+
+**An upload made by hand still arms the duplicate-build guard** (T24). `pocket dev apple appstore
+upload` records the build in `~/.pocketcloud/apple/uploads/` when it is given `--platform`,
+`--marketing-version` and `--build-number`, and names what is missing when it is not. Without that
+record, the next `ship` can plan the number Apple has just accepted and be refused with 409 after a
+full archive. Rerunning `ship` is the better way to finish; by hand it is:
+```bash
+pocket dev apple export --archive-path <archive> --export-path <dir> --export-options-plist scripts/export-options-tvos.plist
+pocket dev apple appstore upload --bundle-id clevercoding.com.PocketBusiness --ipa-path <dir>/PocketBusiness.ipa --platform tvos --marketing-version 1.0.0 --build-number 4
+```
+
+**Ship from a clean worktree when the checkout holds someone else's work.** When the main checkout
+has other sessions' uncommitted or unpushed changes in code the app links, ship from
+`git worktree add --detach .claude/worktrees/<name> origin/develop`. Run `pocket build worktree` for the
+generated inputs and copy `.pocketcloud/apps/<scheme>.json` in first. The upload record is machine-scoped, so the guard holds
+there too (T21). A tvOS app extension with a manual `Info.plist` must list
+`UIRequiredDeviceCapabilities` = `arm64`: Xcode adds it only to the app target, and Transporter
+refuses the whole upload without it.
+
+**A tvOS simulator cannot prove a build launches on a tvOS 26 Apple TV (ADR-0137 T18).** TestFlight
+build 2 died in dyld on an Apple TV HD running tvOS 26.6 (`Library not loaded:
+…/PDFKit.framework/PDFKit`). The tvOS 27 SDK ships PDFKit and links it strongly, and
+the tvOS 26.5 simulator runtime ships PDFKit too, so the simulator launches a binary
+that the device refuses. Check the archive's strong links instead. Every
+`/System/Library/Frameworks` line without `weak` must exist on the oldest tvOS you
+support:
+```bash
+otool -L build/PocketBusiness-tvOS-1.0.0-<n>.xcarchive/Products/Applications/PocketBusiness.app/PocketBusiness | grep -v weak
+```
+Then run it on a physical device, which `pocket dev apple run` installs and launches
+with `devicectl` (before T18 it only copied the build into DSTROOT and said it had
+installed it):
+```bash
+pocket dev apple run -p Apps/PocketMind/PocketMind.xcodeproj -s PocketBusiness-tvOS -d "platform=tvOS,id=<udid>" --bundle-id clevercoding.com.PocketBusiness
+```
+Pull the device's crash logs with
+`xcrun devicectl device info files --device <udid> --domain-type systemCrashLogs`.
+
+**The Apple TV icon and Top Shelf art are generated (ADR-0148 T36).** `scripts/generate-business-tv-icon.swift`
+draws the three-layer image stacks (Background, Middle, Foreground; 400×240 @1x/@2x and
+1280×768) and both Top Shelf images (1920×720 and 2320×720, @1x/@2x) from vectors. Change
+the script rather than the PNGs: the old art was the square iOS icon stretched to 5:3.
+```bash
+swiftc -O -o /tmp/business-tv-icon scripts/generate-business-tv-icon.swift
+/tmp/business-tv-icon --preview /tmp/business-tv-preview   # from the workspace root
+```
 
 The shared iOS export plist uses automatic signing without a bundle-specific
 provisioning-profile map. This lets each sample app resolve its own App Store

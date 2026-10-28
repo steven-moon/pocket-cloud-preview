@@ -6,8 +6,8 @@ project_id: "main"
 status: "active"
 tags: ["pocketcloud", "pocketcli", "verification", "git-hooks", "pre-commit", "commit-msg", "git-sync"]
 owners: ["@steven"]
-version: "1.13.1"
-last_updated: "2026-10-19T00:00:00Z"
+version: "1.15.0"
+last_updated: "2026-10-25T00:00:00Z"
 last_reviewed: "2026-10-07"
 is_archived: false
 ---
@@ -84,6 +84,43 @@ If the warning persists after that, ask TCC before granting anything again
 `Sandbox: … deny(1)` line names it. That pair is how the App Store PocketHub,
 used as verify's helper until T26, produced months of false permission warnings.
 A sandboxed helper is now never used for UI automation.
+
+### A local AI check that times out only in the full run
+
+`execute_workflow` passing alone and timing out in `--exhaustive` is time spent
+somewhere other than the check. There are two places to look.
+
+**Knowledge context.** `RAG context retrieval exceeded budget` means the router
+waited for the knowledge store and got nothing. Since ADR-0035 T04 a store that
+is still loading costs a request at most 1 s, and the router records
+`rag_status=warming` instead of a warning. If the warning is back, time a cold
+load:
+
+```bash
+time pocket knowledge rag query "anything"
+```
+
+**The model.** A process holds one MLX model at a time. Two checks that need
+different models take turns loading over each other, and each one's timeout
+runs while it waits. `pocket system verify` gates every operation that loads or
+generates on that model (`VerifyLocalAIOperationGate`), and the wait for the
+gate does not count against the operation. A request that names no model
+(`default`, `auto`) runs on the model already held (ADR-0010 T28). The model
+each request resolved is in the routing log:
+
+```bash
+grep resolve_local_model_configuration ~/.pocketcloud/logs/workflow_decision_trace.jsonl | tail -3
+```
+
+**`Circuit breaker tripped for 127.0.0.1:<port>`** means something listens on
+that port and did not answer in time. A service that is simply not running
+(nothing listening) no longer warns; it is logged at debug (ADR-0010 T28). On
+macOS the local daemon on 8089 is the llama.cpp HTTP lane, and MLX runs in
+process beside it. Check what is answering before restarting anything:
+
+```bash
+printf 'GET /health HTTP/1.0\r\n\r\n' | nc -w 2 127.0.0.1 8089 | head -1
+```
 
 ### Reading Test Evidence
 
